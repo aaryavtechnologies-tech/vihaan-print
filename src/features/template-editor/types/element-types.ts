@@ -97,7 +97,9 @@ export interface PlaceholderElement extends BaseElement {
     | "address"
     | "school_name"
     | "school_logo"
-    | "principal_signature";
+    | "principal_signature"
+    | "qr_code"
+    | "barcode";
   // Usually placeholders act as text or image masks depending on type
   placeholderText?: string;
   fill?: string;

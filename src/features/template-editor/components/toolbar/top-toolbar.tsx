@@ -11,8 +11,13 @@ import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { SaveIndicator } from "./save-indicator";
 import { publishTemplate } from "../../server/template-actions";
 
+import { ExportDialog } from "./ExportDialog";
+import { usePrintStore } from "../../store/print-store";
+import { Printer } from "lucide-react";
+
 export function TopToolbar() {
   const { zoomIn, zoomOut, zoomLevel, setZoomLevel, past, future, undo, redo, currentTemplateId } = useEditorStore();
+  const setExportPanelOpen = usePrintStore((state) => state.setExportPanelOpen);
 
   const handleZoomChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setZoomLevel(parseFloat(e.target.value));
@@ -107,6 +112,16 @@ export function TopToolbar() {
         </Button>
         
         <Button 
+          onClick={() => setExportPanelOpen(true)} 
+          variant="outline"
+          size="sm" 
+          className="h-8 bg-blue-50 text-blue-600 hover:bg-blue-100 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800 dark:hover:bg-blue-900/50"
+        >
+          <Printer className="h-4 w-4 mr-2" />
+          Export
+        </Button>
+
+        <Button 
           onClick={handlePublish} 
           size="sm" 
           disabled={!currentTemplateId}
@@ -116,6 +131,8 @@ export function TopToolbar() {
           Publish
         </Button>
       </div>
+
+      <ExportDialog />
     </header>
   );
 }

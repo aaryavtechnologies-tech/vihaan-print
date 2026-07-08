@@ -8,6 +8,7 @@ import { StatusBar } from "../statusbar/status-bar";
 import { CanvasWorkspace } from "../canvas/canvas-workspace";
 import { useEditorShortcuts } from "../../hooks/useEditorShortcuts";
 import { useAutoSave } from "../../hooks/useAutoSave";
+import { BatchRenderer } from "../render/BatchRenderer";
 
 export function EditorLayout() {
   const rightPanelOpen = useEditorStore((state) => state.rightPanelOpen);
@@ -33,6 +34,9 @@ export function EditorLayout() {
       </div>
 
       <StatusBar />
+      
+      {/* Hidden batch renderer for generating export files */}
+      <BatchRenderer />
     </div>
   );
 }
