@@ -19,8 +19,9 @@ model User {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
-  sessions Session[]
-  accounts Account[]
+  sessions               Session[]
+  accounts               Account[]
+  templateEditorSettings TemplateEditorSettings?
 
   @@map("users")
 }
@@ -140,4 +141,24 @@ model School {
   @@index([city])
   @@index([status])
   @@map("schools")
+}
+
+model TemplateEditorSettings {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  gridEnabled    Boolean  @default(true)
+  gridSize       Int      @default(10)
+  snapEnabled    Boolean  @default(true)
+  zoomLevel      Float    @default(100.0)
+  canvasPosition Json? // { x: 0, y: 0 }
+  rulerEnabled   Boolean  @default(true)
+  theme          String   @default("light")
+  lastEdited     DateTime @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("template_editor_settings")
 }

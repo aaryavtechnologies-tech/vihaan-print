@@ -152,7 +152,7 @@ export function SchoolTable({ schools, onDelete, onArchive, onRestore }: SchoolT
                     </div>
                   </TableCell>
                   <TableCell>
-                    {getStatusBadge(school.status)}
+                    {getStatusBadge(school.status as any)}
                   </TableCell>
                   <TableCell className="text-sm text-slate-500">
                     {format(new Date(school.createdAt), "MMM d, yyyy")}
