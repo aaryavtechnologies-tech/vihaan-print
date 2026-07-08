@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { EditorElement } from "../types/element-types";
 
 export type SidebarTab = "templates" | "elements" | "uploads" | "text" | "images" | "shapes" | "icons" | "qr" | "barcode" | "layers" | "history";
+export type DirtyState = "CLEAN" | "UNSAVED" | "SAVING" | "SAVED" | "ERROR";
 
 interface EditorState {
   // Canvas State
@@ -18,12 +19,24 @@ interface EditorState {
   rulerEnabled: boolean;
   snapEnabled: boolean;
   
+  // History
+  past: EditorElement[][];
+  future: EditorElement[][];
+  
   // Selections & Elements
-  selectedObjectId: string | null;
+  selectedObjectIds: string[];
   elements: EditorElement[];
-  clipboard: EditorElement | null;
+  clipboard: EditorElement[] | null;
 
+  // Persistence
+  currentTemplateId: string | null;
+  currentVersionId: string | null;
+  dirtyState: DirtyState;
+  
   // Actions
+  setCurrentTemplateId: (id: string | null) => void;
+  setCurrentVersionId: (id: string | null) => void;
+  setDirtyState: (state: DirtyState) => void;
   setZoomLevel: (zoom: number) => void;
   setCanvasPosition: (pos: { x: number; y: number }) => void;
   setActiveSidebarTab: (tab: SidebarTab | null) => void;
@@ -31,17 +44,24 @@ interface EditorState {
   setGridEnabled: (enabled: boolean) => void;
   setRulerEnabled: (enabled: boolean) => void;
   setSnapEnabled: (enabled: boolean) => void;
-  setSelectedObjectId: (id: string | null) => void;
+  setSelectedObjectIds: (ids: string[]) => void;
+  toggleSelection: (id: string) => void;
   
   // Element Actions
   addElement: (element: EditorElement) => void;
   updateElement: (id: string, updates: Partial<EditorElement>) => void;
-  deleteElement: (id: string) => void;
-  duplicateElement: (id: string) => void;
+  updateElements: (updates: {id: string, changes: Partial<EditorElement>}[]) => void;
+  deleteElement: (ids: string | string[]) => void;
+  duplicateElement: (ids: string | string[]) => void;
   setElements: (elements: EditorElement[]) => void;
   
+  // History Actions
+  undo: () => void;
+  redo: () => void;
+  saveHistorySnapshot: () => void;
+  
   // Clipboard
-  copyElement: (id: string) => void;
+  copyElement: (ids: string | string[]) => void;
   pasteElement: () => void;
 
   // Z-Index Controls
@@ -61,84 +81,173 @@ export const useEditorStore = create<EditorState>((set) => ({
   canvasPosition: { x: 0, y: 0 },
   activeSidebarTab: "templates",
   rightPanelOpen: true,
-  gridEnabled: true,
+  gridEnabled: false,
   rulerEnabled: true,
   snapEnabled: true,
-  selectedObjectId: null,
+  selectedObjectIds: [],
   elements: [],
   clipboard: null,
+  past: [],
+  future: [],
+  currentTemplateId: null,
+  currentVersionId: null,
+  dirtyState: "CLEAN",
+
+  setCurrentTemplateId: (id) => set({ currentTemplateId: id }),
+  setCurrentVersionId: (id) => set({ currentVersionId: id }),
+  setDirtyState: (state) => set({ dirtyState: state }),
 
   setZoomLevel: (zoom) => set({ zoomLevel: zoom }),
-  setCanvasPosition: (pos) => set({ canvasPosition: pos }),
+  setCanvasPosition: (pos) => set({ canvasPosition: pos, dirtyState: "UNSAVED" }),
   setActiveSidebarTab: (tab) => set({ activeSidebarTab: tab }),
   setRightPanelOpen: (isOpen) => set({ rightPanelOpen: isOpen }),
   setGridEnabled: (enabled) => set({ gridEnabled: enabled }),
   setRulerEnabled: (enabled) => set({ rulerEnabled: enabled }),
   setSnapEnabled: (enabled) => set({ snapEnabled: enabled }),
-  setSelectedObjectId: (id) => set({ selectedObjectId: id }),
+  setSelectedObjectIds: (ids) => set({ selectedObjectIds: ids }),
+  toggleSelection: (id) => set((state) => ({
+    selectedObjectIds: state.selectedObjectIds.includes(id) 
+      ? state.selectedObjectIds.filter(selId => selId !== id)
+      : [...state.selectedObjectIds, id]
+  })),
   
   // Element Actions
   addElement: (element) => set((state) => {
-    // New elements go to the top (highest layerIndex logic can be applied if needed, but we rely on array order for z-index in konva)
-    return { elements: [...state.elements, element], selectedObjectId: element.id };
+    return { 
+      past: [...state.past, state.elements].slice(-100),
+      future: [],
+      elements: [...state.elements, element], 
+      selectedObjectIds: [element.id],
+      dirtyState: "UNSAVED"
+    };
   }),
   
-  updateElement: (id, updates) => set((state) => ({
-    elements: state.elements.map(el => el.id === id ? { ...el, ...updates, updatedAt: Date.now() } as EditorElement : el)
-  })),
-  
-  deleteElement: (id) => set((state) => ({
-    elements: state.elements.filter(el => el.id !== id),
-    selectedObjectId: state.selectedObjectId === id ? null : state.selectedObjectId
-  })),
-  
-  duplicateElement: (id) => set((state) => {
-    const el = state.elements.find(e => e.id === id);
-    if (!el) return state;
-    
-    const newId = crypto.randomUUID();
-    const duplicated: EditorElement = {
-      ...el,
-      id: newId,
-      name: `${el.name} (Copy)`,
-      x: el.x + 20,
-      y: el.y + 20,
-      createdAt: Date.now(),
-      updatedAt: Date.now()
+  updateElement: (id, updates) => set((state) => {
+    return {
+      past: [...state.past, state.elements].slice(-100),
+      future: [],
+      elements: state.elements.map(el => el.id === id ? { ...el, ...updates, updatedAt: Date.now() } as EditorElement : el),
+      dirtyState: "UNSAVED"
     };
+  }),
+
+  updateElements: (updates) => set((state) => {
+    return {
+      past: [...state.past, state.elements].slice(-100),
+      future: [],
+      elements: state.elements.map(el => {
+        const update = updates.find(u => u.id === el.id);
+        if (update) {
+          return { ...el, ...update.changes, updatedAt: Date.now() } as EditorElement;
+        }
+        return el;
+      }),
+      dirtyState: "UNSAVED"
+    };
+  }),
+  
+  deleteElement: (idOrIds) => set((state) => {
+    const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
+    return {
+      past: [...state.past, state.elements].slice(-100),
+      future: [],
+      elements: state.elements.filter(el => !ids.includes(el.id)),
+      selectedObjectIds: state.selectedObjectIds.filter(selId => !ids.includes(selId)),
+      dirtyState: "UNSAVED"
+    };
+  }),
+  
+  duplicateElement: (idOrIds) => set((state) => {
+    const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
+    const elsToDuplicate = state.elements.filter(e => ids.includes(e.id));
+    if (elsToDuplicate.length === 0) return state;
+    
+    const duplicatedElements = elsToDuplicate.map(el => {
+      const newId = crypto.randomUUID();
+      return {
+        ...el,
+        id: newId,
+        name: `${el.name} (Copy)`,
+        x: el.x + 20,
+        y: el.y + 20,
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      } as EditorElement;
+    });
     
     return {
-      elements: [...state.elements, duplicated],
-      selectedObjectId: newId
+      past: [...state.past, state.elements].slice(-100),
+      future: [],
+      elements: [...state.elements, ...duplicatedElements],
+      selectedObjectIds: duplicatedElements.map(e => e.id),
+      dirtyState: "UNSAVED"
     };
   }),
   
   setElements: (elements) => set({ elements }),
   
+  // History Actions
+  undo: () => set((state) => {
+    if (state.past.length === 0) return state;
+    const previous = state.past[state.past.length - 1];
+    const newPast = state.past.slice(0, state.past.length - 1);
+    return {
+      past: newPast,
+      future: [state.elements, ...state.future],
+      elements: previous,
+      selectedObjectIds: [],
+      dirtyState: "UNSAVED"
+    };
+  }),
+  
+  redo: () => set((state) => {
+    if (state.future.length === 0) return state;
+    const next = state.future[0];
+    const newFuture = state.future.slice(1);
+    return {
+      past: [...state.past, state.elements],
+      future: newFuture,
+      elements: next,
+      selectedObjectIds: [],
+      dirtyState: "UNSAVED"
+    };
+  }),
+  
+  saveHistorySnapshot: () => set((state) => ({
+    past: [...state.past, state.elements].slice(-100),
+    future: []
+  })),
+  
   // Clipboard
-  copyElement: (id) => set((state) => {
-    const el = state.elements.find(e => e.id === id);
-    return el ? { clipboard: JSON.parse(JSON.stringify(el)) } : state;
+  copyElement: (idOrIds) => set((state) => {
+    const ids = Array.isArray(idOrIds) ? idOrIds : [idOrIds];
+    const elsToCopy = state.elements.filter(e => ids.includes(e.id));
+    return elsToCopy.length > 0 ? { clipboard: JSON.parse(JSON.stringify(elsToCopy)) } : state;
   }),
   
   pasteElement: () => set((state) => {
-    if (!state.clipboard) return state;
+    if (!state.clipboard || state.clipboard.length === 0) return state;
     
-    const newId = crypto.randomUUID();
-    const pasted: EditorElement = {
-      ...state.clipboard,
-      id: newId,
-      name: `${state.clipboard.name} (Pasted)`,
-      x: state.clipboard.x + 20,
-      y: state.clipboard.y + 20,
-      createdAt: Date.now(),
-      updatedAt: Date.now()
-    };
+    const pastedElements = state.clipboard.map(clipEl => {
+      const newId = crypto.randomUUID();
+      return {
+        ...clipEl,
+        id: newId,
+        name: `${clipEl.name} (Pasted)`,
+        x: clipEl.x + 20,
+        y: clipEl.y + 20,
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+      } as EditorElement;
+    });
     
     return {
-      elements: [...state.elements, pasted],
-      selectedObjectId: newId,
-      clipboard: pasted // Update clipboard so repeated pastes keep offsetting
+      past: [...state.past, state.elements].slice(-100),
+      future: [],
+      elements: [...state.elements, ...pastedElements],
+      selectedObjectIds: pastedElements.map(e => e.id),
+      clipboard: pastedElements,
+      dirtyState: "UNSAVED"
     };
   }),
 
@@ -152,7 +261,12 @@ export const useEditorStore = create<EditorState>((set) => ({
     newElements[idx + 1] = newElements[idx];
     newElements[idx] = temp;
     
-    return { elements: newElements };
+    return { 
+      past: [...state.past, state.elements].slice(-100),
+      future: [],
+      elements: newElements,
+      dirtyState: "UNSAVED"
+    };
   }),
   
   sendBackward: (id) => set((state) => {
@@ -164,7 +278,12 @@ export const useEditorStore = create<EditorState>((set) => ({
     newElements[idx - 1] = newElements[idx];
     newElements[idx] = temp;
     
-    return { elements: newElements };
+    return { 
+      past: [...state.past, state.elements].slice(-100),
+      future: [],
+      elements: newElements,
+      dirtyState: "UNSAVED"
+    };
   }),
   
   bringToFront: (id) => set((state) => {
@@ -175,7 +294,12 @@ export const useEditorStore = create<EditorState>((set) => ({
     const [el] = newElements.splice(idx, 1);
     newElements.push(el);
     
-    return { elements: newElements };
+    return { 
+      past: [...state.past, state.elements].slice(-100),
+      future: [],
+      elements: newElements,
+      dirtyState: "UNSAVED"
+    };
   }),
   
   sendToBack: (id) => set((state) => {
@@ -186,7 +310,12 @@ export const useEditorStore = create<EditorState>((set) => ({
     const [el] = newElements.splice(idx, 1);
     newElements.unshift(el);
     
-    return { elements: newElements };
+    return { 
+      past: [...state.past, state.elements].slice(-100),
+      future: [],
+      elements: newElements,
+      dirtyState: "UNSAVED"
+    };
   }),
 
   zoomIn: () => set((state) => ({ zoomLevel: Math.min(state.zoomLevel + 0.1, 5.0) })),

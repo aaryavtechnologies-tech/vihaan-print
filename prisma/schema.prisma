@@ -137,6 +137,9 @@ model School {
   // createdBy       String?
   // updatedBy       String?
 
+  // Relations
+  templates Template[]
+
   @@index([schoolName])
   @@index([city])
   @@index([status])
@@ -161,4 +164,88 @@ model TemplateEditorSettings {
   updatedAt DateTime @updatedAt
 
   @@map("template_editor_settings")
+}
+
+enum TemplateStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Template {
+  id             String         @id @default(cuid())
+  uuid           String         @unique @default(uuid())
+  schoolId       String?
+  school         School?        @relation(fields: [schoolId], references: [id], onDelete: SetNull)
+  name           String
+  description    String?
+  status         TemplateStatus @default(DRAFT)
+  
+  // Dimensions
+  orientation    String         @default("portrait") // "portrait" | "landscape"
+  width          Float          @default(54)
+  height         Float          @default(86)
+  dpi            Int            @default(300)
+  canvasWidth    Float          @default(638)
+  canvasHeight   Float          @default(1016)
+  
+  // Base background (could be moved to JSON, but useful for thumbnails)
+  backgroundImage String?
+  thumbnail      String?
+  
+  // Version Tracking
+  currentVersionId String?
+  currentVersion   TemplateVersion? @relation("CurrentVersion", fields: [currentVersionId], references: [id])
+  versions       TemplateVersion[] @relation("AllVersions")
+
+  // Audit
+  createdBy      String?
+  updatedBy      String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  deletedAt      DateTime?
+
+  @@index([schoolId])
+  @@index([status])
+  @@map("templates")
+}
+
+model TemplateVersion {
+  id             String    @id @default(cuid())
+  templateId     String
+  template       Template  @relation("AllVersions", fields: [templateId], references: [id], onDelete: Cascade)
+  version        Int       @default(1)
+  versionName    String?
+  jsonData       Json      // Contains all elements, properties, layer order, etc.
+  thumbnail      String?
+  changeLog      String?
+  published      Boolean   @default(false)
+  
+  // Audit
+  createdBy      String?
+  createdAt      DateTime  @default(now())
+
+  // Reverse relation for Template's currentVersion
+  currentFor     Template[] @relation("CurrentVersion")
+
+  @@unique([templateId, version])
+  @@map("template_versions")
+}
+
+model TemplateAsset {
+  id          String   @id @default(cuid())
+  url         String
+  publicId    String   @unique
+  assetType   String   // "image", "icon", "background"
+  name        String?
+  bytes       Int?
+  format      String?
+  
+  // Optional linkage to school or global
+  schoolId    String?
+  
+  createdBy   String?
+  createdAt   DateTime @default(now())
+
+  @@map("template_assets")
 }

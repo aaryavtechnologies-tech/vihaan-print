@@ -8,12 +8,24 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { SaveIndicator } from "./save-indicator";
+import { publishTemplate } from "../../server/template-actions";
 
 export function TopToolbar() {
-  const { zoomLevel, zoomIn, zoomOut, setZoomLevel } = useEditorStore();
+  const { zoomIn, zoomOut, zoomLevel, setZoomLevel, past, future, undo, redo, currentTemplateId } = useEditorStore();
 
   const handleZoomChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setZoomLevel(parseFloat(e.target.value));
+  };
+
+  const handlePublish = async () => {
+    if (!currentTemplateId) return;
+    try {
+      await publishTemplate(currentTemplateId);
+      // Maybe show a toast notification here
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
@@ -31,18 +43,30 @@ export function TopToolbar() {
       {/* Center: Template Name & Save Status */}
       <div className="flex flex-col items-center flex-1 justify-center relative">
         <h1 className="text-sm font-semibold tracking-tight absolute -top-1">Student ID - 2026 Batch</h1>
-        <div className="flex items-center gap-1.5 text-[10px] text-slate-400 absolute top-4">
-          <Cloud className="w-3 h-3" />
-          <span>All changes saved to cloud</span>
-        </div>
+        <SaveIndicator />
       </div>
 
+      {/* Right: Tools & Zoom */}
       <div className="flex items-center gap-2">
-        <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-md">
-          <Button variant="ghost" size="icon" className="h-7 w-7 text-slate-400" disabled>
+        <div className="flex items-center gap-1 mr-2 border-r pr-3 dark:border-slate-700">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-8 w-8" 
+            disabled={past.length === 0}
+            onClick={undo}
+            title="Undo (Ctrl+Z)"
+          >
             <Undo2 className="h-4 w-4" />
           </Button>
-          <Button variant="ghost" size="icon" className="h-7 w-7 text-slate-400" disabled>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-8 w-8" 
+            disabled={future.length === 0}
+            onClick={redo}
+            title="Redo (Ctrl+Shift+Z)"
+          >
             <Redo2 className="h-4 w-4" />
           </Button>
         </div>
@@ -82,9 +106,14 @@ export function TopToolbar() {
           Preview
         </Button>
         
-        <Button size="sm" className="h-8 bg-blue-600 hover:bg-blue-700 text-white">
+        <Button 
+          onClick={handlePublish} 
+          size="sm" 
+          disabled={!currentTemplateId}
+          className="h-8 bg-blue-600 hover:bg-blue-700 text-white"
+        >
           <Save className="h-4 w-4 mr-2" />
-          Save
+          Publish
         </Button>
       </div>
     </header>

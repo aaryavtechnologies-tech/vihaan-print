@@ -7,12 +7,16 @@ import { RightPanel } from "../properties/right-panel";
 import { StatusBar } from "../statusbar/status-bar";
 import { CanvasWorkspace } from "../canvas/canvas-workspace";
 import { useEditorShortcuts } from "../../hooks/useEditorShortcuts";
+import { useAutoSave } from "../../hooks/useAutoSave";
 
 export function EditorLayout() {
   const rightPanelOpen = useEditorStore((state) => state.rightPanelOpen);
   
   // Register global shortcuts
   useEditorShortcuts();
+  
+  // Enable auto-saving
+  useAutoSave();
 
   return (
     <div className="flex flex-col h-screen w-full bg-slate-50 dark:bg-slate-950 overflow-hidden text-slate-900 dark:text-slate-100">

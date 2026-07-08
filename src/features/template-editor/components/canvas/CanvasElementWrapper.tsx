@@ -13,10 +13,10 @@ interface CanvasElementWrapperProps {
 }
 
 export function CanvasElementWrapper({ element, onSelect, children }: CanvasElementWrapperProps) {
-  const { setSelectedObjectId, selectedObjectId, updateElement } = useEditorStore();
+  const { setSelectedObjectIds, selectedObjectIds, toggleSelection, updateElement } = useEditorStore();
   const groupRef = useRef<Konva.Group>(null);
   
-  const isSelected = selectedObjectId === element.id;
+  const isSelected = selectedObjectIds.includes(element.id);
 
   useEffect(() => {
     if (isSelected && groupRef.current) {
@@ -30,6 +30,7 @@ export function CanvasElementWrapper({ element, onSelect, children }: CanvasElem
     <Group
       ref={groupRef}
       id={element.id}
+      name="element-group"
       x={element.x}
       y={element.y}
       width={element.width}
@@ -39,11 +40,15 @@ export function CanvasElementWrapper({ element, onSelect, children }: CanvasElem
       opacity={element.opacity ?? 1}
       onClick={(e) => {
         e.cancelBubble = true; // Prevent event bubbling to background (which would deselect)
-        setSelectedObjectId(element.id);
+        if (e.evt.shiftKey || e.evt.ctrlKey || e.evt.metaKey) {
+          toggleSelection(element.id);
+        } else {
+          setSelectedObjectIds([element.id]);
+        }
       }}
       onTap={(e) => {
         e.cancelBubble = true;
-        setSelectedObjectId(element.id);
+        setSelectedObjectIds([element.id]);
       }}
       onDragEnd={(e) => {
         updateElement(element.id, {

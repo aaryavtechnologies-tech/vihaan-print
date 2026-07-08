@@ -9,6 +9,7 @@ import {
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { EDITOR_CONSTANTS } from "../../constants/editor-constants";
+import { HistoryPanel } from "./history-panel";
 
 const SIDEBAR_TABS = [
   { id: "templates", icon: LayoutTemplate, label: "Templates" },
@@ -28,8 +29,8 @@ export function LeftSidebar() {
     setActiveSidebarTab,
     elements,
     addElement,
-    selectedObjectId,
-    setSelectedObjectId,
+    selectedObjectIds,
+    setSelectedObjectIds,
     updateElement
   } = useEditorStore();
 
@@ -137,17 +138,16 @@ export function LeftSidebar() {
                     ) : (
                       // Display elements in reverse order so newest (highest layerIndex equivalent) is at the top
                       [...elements].reverse().map((el) => {
-                        const isSelected = selectedObjectId === el.id;
+                        const isSelected = selectedObjectIds.includes(el.id);
                         return (
                           <div 
                             key={el.id}
-                            className={cn(
-                              "flex items-center justify-between p-2 rounded-lg border group cursor-pointer transition-colors text-sm",
-                              isSelected 
-                                ? "border-blue-500 bg-blue-50/50 dark:border-blue-700 dark:bg-blue-900/20" 
-                                : "border-transparent hover:bg-slate-50 dark:hover:bg-slate-800"
-                            )}
-                            onClick={() => setSelectedObjectId(el.id)}
+                            className={`flex items-center justify-between p-2 rounded-md border text-sm transition-colors ${
+                              isSelected
+                                ? "bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800" 
+                                : "bg-white border-slate-200 dark:bg-slate-900 dark:border-slate-800"
+                            }`}
+                            onClick={() => setSelectedObjectIds([el.id])}
                           >
                             <div className="flex items-center gap-2 overflow-hidden">
                               {/* Grab Handle Placeholder */}
@@ -181,8 +181,12 @@ export function LeftSidebar() {
                   </div>
                 )}
                 
+                {activeSidebarTab === "history" && (
+                  <HistoryPanel />
+                )}
+                
                 {/* Fallback for empty panels */}
-                {activeSidebarTab !== "text" && activeSidebarTab !== "elements" && activeSidebarTab !== "layers" && (
+                {activeSidebarTab !== "text" && activeSidebarTab !== "elements" && activeSidebarTab !== "layers" && activeSidebarTab !== "history" && (
                   <div className="flex items-center justify-center h-48 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-lg text-slate-400 text-sm">
                     {activeSidebarTab} options coming soon
                   </div>

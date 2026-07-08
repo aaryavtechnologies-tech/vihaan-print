@@ -15,8 +15,9 @@ import { AppearanceSection } from "./sections/AppearanceSection";
 import { DataBindingSection } from "./sections/DataBindingSection";
 
 export function RightPanel() {
-  const { selectedObjectId, elements } = useEditorStore();
-  const selectedElement = elements.find(e => e.id === selectedObjectId);
+  const { selectedObjectIds, elements } = useEditorStore();
+  const isMultiSelection = selectedObjectIds.length > 1;
+  const selectedElement = selectedObjectIds.length === 1 ? elements.find(e => e.id === selectedObjectIds[0]) : null;
 
   const getElementIcon = (type: EditorElement["type"]) => {
     switch(type) {
@@ -34,7 +35,19 @@ export function RightPanel() {
 
   return (
     <div className="w-80 h-full shrink-0 border-l bg-white dark:bg-slate-900 z-10 shadow-sm flex flex-col">
-      {selectedElement ? (
+      {isMultiSelection ? (
+        <>
+          <div className="h-12 border-b flex items-center px-4 font-semibold text-sm">
+            <MousePointer2 className="h-4 w-4 mr-2 text-slate-500" />
+            Multiple Objects
+          </div>
+          <div className="flex flex-col items-center justify-center flex-1 text-slate-400 p-4">
+            <Shapes className="h-12 w-12 mb-3 stroke-[1.5]" />
+            <p className="text-sm font-medium text-slate-600 dark:text-slate-300">{selectedObjectIds.length} Objects Selected</p>
+            <p className="text-xs text-center mt-1">Use the alignment toolbar above the canvas to organize these objects.</p>
+          </div>
+        </>
+      ) : selectedElement ? (
         <>
           <div className="h-12 border-b flex items-center px-4 font-semibold text-sm bg-slate-50 dark:bg-slate-950">
             <span className="text-slate-500 mr-2">{getElementIcon(selectedElement.type)}</span>

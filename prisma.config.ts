@@ -1,7 +1,10 @@
 // @ts-nocheck
 import "dotenv/config";
-import { defineConfig } from "@prisma/config";
+import { defineConfig, env } from "@prisma/config";
 
 export default defineConfig({
   earlyAccess: true,
+  datasource: {
+    url: process.env.DATABASE_URL,
+  },
 });
