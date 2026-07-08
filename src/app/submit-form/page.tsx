@@ -1,0 +1,51 @@
+import { StudentWizard } from "@/features/students/components/student-wizard";
+import { Sparkles, GraduationCap } from "lucide-react";
+
+export const metadata = {
+  title: "Student ID Registration | VIHAAN ID PRINT",
+};
+
+export default function SubmitFormPage() {
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900 relative overflow-hidden flex flex-col justify-center py-16 px-4 sm:px-6 lg:px-8 selection:bg-blue-100 selection:text-blue-900">
+      
+      {/* Dynamic Background Elements - Light Theme */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-blue-200/50 blur-[120px] mix-blend-multiply animate-pulse duration-10000"></div>
+        <div className="absolute top-[20%] -right-[10%] w-[40%] h-[60%] rounded-full bg-purple-200/50 blur-[120px] mix-blend-multiply animate-pulse duration-7000 delay-1000"></div>
+        <div className="absolute -bottom-[20%] left-[20%] w-[60%] h-[50%] rounded-full bg-emerald-200/40 blur-[120px] mix-blend-multiply"></div>
+        
+        {/* Subtle grid overlay */}
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] brightness-100 contrast-150"></div>
+      </div>
+
+      <div className="relative w-full max-w-[1400px] mx-auto z-10">
+        
+        {/* Header Section */}
+        <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-6 duration-700">
+          <div className="inline-flex items-center justify-center p-4 bg-white rounded-2xl border border-slate-200 mb-6 shadow-sm group cursor-default">
+            <GraduationCap className="w-10 h-10 text-blue-600 group-hover:scale-110 transition-transform duration-500 ease-out" />
+          </div>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4 flex items-center justify-center gap-3">
+            Student ID Registration <Sparkles className="w-8 h-8 text-yellow-500 animate-pulse" />
+          </h2>
+          <p className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto font-medium leading-relaxed">
+            Please enter your details accurately. The information provided here will be printed directly onto your official Smart ID Card.
+          </p>
+        </div>
+
+        {/* Form Container */}
+        <div className="bg-white text-slate-900 rounded-[2rem] shadow-2xl shadow-blue-900/5 p-6 md:p-10 border border-slate-100 animate-in fade-in zoom-in-95 duration-1000 delay-200 fill-mode-both ring-1 ring-slate-200/50">
+          <div className="relative z-10">
+            <StudentWizard isPublic={true} />
+          </div>
+        </div>
+
+        {/* Footer Text */}
+        <div className="mt-12 text-center text-slate-400 font-medium text-sm animate-in fade-in duration-1000 delay-500">
+          <p>Protected by Enterprise Grade Security • VIHAAN ID PRINT © 2026</p>
+        </div>
+      </div>
+    </div>
+  );
+}

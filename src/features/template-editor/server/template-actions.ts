@@ -3,6 +3,85 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
+export async function createEmptyTemplate(name: string) {
+  try {
+    const newTemplate = await prisma.template.create({
+      data: {
+        name,
+        description: "New template design",
+        status: "DRAFT",
+        orientation: "portrait",
+        width: 54,
+        height: 86,
+        dpi: 300,
+        canvasWidth: 638,
+        canvasHeight: 1016,
+      }
+    });
+
+    const newVersion = await prisma.templateVersion.create({
+      data: {
+        templateId: newTemplate.id,
+        version: 1,
+        jsonData: { elements: [], canvasPosition: { x: 50, y: 50 }, zoomLevel: 100 },
+        published: false,
+        changeLog: "Initial creation",
+      }
+    });
+
+    await prisma.template.update({
+      where: { id: newTemplate.id },
+      data: { currentVersionId: newVersion.id }
+    });
+
+    revalidatePath("/dashboard/templates");
+    return { success: true, templateId: newTemplate.id };
+  } catch (error) {
+    console.error("Failed to create template:", error);
+    throw new Error("Failed to create template");
+  }
+}
+
+export async function getTemplates() {
+  try {
+    const templates = await prisma.template.findMany({
+      orderBy: { updatedAt: 'desc' },
+      include: {
+        school: {
+          select: { schoolName: true }
+        },
+        currentVersion: {
+          select: { version: true }
+        }
+      }
+    });
+    return templates;
+  } catch (error) {
+    console.error("Failed to fetch templates:", error);
+    throw new Error("Failed to fetch templates");
+  }
+}
+
+export async function getTemplateForEditor(templateId: string) {
+  try {
+    const template = await prisma.template.findUnique({
+      where: { id: templateId },
+      include: {
+        currentVersion: true
+      }
+    });
+    
+    if (!template) {
+      throw new Error("Template not found");
+    }
+    
+    return template;
+  } catch (error) {
+    console.error("Failed to fetch template:", error);
+    throw new Error("Failed to fetch template");
+  }
+}
+
 export async function saveTemplateDraft(templateId: string, jsonData: any) {
   try {
     const template = await prisma.template.findUnique({
@@ -37,7 +116,7 @@ export async function saveTemplateDraft(templateId: string, jsonData: any) {
       }
     });
 
-    revalidatePath("/templates");
+    revalidatePath("/dashboard/templates");
     return { success: true, versionId: newVersion.id };
   } catch (error) {
     console.error("Failed to save template draft:", error);
@@ -67,7 +146,7 @@ export async function publishTemplate(templateId: string) {
       data: { status: "PUBLISHED" }
     });
 
-    revalidatePath("/templates");
+    revalidatePath("/dashboard/templates");
     return { success: true };
   } catch (error) {
     console.error("Failed to publish template:", error);
@@ -117,7 +196,7 @@ export async function duplicateTemplate(templateId: string) {
       data: { currentVersionId: newVersion.id }
     });
 
-    revalidatePath("/templates");
+    revalidatePath("/dashboard/templates");
     return { success: true, newTemplateId: newTemplate.id };
   } catch (error) {
     console.error("Failed to duplicate template:", error);
@@ -175,7 +254,7 @@ export async function restoreVersion(templateId: string, versionId: string) {
       }
     });
 
-    revalidatePath("/templates");
+    revalidatePath("/dashboard/templates");
     return { success: true, newVersionId: newVersion.id, jsonData: targetVersion.jsonData };
   } catch (error) {
     console.error("Failed to restore version:", error);

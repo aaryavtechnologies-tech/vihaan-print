@@ -30,8 +30,8 @@ export function PageHeader({ title, description, breadcrumbs, action }: PageHead
             </BreadcrumbList>
           </Breadcrumb>
         )}
-        <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
-        {description && <p className="text-muted-foreground mt-1">{description}</p>}
+        <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">{title}</h1>
+        {description && <p className="text-slate-500 font-medium mt-1.5">{description}</p>}
       </div>
       {action && <div>{action}</div>}
     </div>

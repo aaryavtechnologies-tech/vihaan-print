@@ -67,27 +67,27 @@ export function SchoolTable({ schools, onDelete, onArchive, onRestore }: SchoolT
 
   if (schools.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center p-12 bg-white dark:bg-slate-950 border rounded-xl shadow-sm text-center">
-        <div className="w-16 h-16 bg-slate-100 dark:bg-slate-900 rounded-full flex items-center justify-center mb-4">
+      <div className="flex flex-col items-center justify-center p-12 bg-white border border-slate-200/60 rounded-2xl shadow-sm text-center">
+        <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4">
           <Building2 className="w-8 h-8 text-slate-400" />
         </div>
-        <h3 className="text-lg font-medium text-slate-900 dark:text-slate-100 mb-1">No schools found</h3>
-        <p className="text-slate-500 dark:text-slate-400 max-w-sm mb-6">
+        <h3 className="text-lg font-semibold text-slate-800 mb-1">No schools found</h3>
+        <p className="text-slate-500 font-medium max-w-sm mb-6">
           There are no schools matching your search or filters. Try adjusting them or create a new school.
         </p>
         <Link href="/dashboard/schools/new">
-          <Button className="bg-blue-600 hover:bg-blue-700">Add New School</Button>
+          <Button className="bg-blue-600 hover:bg-blue-700 shadow-sm">Add New School</Button>
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="bg-white dark:bg-slate-950 border rounded-xl shadow-sm overflow-hidden">
+    <div className="bg-white border border-slate-200/60 rounded-2xl shadow-[0_2px_10px_rgb(0,0,0,0.02)] overflow-hidden">
       <div className="overflow-x-auto">
         <Table>
-          <TableHeader className="bg-slate-50 dark:bg-slate-900/50">
-            <TableRow>
+          <TableHeader className="bg-slate-50/50">
+            <TableRow className="border-slate-100">
               <TableHead className="w-[40px] px-4">
                 <Checkbox 
                   checked={selectedRowIds.length === schools.length && schools.length > 0}
@@ -112,7 +112,7 @@ export function SchoolTable({ schools, onDelete, onArchive, onRestore }: SchoolT
                 <TableRow 
                   key={school.id}
                   data-state={isSelected ? "selected" : undefined}
-                  className={isSelected ? "bg-blue-50/50 dark:bg-blue-900/10" : ""}
+                  className={isSelected ? "bg-blue-50/50 border-slate-100" : "border-slate-100 hover:bg-slate-50/50"}
                 >
                   <TableCell className="px-4">
                     <Checkbox 
@@ -123,21 +123,21 @@ export function SchoolTable({ schools, onDelete, onArchive, onRestore }: SchoolT
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 relative rounded-md overflow-hidden bg-slate-100 dark:bg-slate-800 border flex items-center justify-center shrink-0">
+                      <div className="h-10 w-10 relative rounded-xl overflow-hidden bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0">
                         {school.logo ? (
                           <Image src={school.logo} alt={school.schoolName} fill className="object-contain p-1" />
                         ) : (
-                          <Building2 className="w-5 h-5 text-slate-400" />
+                          <Building2 className="w-5 h-5 text-slate-300" />
                         )}
                       </div>
                       <div className="flex flex-col">
-                        <span className="font-medium text-slate-900 dark:text-slate-100 line-clamp-1">{school.schoolName}</span>
-                        <span className="text-xs text-slate-500">{school.schoolType.replace(/_/g, " ")}</span>
+                        <span className="font-semibold text-slate-800 line-clamp-1">{school.schoolName}</span>
+                        <span className="text-xs text-slate-500 font-medium">{school.schoolType.replace(/_/g, " ")}</span>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <span className="font-mono text-sm bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">{school.schoolCode}</span>
+                    <span className="font-mono text-sm font-medium bg-slate-100 text-slate-600 px-2.5 py-1 rounded-md">{school.schoolCode}</span>
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-col">

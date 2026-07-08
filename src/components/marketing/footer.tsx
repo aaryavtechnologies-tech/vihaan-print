@@ -55,6 +55,11 @@ export function Footer() {
               <li><Link href="#" className="hover:text-foreground">Terms of Service</Link></li>
               <li><Link href="#" className="hover:text-foreground">Cookie Policy</Link></li>
             </ul>
+            
+            <h3 className="font-semibold mt-6 mb-4">Admin</h3>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li><Link href="/login" className="hover:text-foreground">Admin Login</Link></li>
+            </ul>
           </div>
         </div>
         <div className="pt-8 border-t text-center text-sm text-muted-foreground">

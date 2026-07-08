@@ -134,7 +134,7 @@ export function SchoolForm({ initialData, isEdit = false }: SchoolFormProps) {
               </TabsTrigger>
             </TabsList>
 
-            <div className="bg-white dark:bg-slate-950 p-6 rounded-xl border shadow-sm">
+            <div className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200/60 shadow-[0_2px_10px_rgb(0,0,0,0.02)]">
               <TabsContent value="basic" className="mt-0 space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField

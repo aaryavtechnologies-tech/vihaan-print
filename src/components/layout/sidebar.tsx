@@ -11,9 +11,9 @@ import { Separator } from "@/components/ui/separator";
 
 export const primaryLinks = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Students", href: "/dashboard/students", icon: Users },
   { label: "Schools", href: "/dashboard/schools", icon: Building2 },
   { label: "Templates", href: "/dashboard/templates", icon: LayoutTemplate },
-  { label: "Students", href: "/dashboard/students", icon: Users },
 ];
 
 export const actionLinks = [
@@ -30,14 +30,14 @@ export function Sidebar() {
       initial={{ width: 256 }}
       animate={{ width: isSidebarCollapsed ? 80 : 256 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      className="hidden md:flex flex-col border-r bg-background shrink-0 h-screen sticky top-0 z-40"
+      className="hidden md:flex flex-col bg-white border-r border-slate-200 shadow-sm shrink-0 h-screen sticky top-0 z-40"
     >
-      <div className="flex h-16 items-center px-4 border-b shrink-0">
+      <div className="flex h-16 items-center px-4 border-b border-slate-100 shrink-0">
         <div className={cn("flex items-center gap-2 font-semibold", isSidebarCollapsed ? "justify-center w-full" : "")}>
-          <div className="h-8 w-8 rounded bg-primary flex items-center justify-center shrink-0">
-            <span className="text-primary-foreground font-bold text-lg">V</span>
+          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-md shrink-0">
+            <span className="text-white font-bold text-lg">V</span>
           </div>
-          {!isSidebarCollapsed && <span className="text-lg tracking-tight truncate">VIHAAN ID PRINT</span>}
+          {!isSidebarCollapsed && <span className="text-lg tracking-tight truncate text-slate-900">VIHAAN ID PRINT</span>}
         </div>
       </div>
 

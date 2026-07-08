@@ -17,12 +17,12 @@ export default function DashboardHome() {
   ];
 
   const quickActions = [
-    { title: "Add School", description: "Register a new school tenant", icon: PlusCircle, href: "/dashboard/schools/new", colorClass: "text-blue-500 bg-blue-500/10 dark:bg-blue-500/20" },
-    { title: "Create Template", description: "Design a new ID card template", icon: LayoutTemplate, href: "/dashboard/templates/new", colorClass: "text-purple-500 bg-purple-500/10 dark:bg-purple-500/20" },
-    { title: "Add Student", description: "Register a single student record", icon: UserPlus, href: "/dashboard/students/new", colorClass: "text-emerald-500 bg-emerald-500/10 dark:bg-emerald-500/20" },
-    { title: "Import Data", description: "Bulk import students via Excel", icon: Upload, href: "/dashboard/students/import", colorClass: "text-amber-500 bg-amber-500/10 dark:bg-amber-500/20" },
-    { title: "Generate IDs", description: "Process pending ID cards", icon: IdCard, href: "/dashboard/generate", colorClass: "text-indigo-500 bg-indigo-500/10 dark:bg-indigo-500/20" },
-    { title: "Print Center", description: "Send generated IDs to printer", icon: Printer, href: "/dashboard/print", colorClass: "text-rose-500 bg-rose-500/10 dark:bg-rose-500/20" },
+    { title: "Add School", description: "Register a new school tenant", icon: PlusCircle, href: "/dashboard/schools/new", colorClass: "text-blue-600 bg-blue-50" },
+    { title: "Create Template", description: "Design a new ID card template", icon: LayoutTemplate, href: "/dashboard/templates", colorClass: "text-purple-600 bg-purple-50" },
+    { title: "Add Student", description: "Register a single student record", icon: UserPlus, href: "/dashboard/students/new", colorClass: "text-emerald-600 bg-emerald-50" },
+    { title: "Import Data", description: "Bulk import students via Excel", icon: Upload, href: "/dashboard/students/import", colorClass: "text-amber-600 bg-amber-50" },
+    { title: "Generate IDs", description: "Process pending ID cards", icon: IdCard, href: "/dashboard/generate", colorClass: "text-indigo-600 bg-indigo-50" },
+    { title: "Print Center", description: "Send generated IDs to printer", icon: Printer, href: "/dashboard/print", colorClass: "text-rose-600 bg-rose-50" },
   ];
 
   const activities = [

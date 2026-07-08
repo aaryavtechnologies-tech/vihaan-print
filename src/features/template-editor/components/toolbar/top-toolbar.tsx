@@ -37,7 +37,7 @@ export function TopToolbar() {
     <header className="h-14 bg-white dark:bg-slate-900 border-b flex items-center justify-between px-4 shrink-0 z-10 shadow-sm">
       {/* Left: Branding & Back */}
       <div className="flex items-center gap-3">
-        <Link href="/templates">
+        <Link href="/dashboard/templates">
           <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-slate-900 dark:hover:text-white">
             <ArrowLeft className="h-4 w-4" />
           </Button>
