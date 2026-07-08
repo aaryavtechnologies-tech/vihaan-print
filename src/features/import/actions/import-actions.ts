@@ -2,12 +2,12 @@
 
 import { prisma } from "@/lib/prisma";
 import { ImportStatus } from "@prisma/client";
-import { getSession } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
 export async function createImportJob(data: { schoolId: string; totalRecords: number; fileName: string; fileSize: number }) {
   try {
-    const session = await getSession({ headers: await headers() });
+    const session = await auth.api.getSession({ headers: await headers() });
     if (!session?.user?.id) {
       throw new Error("Unauthorized");
     }

@@ -3,7 +3,7 @@
 import { useDashboardStore } from "@/store/dashboard-store";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { LayoutDashboard, Building2, LayoutTemplate, Users, IdCard, Printer, BarChart3, Settings, PanelLeftClose, PanelLeftOpen, Database, History } from "lucide-react";
+import { LayoutDashboard, Building2, LayoutTemplate, Users, IdCard, Printer, BarChart3, Settings, PanelLeftClose, PanelLeftOpen, Database, History, CreditCard } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -20,6 +20,8 @@ export const actionLinks = [
   { label: "Bulk Import", href: "/dashboard/import", icon: Database },
   { label: "Import History", href: "/dashboard/import/history", icon: History },
   { label: "Generate ID", href: "/dashboard/generate", icon: IdCard },
+  { label: "Generation History", href: "/dashboard/generate/history", icon: History },
+  { label: "Generated Cards", href: "/dashboard/generated-cards", icon: CreditCard },
   { label: "Print Center", href: "/dashboard/print", icon: Printer },
   { label: "Reports", href: "/dashboard/reports", icon: BarChart3 },
 ];

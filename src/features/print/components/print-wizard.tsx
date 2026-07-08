@@ -1,38 +1,38 @@
 "use client";
 
-import { useImportStore } from "../store/import-store";
-import { Step1Setup } from "./steps/step-1-setup";
-import { Step2Upload } from "./steps/step-2-upload";
-import { Step3Mapping } from "./steps/step-3-mapping";
-import { Step4Validation } from "./steps/step-4-validation";
-import { Step5Photos } from "./steps/step-5-photos";
+import { usePrintStore } from "../store/print-store";
+import { Step1School } from "./steps/step-1-school";
+import { Step2Template } from "./steps/step-2-template";
+import { Step3Students } from "./steps/step-3-students";
+import { Step4Layout } from "./steps/step-4-layout";
+import { Step5Settings } from "./steps/step-5-settings";
 import { Step6Preview } from "./steps/step-6-preview";
-import { Step7Import } from "./steps/step-7-import";
+import { Step7Print } from "./steps/step-7-print";
 import { Card } from "@/components/ui/card";
 import { Check } from "lucide-react";
 
 const steps = [
-  { id: 1, title: "Setup" },
-  { id: 2, title: "Upload Data" },
-  { id: 3, title: "Map Columns" },
-  { id: 4, title: "Validate" },
-  { id: 5, title: "Upload Photos" },
+  { id: 1, title: "School" },
+  { id: 2, title: "Template" },
+  { id: 3, title: "Students" },
+  { id: 4, title: "Layout" },
+  { id: 5, title: "Settings" },
   { id: 6, title: "Preview" },
-  { id: 7, title: "Import" },
+  { id: 7, title: "Print" },
 ];
 
-export function ImportWizard() {
-  const currentStep = useImportStore((state) => state.currentStep);
+export function PrintWizard() {
+  const currentStep = usePrintStore((state) => state.currentStep);
 
   const renderStep = () => {
     switch (currentStep) {
-      case 1: return <Step1Setup />;
-      case 2: return <Step2Upload />;
-      case 3: return <Step3Mapping />;
-      case 4: return <Step4Validation />;
-      case 5: return <Step5Photos />;
+      case 1: return <Step1School />;
+      case 2: return <Step2Template />;
+      case 3: return <Step3Students />;
+      case 4: return <Step4Layout />;
+      case 5: return <Step5Settings />;
       case 6: return <Step6Preview />;
-      case 7: return <Step7Import />;
+      case 7: return <Step7Print />;
       default: return null;
     }
   };
@@ -40,8 +40,8 @@ export function ImportWizard() {
   return (
     <div className="w-full max-w-6xl mx-auto space-y-8">
       {/* Wizard Header / Stepper */}
-      <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)]">
-        <div className="flex items-center justify-between w-full relative">
+      <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] overflow-x-auto hide-scrollbar">
+        <div className="flex items-center justify-between min-w-[600px] w-full relative">
           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-100 z-0 rounded-full" />
           
           <div 

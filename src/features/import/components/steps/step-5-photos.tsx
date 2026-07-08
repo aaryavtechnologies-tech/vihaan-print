@@ -36,7 +36,7 @@ export function Step5Photos() {
             const blob = await zipEntry.async("blob");
             // Use just the basename without folders
             const baseName = filename.split('/').pop() || filename;
-            newPhotos[baseName] = new File([blob], baseName, { type: \`image/\${ext === 'jpg' ? 'jpeg' : ext}\` });
+            newPhotos[baseName] = new File([blob], baseName, { type: `image/${ext === 'jpg' ? 'jpeg' : ext}` });
           }
         }
       }
@@ -46,7 +46,7 @@ export function Step5Photos() {
         toast.error("No valid images (jpg/png) found in the ZIP file.");
       } else {
         addPhotos(newPhotos);
-        toast.success(\`Successfully extracted \${count} photos.\`);
+        toast.success(`Successfully extracted ${count} photos.`);
       }
     } catch (error) {
       console.error(error);
@@ -81,10 +81,10 @@ export function Step5Photos() {
     // We try to match by studentId.jpg, admissionNo.jpg, or the specific mapped photoName
     const possibleNames = [
       row.photoName,
-      row.studentId ? \`\${row.studentId}.jpg\` : null,
-      row.studentId ? \`\${row.studentId}.png\` : null,
-      row.admissionNo ? \`\${row.admissionNo}.jpg\` : null,
-      row.admissionNo ? \`\${row.admissionNo}.png\` : null,
+      row.studentId ? `${row.studentId}.jpg` : null,
+      row.studentId ? `${row.studentId}.png` : null,
+      row.admissionNo ? `${row.admissionNo}.jpg` : null,
+      row.admissionNo ? `${row.admissionNo}.png` : null,
     ].filter(Boolean) as string[];
 
     const hasMatch = possibleNames.some(name => !!photoMap[name]);
@@ -102,9 +102,9 @@ export function Step5Photos() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div 
-          className={\`relative flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-3xl transition-all duration-200 h-[280px] \${
+          className={`relative flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-3xl transition-all duration-200 h-[280px] ${
             isDragging ? "border-blue-500 bg-blue-50 scale-105" : "border-slate-300 bg-slate-50 hover:bg-slate-100"
-          }\`}
+          }`}
           onDragOver={onDragOver}
           onDragLeave={onDragLeave}
           onDrop={onDrop}

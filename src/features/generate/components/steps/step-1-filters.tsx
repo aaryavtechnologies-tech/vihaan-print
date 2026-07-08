@@ -1,43 +1,32 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useImportStore } from "../../store/import-store";
-import { getSetupData } from "../../actions/setup-actions";
+import { useGenerationStore } from "../../store/generation-store";
+import { getSetupData } from "@/features/import/actions/setup-actions";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Building2, LayoutTemplate, GraduationCap, Users } from "lucide-react";
+import { Building2, GraduationCap, Users, Calendar } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
-export function Step1Setup() {
-  const { setupContext, setSetupContext, nextStep } = useImportStore();
+export function Step1Filters() {
+  const { filters, setFilters, nextStep } = useGenerationStore();
   const [schools, setSchools] = useState<any[]>([]);
-  const [templates, setTemplates] = useState<any[]>([]);
-  
-  const [schoolId, setSchoolId] = useState(setupContext?.schoolId || "");
-  const [templateId, setTemplateId] = useState(setupContext?.templateId || "");
-  const [academicYear, setAcademicYear] = useState(setupContext?.academicYear || "2024-2025");
-  const [className, setClassName] = useState(setupContext?.className || "");
-  const [section, setSection] = useState(setupContext?.section || "");
 
   useEffect(() => {
     getSetupData().then(data => {
       setSchools(data.schools);
-      setTemplates(data.templates);
     });
   }, []);
 
   const handleNext = () => {
-    setSetupContext({ schoolId, templateId, academicYear, className, section });
     nextStep();
   };
-
-  const filteredTemplates = templates.filter(t => !t.schoolId || t.schoolId === schoolId);
 
   return (
     <div className="max-w-2xl mx-auto space-y-8 animate-in fade-in zoom-in-95 duration-300">
       <div className="text-center space-y-2">
-        <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">Import Context</h2>
-        <p className="text-slate-500">Select the school and target configuration for this import.</p>
+        <h2 className="text-3xl font-extrabold tracking-tight text-slate-900">Filter Students</h2>
+        <p className="text-slate-500">Select the target group of students for this generation batch.</p>
       </div>
 
       <div className="space-y-6 bg-slate-50 p-8 rounded-3xl border border-slate-100">
@@ -45,7 +34,7 @@ export function Step1Setup() {
           <label className="text-sm font-semibold flex items-center gap-2 text-slate-700">
             <Building2 className="w-4 h-4" /> Select School *
           </label>
-          <Select value={schoolId || undefined} onValueChange={(val) => setSchoolId(val || "")}>
+          <Select value={filters.schoolId || undefined} onValueChange={(val) => setFilters({ schoolId: val as string})}>
             <SelectTrigger className="h-12 bg-white rounded-xl shadow-sm">
               <SelectValue placeholder="Choose a school" />
             </SelectTrigger>
@@ -59,19 +48,14 @@ export function Step1Setup() {
 
         <div className="space-y-3">
           <label className="text-sm font-semibold flex items-center gap-2 text-slate-700">
-            <LayoutTemplate className="w-4 h-4" /> Default Template (Optional)
+            <Calendar className="w-4 h-4" /> Academic Year
           </label>
-          <Select value={templateId || undefined} onValueChange={(val) => setTemplateId(val || "")}>
-            <SelectTrigger className="h-12 bg-white rounded-xl shadow-sm">
-              <SelectValue placeholder="No default template" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="none">None</SelectItem>
-              {filteredTemplates.map(t => (
-                <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Input 
+            placeholder="e.g. 2024-2025" 
+            className="h-12 bg-white rounded-xl shadow-sm"
+            value={filters.academicYear}
+            onChange={e => setFilters({ academicYear: e.target.value })}
+          />
         </div>
 
         <div className="grid grid-cols-2 gap-6">
@@ -80,35 +64,33 @@ export function Step1Setup() {
               <GraduationCap className="w-4 h-4" /> Class / Grade
             </label>
             <Input 
-              placeholder="e.g. 10, XII" 
+              placeholder="e.g. 10 (Leave blank for all)" 
               className="h-12 bg-white rounded-xl shadow-sm"
-              value={className}
-              onChange={e => setClassName(e.target.value)}
+              value={filters.className}
+              onChange={e => setFilters({ className: e.target.value })}
             />
-            <p className="text-xs text-slate-500">Applied if missing in file</p>
           </div>
           <div className="space-y-3">
             <label className="text-sm font-semibold flex items-center gap-2 text-slate-700">
               <Users className="w-4 h-4" /> Section
             </label>
             <Input 
-              placeholder="e.g. A, Science" 
+              placeholder="e.g. A (Leave blank for all)" 
               className="h-12 bg-white rounded-xl shadow-sm"
-              value={section}
-              onChange={e => setSection(e.target.value)}
+              value={filters.section}
+              onChange={e => setFilters({ section: e.target.value })}
             />
-            <p className="text-xs text-slate-500">Applied if missing in file</p>
           </div>
         </div>
       </div>
 
       <div className="flex justify-end pt-4">
         <Button 
-          disabled={!schoolId} 
+          disabled={!filters.schoolId} 
           onClick={handleNext}
           className="h-12 px-8 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/20 transition-all font-semibold"
         >
-          Continue to Upload
+          Select Template
         </Button>
       </div>
     </div>

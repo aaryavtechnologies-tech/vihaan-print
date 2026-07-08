@@ -79,10 +79,10 @@ export function Step7Import() {
         
         const possibleNames = [
           row.photoName,
-          row.studentId ? \`\${row.studentId}.jpg\` : null,
-          row.studentId ? \`\${row.studentId}.png\` : null,
-          row.admissionNo ? \`\${row.admissionNo}.jpg\` : null,
-          row.admissionNo ? \`\${row.admissionNo}.png\` : null,
+          row.studentId ? `${row.studentId}.jpg` : null,
+          row.studentId ? `${row.studentId}.png` : null,
+          row.admissionNo ? `${row.admissionNo}.jpg` : null,
+          row.admissionNo ? `${row.admissionNo}.png` : null,
         ].filter(Boolean) as string[];
 
         const matchedName = possibleNames.find(name => !!photoMap[name]);
@@ -191,7 +191,7 @@ export function Step7Import() {
         <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden">
           <div 
             className="h-full bg-blue-600 transition-all duration-300 ease-out"
-            style={{ width: \`\${importProgress.percentage}%\` }}
+            style={{ width: `${importProgress.percentage}%` }}
           />
         </div>
       </div>

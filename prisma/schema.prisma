@@ -23,6 +23,8 @@ model User {
   accounts               Account[]
   templateEditorSettings TemplateEditorSettings?
   importJobs             ImportJob[]
+  generationJobs         GenerationJob[]
+  printJobs              PrintJob[]
 
   @@map("users")
 }
@@ -139,9 +141,12 @@ model School {
   // updatedBy       String?
 
   // Relations
-  templates   Template[]
-  students    Student[]
-  importJobs  ImportJob[]
+  templates      Template[]
+  students       Student[]
+  importJobs     ImportJob[]
+  generatedCards GeneratedCard[]
+  generationJobs GenerationJob[]
+  printJobs      PrintJob[]
 
   @@index([schoolName])
   @@index([city])
@@ -208,6 +213,8 @@ model Template {
   updatedAt      DateTime       @updatedAt
   deletedAt      DateTime?
   students       Student[]
+  generatedCards GeneratedCard[]
+  printJobs      PrintJob[]
 
   @@index([schoolId])
   @@index([status])
@@ -332,6 +339,7 @@ model Student {
 
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
+  generatedCards GeneratedCard[]
   
   @@unique([schoolId, studentId])
   @@unique([schoolId, admissionNo])
@@ -404,4 +412,113 @@ model PhotoMapping {
 
   @@unique([schoolId, filename])
   @@map("photo_mappings")
+}
+
+enum GenerationStatus {
+  QUEUED
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+model GenerationJob {
+  id             String       @id @default(cuid())
+  schoolId       String
+  school         School       @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+  
+  status         GenerationStatus @default(QUEUED)
+  totalRecords   Int          @default(0)
+  completedCount Int          @default(0)
+  failedCount    Int          @default(0)
+  
+  errorLog       Json?        
+  
+  startedAt      DateTime?
+  completedAt    DateTime?
+  
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@map("generation_jobs")
+}
+
+enum CardStatus {
+  GENERATED
+  PRINTED
+  ARCHIVED
+}
+
+model GeneratedCard {
+  id             String       @id @default(cuid())
+  uuid           String       @unique @default(uuid())
+  
+  studentId      String
+  student        Student      @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  schoolId       String
+  school         School       @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  templateId     String
+  template       Template     @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  
+  frontImage     String?
+  backImage      String?
+  thumbnail      String?
+  
+  status         CardStatus   @default(GENERATED)
+  
+  generatedAt    DateTime     @default(now())
+  generatedBy    String
+  
+  @@unique([studentId, templateId]) // A student shouldn't have multiple active cards for the same template
+  @@index([schoolId])
+  @@index([status])
+  @@map("generated_cards")
+}
+
+enum PrintLayout {
+  SINGLE_PVC
+  A4_PORTRAIT
+  A4_LANDSCAPE
+  CUSTOM
+}
+
+enum PrintStatus {
+  QUEUED
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+model PrintJob {
+  id             String       @id @default(cuid())
+  uuid           String       @unique @default(uuid())
+  
+  schoolId       String
+  school         School       @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  templateId     String
+  template       Template     @relation(fields: [templateId], references: [id], onDelete: Cascade)
+  
+  jobName        String?
+  layout         PrintLayout  @default(A4_PORTRAIT)
+  paperSize      String       @default("A4")
+  orientation    String       @default("portrait")
+  dpi            Int          @default(300)
+  copies         Int          @default(1)
+  
+  status         PrintStatus  @default(COMPLETED)
+  
+  totalCards     Int          @default(0)
+  
+  queuedAt       DateTime?
+  startedAt      DateTime?
+  completedAt    DateTime?
+  
+  createdBy      String
+  user           User         @relation(fields: [createdBy], references: [id])
+
+  @@index([schoolId])
+  @@map("print_jobs")
 }

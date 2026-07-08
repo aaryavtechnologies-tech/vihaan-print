@@ -105,7 +105,7 @@ export function Step3Mapping() {
                   <TableCell>
                     <Select 
                       value={currentMapping || "none"} 
-                      onValueChange={(val) => handleMappingChange(field.key, val)}
+                      onValueChange={(val) => handleMappingChange(field.key, val || "")}
                     >
                       <SelectTrigger className="w-full bg-white max-w-sm rounded-xl">
                         <SelectValue placeholder="Select column from your file" />

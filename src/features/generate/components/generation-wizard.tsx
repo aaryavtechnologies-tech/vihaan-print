@@ -1,38 +1,32 @@
 "use client";
 
-import { useImportStore } from "../store/import-store";
-import { Step1Setup } from "./steps/step-1-setup";
-import { Step2Upload } from "./steps/step-2-upload";
-import { Step3Mapping } from "./steps/step-3-mapping";
-import { Step4Validation } from "./steps/step-4-validation";
-import { Step5Photos } from "./steps/step-5-photos";
-import { Step6Preview } from "./steps/step-6-preview";
-import { Step7Import } from "./steps/step-7-import";
+import { useGenerationStore } from "../store/generation-store";
+import { Step1Filters } from "./steps/step-1-filters";
+import { Step2Template } from "./steps/step-2-template";
+import { Step3Students } from "./steps/step-3-students";
+import { Step4Preview } from "./steps/step-4-preview";
+import { Step5Generate } from "./steps/step-5-generate";
 import { Card } from "@/components/ui/card";
 import { Check } from "lucide-react";
 
 const steps = [
-  { id: 1, title: "Setup" },
-  { id: 2, title: "Upload Data" },
-  { id: 3, title: "Map Columns" },
-  { id: 4, title: "Validate" },
-  { id: 5, title: "Upload Photos" },
-  { id: 6, title: "Preview" },
-  { id: 7, title: "Import" },
+  { id: 1, title: "Filters" },
+  { id: 2, title: "Template" },
+  { id: 3, title: "Students" },
+  { id: 4, title: "Preview" },
+  { id: 5, title: "Generate" },
 ];
 
-export function ImportWizard() {
-  const currentStep = useImportStore((state) => state.currentStep);
+export function GenerationWizard() {
+  const currentStep = useGenerationStore((state) => state.currentStep);
 
   const renderStep = () => {
     switch (currentStep) {
-      case 1: return <Step1Setup />;
-      case 2: return <Step2Upload />;
-      case 3: return <Step3Mapping />;
-      case 4: return <Step4Validation />;
-      case 5: return <Step5Photos />;
-      case 6: return <Step6Preview />;
-      case 7: return <Step7Import />;
+      case 1: return <Step1Filters />;
+      case 2: return <Step2Template />;
+      case 3: return <Step3Students />;
+      case 4: return <Step4Preview />;
+      case 5: return <Step5Generate />;
       default: return null;
     }
   };

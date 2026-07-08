@@ -100,9 +100,9 @@ export function Step2Upload() {
       </div>
 
       <div 
-        className={\`relative flex flex-col items-center justify-center p-16 border-2 border-dashed rounded-3xl transition-all duration-200 \${
+        className={`relative flex flex-col items-center justify-center p-16 border-2 border-dashed rounded-3xl transition-all duration-200 ${
           isDragging ? "border-blue-500 bg-blue-50 scale-105" : "border-slate-300 bg-slate-50 hover:bg-slate-100"
-        }\`}
+        }`}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
