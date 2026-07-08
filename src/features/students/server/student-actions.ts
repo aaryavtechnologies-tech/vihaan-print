@@ -23,7 +23,7 @@ export async function getStudents(schoolId?: string) {
 
 export async function getStudentById(id: string) {
   try {
-    return await prisma.student.findUnique({
+    return await prisma.student.findFirst({
       where: { id },
       include: {
         school: true,

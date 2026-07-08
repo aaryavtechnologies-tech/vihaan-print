@@ -45,9 +45,9 @@ export default async function TemplatesPage() {
                 )}
                 
                 {/* Overlay actions */}
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                   <Button variant="secondary" size="sm" asChild className="shadow-md">
-                    <Link href={`/dashboard/templates`}>
+                    <Link href={`/dashboard/templates/${template.id}`}>
                       <LayoutTemplate className="h-4 w-4 mr-2" />
                       View
                     </Link>
