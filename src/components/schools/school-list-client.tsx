@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { toast } from "sonner";
-import type { School } from "@/generated/prisma/client";
+import type { School } from "@prisma/client";
 import { SchoolTable } from "./school-table";
 import { SchoolFilters } from "./school-filters";
 import { useSchoolFilters, useSchoolTableStore } from "@/store/school-store";

@@ -36,7 +36,7 @@ export function SchoolFilters() {
       </div>
       
       <div className="flex items-center gap-2">
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
+        <Select value={statusFilter} onValueChange={(val) => setStatusFilter(val as string)}>
           <SelectTrigger className="w-[140px] h-10 bg-white dark:bg-slate-950">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
@@ -48,7 +48,7 @@ export function SchoolFilters() {
           </SelectContent>
         </Select>
 
-        <Select value={boardFilter} onValueChange={setBoardFilter}>
+        <Select value={boardFilter} onValueChange={(val) => setBoardFilter(val as string)}>
           <SelectTrigger className="w-[140px] h-10 bg-white dark:bg-slate-950">
             <SelectValue placeholder="Board" />
           </SelectTrigger>

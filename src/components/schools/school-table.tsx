@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 
-import type { School } from "@/generated/prisma/client";
+import type { School } from "@prisma/client";
 import { SchoolStatus } from "@/types/school";
 import { useSchoolTableStore } from "@/store/school-store";
 

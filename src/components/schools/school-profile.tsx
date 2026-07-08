@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
 
-import type { School } from "@/generated/prisma/client";
+import type { School } from "@prisma/client";
 import { SchoolStatus } from "@/types/school";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
