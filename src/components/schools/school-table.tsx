@@ -76,18 +76,20 @@ export function SchoolTable({ schools, onDelete, onArchive, onRestore }: SchoolT
           There are no schools matching your search or filters. Try adjusting them or create a new school.
         </p>
         <Link href="/dashboard/schools/new">
-          <Button className="bg-blue-600 hover:bg-blue-700 shadow-sm">Add New School</Button>
+          <Button className="h-11 px-6 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 transition-all font-semibold">
+            Add New School
+          </Button>
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="bg-white border border-slate-200/60 rounded-2xl shadow-[0_2px_10px_rgb(0,0,0,0.02)] overflow-hidden">
+    <div className="bg-white border border-slate-100 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden transition-all">
       <div className="overflow-x-auto">
         <Table>
-          <TableHeader className="bg-slate-50/50">
-            <TableRow className="border-slate-100">
+          <TableHeader className="bg-slate-50/80">
+            <TableRow className="border-slate-100 hover:bg-transparent">
               <TableHead className="w-[40px] px-4">
                 <Checkbox 
                   checked={selectedRowIds.length === schools.length && schools.length > 0}

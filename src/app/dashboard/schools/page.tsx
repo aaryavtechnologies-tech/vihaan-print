@@ -22,7 +22,7 @@ export default async function SchoolsPage() {
         description="Manage educational institutions, update branding, and handle contacts."
         action={
           <Link href="/dashboard/schools/new">
-            <Button className="bg-blue-600 hover:bg-blue-700">
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 transition-all font-semibold rounded-xl px-5 h-10">
               <Plus className="mr-2 h-4 w-4" /> Add School
             </Button>
           </Link>

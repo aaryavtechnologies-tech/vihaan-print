@@ -134,8 +134,8 @@ export function SchoolForm({ initialData, isEdit = false }: SchoolFormProps) {
               </TabsTrigger>
             </TabsList>
 
-            <div className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200/60 shadow-[0_2px_10px_rgb(0,0,0,0.02)]">
-              <TabsContent value="basic" className="mt-0 space-y-6">
+            <div className="bg-white p-6 md:p-10 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+              <TabsContent value="basic" className="mt-0 space-y-6 animate-in fade-in zoom-in-95 duration-500">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <FormField
                     control={form.control}
@@ -467,14 +467,15 @@ export function SchoolForm({ initialData, isEdit = false }: SchoolFormProps) {
           </Tabs>
 
           <div className="flex items-center gap-4 justify-end">
-            <Link href="/dashboard/schools">
-              <Button type="button" variant="outline" disabled={isSubmitting}>
-                Cancel
-              </Button>
-            </Link>
-            <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white" disabled={isSubmitting}>
-              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isEdit ? "Save Changes" : "Create School"}
+            <Button type="button" variant="outline" onClick={() => router.push("/dashboard/schools")} className="h-11 px-6 rounded-xl border-slate-200 hover:bg-slate-50 transition-all font-medium">
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isSubmitting} className="h-11 px-8 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 transition-all font-semibold">
+              {isSubmitting ? (
+                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Saving...</>
+              ) : (
+                <><Save className="mr-2 h-4 w-4" /> {isEdit ? "Save Changes" : "Create School"}</>
+              )}
             </Button>
           </div>
         </form>

@@ -22,6 +22,7 @@ model User {
   sessions               Session[]
   accounts               Account[]
   templateEditorSettings TemplateEditorSettings?
+  importJobs             ImportJob[]
 
   @@map("users")
 }
@@ -138,8 +139,9 @@ model School {
   // updatedBy       String?
 
   // Relations
-  templates Template[]
-  students  Student[]
+  templates   Template[]
+  students    Student[]
+  importJobs  ImportJob[]
 
   @@index([schoolName])
   @@index([city])
@@ -335,4 +337,71 @@ model Student {
   @@unique([schoolId, admissionNo])
   @@unique([schoolId, rollNo])
   @@map("students")
+}
+
+enum ImportStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model ImportJob {
+  id             String       @id @default(cuid())
+  schoolId       String
+  school         School       @relation(fields: [schoolId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+  
+  status         ImportStatus @default(PENDING)
+  totalRecords   Int          @default(0)
+  importedCount  Int          @default(0)
+  failedCount    Int          @default(0)
+  skippedCount   Int          @default(0)
+  
+  fileName       String?
+  fileSize       Int?
+  
+  errorLog       Json?        // Stores high-level error summary or array of errors if we don't want a separate table
+  
+  startedAt      DateTime?
+  completedAt    DateTime?
+  
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  errors         ImportError[]
+
+  @@map("import_jobs")
+}
+
+model ImportError {
+  id             String    @id @default(cuid())
+  importJobId    String
+  importJob      ImportJob @relation(fields: [importJobId], references: [id], onDelete: Cascade)
+  
+  rowNumber      Int?
+  studentId      String?
+  errorMessage   String
+  errorType      String?   // "VALIDATION", "DUPLICATE", "SYSTEM"
+  
+  rawData        Json?     // The original row data that failed
+  
+  createdAt      DateTime  @default(now())
+
+  @@map("import_errors")
+}
+
+model PhotoMapping {
+  id             String    @id @default(cuid())
+  schoolId       String
+  filename       String
+  studentId      String?   // Matched student ID (if any)
+  isMatched      Boolean   @default(false)
+  
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@unique([schoolId, filename])
+  @@map("photo_mappings")
 }

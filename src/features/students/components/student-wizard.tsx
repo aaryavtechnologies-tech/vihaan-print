@@ -283,23 +283,33 @@ export function StudentWizard({ schools = [], isPublic = false }: { schools?: an
             </FormProvider>
 
             {/* Navigation Buttons */}
-            <div className="flex justify-between mt-8 pt-4 border-t">
+            <div className="flex justify-between mt-8 pt-6 border-t border-slate-100">
               <Button 
                 variant="outline" 
                 onClick={prevStep} 
                 disabled={currentStep === 0}
+                className="h-11 px-6 rounded-xl border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all font-medium shadow-sm disabled:opacity-40"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" /> Back
               </Button>
               
               {currentStep < STEPS.length - 1 ? (
-                <Button type="button" onClick={nextStep} className="bg-blue-600 hover:bg-blue-700">
+                <Button 
+                  type="button" 
+                  onClick={nextStep} 
+                  className="h-11 px-8 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 transition-all font-semibold"
+                >
                   Next <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               ) : (
-                <Button type="button" onClick={handleSubmit(onSubmit)} className="bg-emerald-600 hover:bg-emerald-700" disabled={isSubmitting}>
-                  {isSubmitting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />} 
-                  {isSubmitting ? "Submitting..." : "Submit Student"}
+                <Button 
+                  type="button" 
+                  onClick={handleSubmit(onSubmit)} 
+                  disabled={isSubmitting}
+                  className="h-11 px-8 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20 hover:shadow-lg hover:shadow-emerald-600/30 transition-all font-semibold"
+                >
+                  {isSubmitting ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+                  Submit Details
                 </Button>
               )}
             </div>

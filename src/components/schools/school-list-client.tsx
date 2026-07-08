@@ -92,12 +92,12 @@ export function SchoolListClient({ initialSchools }: SchoolListClientProps) {
         </div>
         
         {selectedRowIds.length > 0 && (
-          <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-xl border border-slate-200/60 shadow-[0_2px_10px_rgb(0,0,0,0.02)] mb-6">
-            <span className="text-sm font-semibold text-slate-700 mr-2">{selectedRowIds.length} selected</span>
-            <Button variant="outline" size="sm" onClick={handleBulkArchive} disabled={isProcessing} className="shadow-sm">
+          <div className="flex items-center gap-2 bg-blue-50/80 backdrop-blur-sm px-5 py-3 rounded-2xl border border-blue-100 shadow-sm mb-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
+            <span className="text-sm font-semibold text-blue-900 mr-2">{selectedRowIds.length} school(s) selected</span>
+            <Button variant="outline" size="sm" onClick={handleBulkArchive} disabled={isProcessing} className="shadow-sm border-blue-200 text-blue-700 hover:bg-blue-100 hover:text-blue-800 rounded-lg">
               <Archive className="h-4 w-4 mr-2" /> Archive
             </Button>
-            <Button variant="destructive" size="sm" onClick={handleBulkDelete} disabled={isProcessing} className="shadow-sm">
+            <Button variant="destructive" size="sm" onClick={handleBulkDelete} disabled={isProcessing} className="shadow-sm bg-red-600 hover:bg-red-700 rounded-lg">
               <Trash2 className="h-4 w-4 mr-2" /> Delete
             </Button>
           </div>

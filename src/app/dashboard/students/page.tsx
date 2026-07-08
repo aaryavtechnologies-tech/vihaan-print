@@ -20,7 +20,7 @@ export default async function StudentsPage() {
             Manage student records and generated ID cards.
           </p>
         </div>
-        <Button asChild className="bg-blue-600 hover:bg-blue-700">
+        <Button asChild className="h-11 px-6 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 transition-all font-semibold">
           <Link href="/dashboard/students/new">
             <Plus className="mr-2 h-4 w-4" /> Add Student
           </Link>
@@ -28,31 +28,31 @@ export default async function StudentsPage() {
       </div>
 
       {students.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24 text-center border rounded-2xl bg-white border-dashed shadow-sm">
-          <div className="h-20 w-20 rounded-full bg-blue-50 flex items-center justify-center mb-6">
-            <Users className="h-10 w-10 text-blue-500" />
+        <div className="flex flex-col items-center justify-center py-24 text-center border border-slate-200/60 rounded-3xl bg-white shadow-sm">
+          <div className="h-20 w-20 rounded-full bg-slate-50 flex items-center justify-center mb-6">
+            <Users className="h-10 w-10 text-slate-400" />
           </div>
           <h2 className="text-2xl font-semibold mb-2">No students found</h2>
           <p className="text-muted-foreground mb-6 max-w-md">
             Get started by adding your first student to generate an ID card.
           </p>
-          <Button asChild className="bg-blue-600 hover:bg-blue-700">
+          <Button asChild className="h-11 px-6 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/20 hover:shadow-lg hover:shadow-blue-600/30 transition-all font-semibold">
             <Link href="/dashboard/students/new">
               <Plus className="mr-2 h-4 w-4" /> Add Student
             </Link>
           </Button>
         </div>
       ) : (
-        <div className="border rounded-lg bg-white overflow-hidden shadow-sm">
+        <div className="border border-slate-100 rounded-3xl bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden transition-all">
           <table className="w-full text-sm text-left">
-            <thead className="bg-slate-50 border-b">
+            <thead className="bg-slate-50/80 border-b border-slate-100">
               <tr>
-                <th className="px-6 py-4 font-medium text-slate-600">Student ID</th>
-                <th className="px-6 py-4 font-medium text-slate-600">Name</th>
-                <th className="px-6 py-4 font-medium text-slate-600">Class</th>
-                <th className="px-6 py-4 font-medium text-slate-600">School</th>
-                <th className="px-6 py-4 font-medium text-slate-600">Status</th>
-                <th className="px-6 py-4 font-medium text-slate-600 text-right">Actions</th>
+                <th className="px-6 py-4 font-semibold text-slate-600">Student ID</th>
+                <th className="px-6 py-4 font-semibold text-slate-600">Name</th>
+                <th className="px-6 py-4 font-semibold text-slate-600">Class</th>
+                <th className="px-6 py-4 font-semibold text-slate-600">School</th>
+                <th className="px-6 py-4 font-semibold text-slate-600">Status</th>
+                <th className="px-6 py-4 font-semibold text-slate-600 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -68,7 +68,7 @@ export default async function StudentsPage() {
                     </Badge>
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <Button asChild variant="outline" size="sm" className="text-slate-600 hover:text-slate-900">
+                    <Button asChild variant="outline" size="sm" className="rounded-lg shadow-sm text-slate-600 hover:text-blue-700 hover:bg-blue-50 hover:border-blue-200 transition-all">
                       <Link href={`/dashboard/students/print/${student.id}`} target="_blank">
                         <Printer className="w-4 h-4 mr-2" /> Print Card
                       </Link>
