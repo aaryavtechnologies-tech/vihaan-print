@@ -3,8 +3,8 @@
 import { useEditorStore } from "../../store/editor-store";
 import { Button } from "@/components/ui/button";
 import { 
-  Undo2, Redo2, ZoomIn, ZoomOut, Maximize, 
-  MonitorPlay, Save, CheckCircle2, ChevronLeft
+  ArrowLeft, Undo2, Redo2, ZoomIn, ZoomOut, Maximize, 
+  MonitorPlay, Save, CheckCircle2, Cloud
 } from "lucide-react";
 import Link from "next/link";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
@@ -18,17 +18,22 @@ export function TopToolbar() {
 
   return (
     <header className="h-14 bg-white dark:bg-slate-900 border-b flex items-center justify-between px-4 shrink-0 z-10 shadow-sm">
-      <div className="flex items-center gap-4">
-        <Link href="/dashboard/templates">
+      {/* Left: Branding & Back */}
+      <div className="flex items-center gap-3">
+        <Link href="/templates">
           <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-500 hover:text-slate-900 dark:hover:text-white">
-            <ChevronLeft className="h-4 w-4" />
+            <ArrowLeft className="h-4 w-4" />
           </Button>
         </Link>
         <div className="h-4 w-px bg-slate-200 dark:bg-slate-700" />
-        <h1 className="font-semibold text-sm">Untitled Template</h1>
-        <div className="flex items-center gap-1 text-xs text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-md">
-          <CheckCircle2 className="h-3 w-3 text-emerald-500" />
-          Saved
+      </div>
+
+      {/* Center: Template Name & Save Status */}
+      <div className="flex flex-col items-center flex-1 justify-center relative">
+        <h1 className="text-sm font-semibold tracking-tight absolute -top-1">Student ID - 2026 Batch</h1>
+        <div className="flex items-center gap-1.5 text-[10px] text-slate-400 absolute top-4">
+          <Cloud className="w-3 h-3" />
+          <span>All changes saved to cloud</span>
         </div>
       </div>
 

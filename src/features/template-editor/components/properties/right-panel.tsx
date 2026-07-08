@@ -1,26 +1,83 @@
 "use client";
 
 import { useEditorStore } from "../../store/editor-store";
-import { MousePointer2, Settings2, Image as ImageIcon } from "lucide-react";
+import { MousePointer2, Settings2, Image as ImageIcon, Type, Shapes, QrCode } from "lucide-react";
 import { EDITOR_CONSTANTS } from "../../constants/editor-constants";
+import { Accordion } from "@/components/ui/accordion";
+import { EditorElement } from "../../types/element-types";
+
+// Import individual sections (will be implemented next)
+import { GeneralSection } from "./sections/GeneralSection";
+import { PositionSection } from "./sections/PositionSection";
+import { SizeSection } from "./sections/SizeSection";
+import { TypographySection } from "./sections/TypographySection";
+import { AppearanceSection } from "./sections/AppearanceSection";
+import { DataBindingSection } from "./sections/DataBindingSection";
 
 export function RightPanel() {
-  const { selectedObjectId } = useEditorStore();
+  const { selectedObjectId, elements } = useEditorStore();
+  const selectedElement = elements.find(e => e.id === selectedObjectId);
+
+  const getElementIcon = (type: EditorElement["type"]) => {
+    switch(type) {
+      case "text": return <Type className="h-4 w-4" />;
+      case "rectangle":
+      case "circle":
+      case "line": return <Shapes className="h-4 w-4" />;
+      case "image": return <ImageIcon className="h-4 w-4" />;
+      case "qr":
+      case "barcode": return <QrCode className="h-4 w-4" />;
+      case "placeholder": return <Settings2 className="h-4 w-4" />;
+      default: return <MousePointer2 className="h-4 w-4" />;
+    }
+  };
 
   return (
-    <div className="w-72 h-full shrink-0 border-l bg-white dark:bg-slate-900 z-10 shadow-sm flex flex-col">
-      <div className="h-12 border-b flex items-center px-4 font-semibold text-sm">
-        <Settings2 className="h-4 w-4 mr-2 text-slate-500" />
-        Properties
-      </div>
-
-      <div className="flex-1 overflow-y-auto p-4 space-y-6">
-        {selectedObjectId ? (
-          <div className="text-sm text-slate-500 text-center py-8">
-            Properties for selected object will appear here.
+    <div className="w-80 h-full shrink-0 border-l bg-white dark:bg-slate-900 z-10 shadow-sm flex flex-col">
+      {selectedElement ? (
+        <>
+          <div className="h-12 border-b flex items-center px-4 font-semibold text-sm bg-slate-50 dark:bg-slate-950">
+            <span className="text-slate-500 mr-2">{getElementIcon(selectedElement.type)}</span>
+            <span className="truncate flex-1">{selectedElement.name}</span>
+            <span className="text-[10px] text-slate-400 font-mono bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded">
+              {selectedElement.type}
+            </span>
           </div>
-        ) : (
-          <>
+          
+          <div className="flex-1 overflow-y-auto no-scrollbar pb-10">
+            {/* @ts-ignore - Base UI types might not perfectly match standard Radix */}
+            <Accordion type="multiple" defaultValue={["general", "position", "size", "typography", "appearance"]} className="w-full">
+              
+              <GeneralSection element={selectedElement} />
+              
+              <PositionSection element={selectedElement} />
+              
+              {/* Size doesn't apply cleanly to Text out of the box unless autoResize is off, but we'll include it */}
+              <SizeSection element={selectedElement} />
+              
+              {selectedElement.type === "text" && (
+                <TypographySection element={selectedElement} />
+              )}
+              
+              {(selectedElement.type === "rectangle" || selectedElement.type === "circle" || selectedElement.type === "line" || selectedElement.type === "text" || selectedElement.type === "placeholder") && (
+                <AppearanceSection element={selectedElement} />
+              )}
+
+              {selectedElement.type === "placeholder" && (
+                <DataBindingSection element={selectedElement} />
+              )}
+              
+            </Accordion>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="h-12 border-b flex items-center px-4 font-semibold text-sm">
+            <Settings2 className="h-4 w-4 mr-2 text-slate-500" />
+            Template Properties
+          </div>
+
+          <div className="flex-1 overflow-y-auto p-4 space-y-6">
             <div className="flex flex-col items-center justify-center py-8 text-slate-400">
               <MousePointer2 className="h-12 w-12 mb-3 stroke-[1.5]" />
               <p className="text-sm font-medium text-slate-600 dark:text-slate-300">No Object Selected</p>
@@ -57,9 +114,9 @@ export function RightPanel() {
                 <span className="text-xs text-slate-500 font-medium">Upload Background</span>
               </div>
             </div>
-          </>
-        )}
-      </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
