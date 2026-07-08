@@ -42,7 +42,7 @@ const initialState = {
   currentStep: 1 as GenerationStep,
   filters: {
     schoolId: '',
-    academicYear: '2024-2025',
+    academicYear: '',
     className: '',
     section: '',
   },

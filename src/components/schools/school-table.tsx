@@ -171,18 +171,16 @@ export function SchoolTable({ schools, onDelete, onArchive, onRestore }: SchoolT
                       <DropdownMenuContent align="end" className="w-40">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
-                        <Link href={`/dashboard/schools/${school.id}`}>
-                          {/* @ts-ignore */}
-                          <DropdownMenuItem className="cursor-pointer">
+                        <DropdownMenuItem asChild className="cursor-pointer">
+                          <Link href={`/dashboard/schools/${school.id}`}>
                             <Eye className="mr-2 h-4 w-4" /> View Details
-                          </DropdownMenuItem>
-                        </Link>
-                        <Link href={`/dashboard/schools/${school.id}/edit`}>
-                          {/* @ts-ignore */}
-                          <DropdownMenuItem className="cursor-pointer">
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild className="cursor-pointer">
+                          <Link href={`/dashboard/schools/${school.id}/edit`}>
                             <Pencil className="mr-2 h-4 w-4" /> Edit School
-                          </DropdownMenuItem>
-                        </Link>
+                          </Link>
+                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         
                         {school.status === SchoolStatus.ARCHIVED ? (

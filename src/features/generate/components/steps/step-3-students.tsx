@@ -5,14 +5,17 @@ import { useGenerationStore } from "../../store/generation-store";
 import { getFilteredStudents } from "../../actions/fetch-students-action";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2, Search } from "lucide-react";
+import { Loader2, Search, FilterX } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export function Step3Students() {
   const { filters, selectedStudentIds, setSelectedStudents, nextStep, prevStep } = useGenerationStore();
   const [students, setStudents] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [classFilter, setClassFilter] = useState<string>("all");
+  const [sectionFilter, setSectionFilter] = useState<string>("all");
   const [localSelection, setLocalSelection] = useState<Set<string>>(new Set());
 
   useEffect(() => {
@@ -31,11 +34,31 @@ export function Step3Students() {
     });
   }, [filters]);
 
-  const filteredStudents = students.filter(s => 
-    s.fullName.toLowerCase().includes(search.toLowerCase()) || 
-    s.studentId.toLowerCase().includes(search.toLowerCase()) ||
-    (s.admissionNo && s.admissionNo.toLowerCase().includes(search.toLowerCase()))
-  );
+  const filteredStudents = students.filter(s => {
+    // Search match
+    const searchLower = search.toLowerCase();
+    const classSec = `${s.className || ""} ${s.section || ""}`.toLowerCase();
+    const classSec2 = `${s.className || ""}${s.section || ""}`.toLowerCase();
+    
+    const matchesSearch = searchLower === "" || 
+      s.fullName.toLowerCase().includes(searchLower) || 
+      s.studentId.toLowerCase().includes(searchLower) ||
+      (s.admissionNo && s.admissionNo.toLowerCase().includes(searchLower)) ||
+      classSec.includes(searchLower) ||
+      classSec2.includes(searchLower);
+
+    // Class filter match
+    const matchesClass = classFilter === "all" || (s.className && s.className.toLowerCase() === classFilter.toLowerCase());
+    
+    // Section filter match
+    const matchesSection = sectionFilter === "all" || (s.section && s.section.toLowerCase() === sectionFilter.toLowerCase());
+
+    return matchesSearch && matchesClass && matchesSection;
+  });
+
+  // Extract unique classes and sections for the dropdowns
+  const uniqueClasses = Array.from(new Set(students.map(s => s.className).filter(Boolean))).sort();
+  const uniqueSections = Array.from(new Set(students.map(s => s.section).filter(Boolean))).sort();
 
   const handleToggleAll = (checked: boolean) => {
     if (checked) {
@@ -75,16 +98,58 @@ export function Step3Students() {
       </div>
 
       <div className="flex justify-between items-center bg-slate-50 p-4 rounded-2xl border border-slate-200">
-        <div className="relative w-72">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
-          <Input 
-            placeholder="Search name or ID..." 
-            className="pl-9 bg-white"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+          <div className="relative w-full sm:w-64">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+            <Input 
+              placeholder="Search name or ID..." 
+              className="pl-9 bg-white h-10"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          
+          <Select value={classFilter} onValueChange={(val) => setClassFilter(val || "all")}>
+            <SelectTrigger className="w-full sm:w-[140px] bg-white h-10">
+              <SelectValue placeholder="Class" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Classes</SelectItem>
+              {uniqueClasses.map(c => (
+                <SelectItem key={c} value={c}>{c}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select value={sectionFilter} onValueChange={(val) => setSectionFilter(val || "all")}>
+            <SelectTrigger className="w-full sm:w-[140px] bg-white h-10">
+              <SelectValue placeholder="Section" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Sections</SelectItem>
+              {uniqueSections.map(s => (
+                <SelectItem key={s} value={s}>{s}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {(classFilter !== 'all' || sectionFilter !== 'all' || search !== '') && (
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => {
+                setClassFilter('all');
+                setSectionFilter('all');
+                setSearch('');
+              }}
+              className="text-slate-500 hover:text-slate-800 shrink-0"
+              title="Clear filters"
+            >
+              <FilterX className="w-4 h-4" />
+            </Button>
+          )}
         </div>
-        <div className="text-sm font-semibold text-slate-700 bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm">
+        <div className="text-sm font-semibold text-slate-700 bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm shrink-0">
           {localSelection.size} Selected
         </div>
       </div>

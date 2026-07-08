@@ -91,17 +91,22 @@ export function Step4Preview() {
               const bcUrl = generateBarcode(bcText);
               return { ...el, type: "image", url: bcUrl };
             }
-            if (el.placeholderType === "student_name") {
-              return {
-                ...el,
-                type: "text",
-                text: studentData.student_name || "",
-                textColor: el.textColor || "#000",
-                fontSize: el.fontSize || 16,
-                fontFamily: el.fontFamily || "Arial",
-                textAlign: el.textAlign || "center",
-              };
-            }
+            
+            // For all other placeholders (student_name, father_name, dob, class, etc.)
+            // Resolve them as text elements
+            const rawText = replacePlaceholders(`[${el.placeholderType}]`, studentData);
+            // If it returns the placeholder unchanged, make it empty
+            const resolvedText = rawText === `[${el.placeholderType}]` ? "" : rawText;
+            
+            return {
+              ...el,
+              type: "text",
+              text: resolvedText,
+              textColor: el.textColor || "#000",
+              fontSize: el.fontSize || 16,
+              fontFamily: el.fontFamily || "Arial",
+              textAlign: el.textAlign || "left",
+            };
           }
           return el;
         }));

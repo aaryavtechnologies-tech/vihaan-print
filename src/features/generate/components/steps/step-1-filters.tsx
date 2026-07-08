@@ -46,42 +46,8 @@ export function Step1Filters() {
           </Select>
         </div>
 
-        <div className="space-y-3">
-          <label className="text-sm font-semibold flex items-center gap-2 text-slate-700">
-            <Calendar className="w-4 h-4" /> Academic Year
-          </label>
-          <Input 
-            placeholder="e.g. 2024-2025" 
-            className="h-12 bg-white rounded-xl shadow-sm"
-            value={filters.academicYear}
-            onChange={e => setFilters({ academicYear: e.target.value })}
-          />
-        </div>
 
-        <div className="grid grid-cols-2 gap-6">
-          <div className="space-y-3">
-            <label className="text-sm font-semibold flex items-center gap-2 text-slate-700">
-              <GraduationCap className="w-4 h-4" /> Class / Grade
-            </label>
-            <Input 
-              placeholder="e.g. 10 (Leave blank for all)" 
-              className="h-12 bg-white rounded-xl shadow-sm"
-              value={filters.className}
-              onChange={e => setFilters({ className: e.target.value })}
-            />
-          </div>
-          <div className="space-y-3">
-            <label className="text-sm font-semibold flex items-center gap-2 text-slate-700">
-              <Users className="w-4 h-4" /> Section
-            </label>
-            <Input 
-              placeholder="e.g. A (Leave blank for all)" 
-              className="h-12 bg-white rounded-xl shadow-sm"
-              value={filters.section}
-              onChange={e => setFilters({ section: e.target.value })}
-            />
-          </div>
-        </div>
+
       </div>
 
       <div className="flex justify-end pt-4">

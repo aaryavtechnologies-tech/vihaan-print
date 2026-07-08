@@ -26,14 +26,11 @@ export function UserMenu() {
 
   return (
     <DropdownMenu>
-      {/* @ts-ignore */}
-      <DropdownMenuTrigger asChild>
-        <button className="flex items-center gap-2 outline-none rounded-full ring-offset-background focus-visible:ring-2 focus-visible:ring-ring">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src={user?.image || ""} alt={user?.name || ""} />
-            <AvatarFallback className="bg-primary text-primary-foreground text-xs">{initials}</AvatarFallback>
-          </Avatar>
-        </button>
+      <DropdownMenuTrigger className="flex items-center gap-2 outline-none rounded-full ring-offset-background focus-visible:ring-2 focus-visible:ring-ring">
+        <Avatar className="h-8 w-8">
+          <AvatarImage src={user?.image || ""} alt={user?.name || ""} />
+          <AvatarFallback className="bg-primary text-primary-foreground text-xs">{initials}</AvatarFallback>
+        </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end">
         <DropdownMenuLabel className="font-normal">

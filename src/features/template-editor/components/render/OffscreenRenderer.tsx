@@ -92,18 +92,19 @@ export function OffscreenRenderer({
                 url: bcUrl,
               };
             }
-            // Other placeholders (e.g. student_name handled as text usually, but if it's a specific placeholder type)
-            if (placeEl.placeholderType === "student_name") {
-              return {
-                ...placeEl,
-                type: "text",
-                text: studentData.student_name || "",
-                textColor: placeEl.textColor || "#000",
-                fontSize: placeEl.fontSize || 16,
-                fontFamily: placeEl.fontFamily || "Arial",
-                textAlign: placeEl.textAlign || "center",
-              };
-            }
+            // For all other placeholders (student_name, father_name, dob, class, etc.)
+            const rawText = replacePlaceholders(`[${placeEl.placeholderType}]`, studentData);
+            const resolvedText = rawText === `[${placeEl.placeholderType}]` ? "" : rawText;
+
+            return {
+              ...placeEl,
+              type: "text",
+              text: resolvedText,
+              textColor: placeEl.textColor || "#000",
+              fontSize: placeEl.fontSize || 16,
+              fontFamily: placeEl.fontFamily || "Arial",
+              textAlign: placeEl.textAlign || "left",
+            };
           }
           return el;
         }));

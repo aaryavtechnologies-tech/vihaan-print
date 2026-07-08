@@ -13,8 +13,8 @@ export async function getPrintableCards(filters: { schoolId: string; templateId:
 
     // Filter by student class/section if needed
     const studentFilter: any = {};
-    if (filters.className) studentFilter.className = filters.className;
-    if (filters.section) studentFilter.section = filters.section;
+    if (filters.className) studentFilter.className = { contains: filters.className, mode: 'insensitive' };
+    if (filters.section) studentFilter.section = { contains: filters.section, mode: 'insensitive' };
     
     if (Object.keys(studentFilter).length > 0) {
       whereClause.student = { is: studentFilter };

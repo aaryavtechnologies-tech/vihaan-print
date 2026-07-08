@@ -8,9 +8,9 @@ export async function getFilteredStudents(filters: { schoolId: string; academicY
       schoolId: filters.schoolId,
     };
 
-    if (filters.academicYear) whereClause.academicYear = filters.academicYear;
-    if (filters.className) whereClause.className = filters.className;
-    if (filters.section) whereClause.section = filters.section;
+    if (filters.academicYear) whereClause.academicYear = { contains: filters.academicYear, mode: 'insensitive' };
+    if (filters.className) whereClause.className = { contains: filters.className, mode: 'insensitive' };
+    if (filters.section) whereClause.section = { contains: filters.section, mode: 'insensitive' };
 
     const students = await prisma.student.findMany({
       where: whereClause,
