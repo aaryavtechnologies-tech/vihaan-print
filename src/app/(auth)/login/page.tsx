@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "@/lib/auth-client";
@@ -23,18 +23,21 @@ export default function LoginPage() {
     defaultValues: { email: "", password: "", rememberMe: false }
   });
 
+  useEffect(() => {
+    router.prefetch("/dashboard");
+  }, [router]);
+
   const onSubmit = async (data: LoginInput) => {
+    setIsLoading(true);
+
     await signIn.email({
       email: data.email,
       password: data.password,
       rememberMe: data.rememberMe,
     }, {
-      onRequest: () => {
-        setIsLoading(true);
-      },
       onSuccess: () => {
         toast.success("Successfully logged in");
-        router.push("/dashboard");
+        router.replace("/dashboard");
       },
       onError: (ctx) => {
         setIsLoading(false);

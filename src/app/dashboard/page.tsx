@@ -32,9 +32,9 @@ export default function DashboardHome() {
     { id: "4", title: "Students Imported", description: "500 records imported for DPS", timestamp: "1 day ago", icon: Upload, iconColorClass: "text-amber-500" },
   ];
 
-  const now = new Date();
-  const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const dateString = now.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
+  const now = new Date("2026-07-09T12:47:00");
+  const timeString = now.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true });
+  const dateString = now.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" });
 
   return (
     <div className="space-y-6">
