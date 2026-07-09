@@ -30,20 +30,27 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginInput) => {
     setIsLoading(true);
 
-    await signIn.email({
-      email: data.email,
-      password: data.password,
-      rememberMe: data.rememberMe,
-    }, {
-      onSuccess: () => {
-        toast.success("Successfully logged in");
-        router.replace("/dashboard");
-      },
-      onError: (ctx) => {
-        setIsLoading(false);
-        toast.error(ctx.error.message || "Invalid email or password");
-      }
-    });
+    try {
+      await signIn.email({
+        email: data.email,
+        password: data.password,
+        rememberMe: data.rememberMe,
+      }, {
+        onSuccess: () => {
+          toast.success("Successfully logged in");
+          setIsLoading(false);
+          window.location.assign("/dashboard");
+        },
+        onError: (ctx) => {
+          setIsLoading(false);
+          toast.error(ctx.error.message || "Invalid email or password");
+        }
+      });
+    } catch (error) {
+      setIsLoading(false);
+      toast.error("Unable to sign in right now. Please try again.");
+      console.error("Login failed:", error);
+    }
   };
 
   const stats = [
