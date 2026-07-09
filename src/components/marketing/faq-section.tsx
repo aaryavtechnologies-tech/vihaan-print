@@ -30,11 +30,11 @@ const faqs = [
 
 export function FAQSection() {
   return (
-    <section id="faq" className="py-24 bg-white dark:bg-slate-900">
+    <section id="faq" className="py-24 bg-slate-900 border-t border-white/5">
       <div className="container mx-auto px-4 max-w-3xl">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">Frequently asked questions</h2>
-          <p className="text-lg text-muted-foreground">
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-white">Frequently asked questions</h2>
+          <p className="text-lg text-slate-400">
             Everything you need to know about the product and billing.
           </p>
         </div>
@@ -42,9 +42,9 @@ export function FAQSection() {
         {/* @ts-ignore */}
         <Accordion type="single" collapsible className="w-full">
           {faqs.map((faq, index) => (
-            <AccordionItem key={index} value={`item-${index}`}>
-              <AccordionTrigger className="text-left text-lg font-medium">{faq.question}</AccordionTrigger>
-              <AccordionContent className="text-muted-foreground text-base leading-relaxed">
+            <AccordionItem key={index} value={`item-${index}`} className="border-white/10">
+              <AccordionTrigger className="text-left text-lg font-medium text-white hover:text-blue-400 transition-colors">{faq.question}</AccordionTrigger>
+              <AccordionContent className="text-slate-400 text-base leading-relaxed">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>

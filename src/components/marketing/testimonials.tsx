@@ -29,11 +29,11 @@ const reviews = [
 
 export function Testimonials() {
   return (
-    <section className="py-24 bg-slate-50 dark:bg-slate-950">
+    <section className="py-24 bg-slate-950 border-t border-white/5">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">Don't just take our word for it</h2>
-          <p className="text-lg text-muted-foreground">
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-white">Don't just take our word for it</h2>
+          <p className="text-lg text-slate-400">
             Thousands of educational institutions trust VIHAAN to handle their sensitive student data and card generation.
           </p>
         </div>
@@ -46,7 +46,7 @@ export function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col justify-between"
+              className="bg-white/4 backdrop-blur-sm rounded-2xl p-8 border border-white/8 flex flex-col justify-between hover:bg-white/7 hover:border-white/15 transition-all"
             >
               <div>
                 <div className="flex gap-1 mb-6">
@@ -54,8 +54,8 @@ export function Testimonials() {
                     <Star key={star} className="w-5 h-5 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
-                <p className="text-slate-700 dark:text-slate-300 mb-8 text-lg leading-relaxed">
-                  "{review.content}"
+                <p className="text-slate-300 mb-8 text-lg leading-relaxed">
+                  &ldquo;{review.content}&rdquo;
                 </p>
               </div>
               <div className="flex items-center gap-4">
@@ -63,7 +63,7 @@ export function Testimonials() {
                   {review.initials}
                 </div>
                 <div>
-                  <h4 className="font-semibold text-slate-900 dark:text-white">{review.name}</h4>
+                  <h4 className="font-semibold text-white">{review.name}</h4>
                   <p className="text-sm text-slate-500">{review.role}</p>
                 </div>
               </div>

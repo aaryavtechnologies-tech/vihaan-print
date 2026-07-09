@@ -19,11 +19,11 @@ const features = [
 
 export function FeaturesSection() {
   return (
-    <section id="features" className="py-24 bg-slate-50 dark:bg-slate-950">
+    <section id="features" className="py-24 bg-slate-950 border-t border-white/5">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">Everything you need to <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">manage ID cards</span></h2>
-          <p className="text-lg text-muted-foreground">
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-white">Everything you need to <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">manage ID cards</span></h2>
+          <p className="text-lg text-slate-400">
             A comprehensive suite of tools built specifically for educational institutions to streamline the ID card generation process from start to finish.
           </p>
         </div>
@@ -38,13 +38,13 @@ export function FeaturesSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
-                className="group relative rounded-2xl border bg-background p-6 shadow-sm transition-all hover:shadow-md hover:border-blue-500/30"
+                className="group relative rounded-2xl border border-white/8 bg-white/4 backdrop-blur-sm p-6 transition-all hover:bg-white/8 hover:border-blue-500/30 hover:shadow-lg hover:shadow-blue-500/10"
               >
                 <div className={cn("mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl", feature.color)}>
                   <Icon className="h-6 w-6" />
                 </div>
-                <h3 className="mb-2 text-xl font-semibold">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
+                <h3 className="mb-2 text-xl font-semibold text-white">{feature.title}</h3>
+                <p className="text-slate-400">{feature.description}</p>
               </motion.div>
             );
           })}

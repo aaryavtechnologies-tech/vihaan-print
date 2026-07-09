@@ -12,11 +12,11 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-24 bg-white dark:bg-slate-900">
+    <section id="how-it-works" className="py-24 bg-slate-900 border-t border-white/5">
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">How it works</h2>
-          <p className="text-lg text-muted-foreground">
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4 text-white">How it works</h2>
+          <p className="text-lg text-slate-400">
             A simple, streamlined process to go from raw data to printed ID cards in minutes.
           </p>
         </div>
@@ -37,14 +37,14 @@ export function HowItWorks() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="flex flex-col items-center text-center"
                 >
-                  <div className="w-16 h-16 rounded-full bg-white dark:bg-slate-800 border-4 border-blue-500 flex items-center justify-center mb-6 shadow-xl">
-                    <Icon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                  <div className="w-16 h-16 rounded-full bg-slate-800 border-4 border-blue-500 flex items-center justify-center mb-6 shadow-xl shadow-blue-500/20">
+                    <Icon className="h-6 w-6 text-blue-400" />
                   </div>
-                  <div className="mb-2 text-sm font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+                  <div className="mb-2 text-sm font-bold text-blue-400 uppercase tracking-wider">
                     Step {step.step}
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                  <p className="text-muted-foreground text-sm">{step.description}</p>
+                  <h3 className="text-xl font-semibold mb-2 text-white">{step.title}</h3>
+                  <p className="text-slate-400 text-sm">{step.description}</p>
                 </motion.div>
               );
             })}
