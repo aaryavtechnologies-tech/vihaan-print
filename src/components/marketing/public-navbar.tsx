@@ -43,7 +43,7 @@ export function PublicNavbar() {
         
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Link href="/submit-form">
+          <Link href="/stjohn/login">
             <Button className="bg-blue-600 hover:bg-blue-500 text-white rounded-full px-6 shadow-md shadow-blue-500/25">Submit Form</Button>
           </Link>
         </div>

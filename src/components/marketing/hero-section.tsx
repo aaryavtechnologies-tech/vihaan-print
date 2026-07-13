@@ -77,7 +77,7 @@ export function HeroSection() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
             >
-              <Link href="/submit-form" className="w-full sm:w-auto">
+              <Link href="/stjohn/login" className="w-full sm:w-auto">
                 <Button size="lg" className="w-full bg-blue-600 hover:bg-blue-500 text-white rounded-full px-8 h-14 text-base shadow-lg shadow-blue-500/30">
                   Submit Registration Form
                   <ArrowRight className="ml-2 h-5 w-5" />

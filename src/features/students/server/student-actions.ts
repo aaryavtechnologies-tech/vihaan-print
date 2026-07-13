@@ -44,19 +44,18 @@ export async function createStudent(data: any) {
 
     let finalSchoolId = data.schoolId;
 
-    if (!finalSchoolId) {
-      // Find default school if not provided (for public form)
-      let defaultSchool = await prisma.school.findFirst({
-        orderBy: { createdAt: 'asc' }
+    if (!finalSchoolId || finalSchoolId === "STJOHN-9780") {
+      // Find STJOHN school or default
+      let schoolToUse = await prisma.school.findFirst({
+        where: { schoolCode: finalSchoolId === "STJOHN-9780" ? "STJOHN-9780" : "VGS" }
       });
       
-      if (!defaultSchool) {
-        // Create a default school if none exists
-        defaultSchool = await prisma.school.create({
+      if (!schoolToUse) {
+        schoolToUse = await prisma.school.create({
           data: {
-            schoolName: "Vihaan Global School",
-            schoolCode: "VGS",
-            email: "admin@vihaanprint.com",
+            schoolName: finalSchoolId === "STJOHN-9780" ? "St. John Samaritan School" : "Vihaan Global School",
+            schoolCode: finalSchoolId === "STJOHN-9780" ? "STJOHN-9780" : "VGS",
+            email: finalSchoolId === "STJOHN-9780" ? "admin@stjohn.com" : "admin@vihaanprint.com",
             phone: "0000000000",
             addressLine1: "Head Office",
             city: "Default City",
@@ -66,7 +65,7 @@ export async function createStudent(data: any) {
         });
       }
       
-      finalSchoolId = defaultSchool.id;
+      finalSchoolId = schoolToUse.id;
     }
 
     // Generate a studentId if not provided (for public form)
