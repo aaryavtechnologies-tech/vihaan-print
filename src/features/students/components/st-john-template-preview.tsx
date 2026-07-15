@@ -37,7 +37,7 @@ export function StJohnTemplatePreview({ data, zoom = 1 }: StJohnTemplatePreviewP
 
         {/* Logo area */}
         <div className="absolute top-[25px] left-[30px] w-[130px] h-[130px] bg-white rounded-full flex items-center justify-center border-[4px] border-white/20 shadow-xl overflow-hidden backdrop-blur-sm">
-          <img src="/images/st-john-logo.png" alt="School Logo" className="w-[120px] h-[120px] object-contain rounded-full shadow-inner bg-white" crossOrigin="anonymous" />
+          <img src="/images/st-john-logo.png" alt="School Logo" className="w-[120px] h-[120px] object-contain rounded-full shadow-inner bg-white" />
         </div>
         
         <div className="absolute top-[160px] left-[30px] w-[130px] text-center text-white/90 font-bold text-sm tracking-widest bg-black/30 rounded-b-md px-1 py-0.5">
@@ -104,12 +104,12 @@ export function StJohnTemplatePreview({ data, zoom = 1 }: StJohnTemplatePreviewP
 
       <div className="absolute top-[505px] left-[420px] flex items-start w-[380px] px-4">
         <span className="font-bold text-[24px] text-slate-500 w-[120px] shrink-0 tracking-wider uppercase">Address :</span>
-        <span className="text-[21px] text-[#FF0000] font-normal uppercase leading-tight mt-1 ml-2 max-h-[80px] overflow-hidden">{data.address || "-"}</span>
+        <span className="text-[19px] text-[#FF0000] font-normal uppercase leading-tight mt-1 ml-2 flex-1 break-words">{data.address || "-"}</span>
       </div>
 
       {/* Principal Signature */}
       <div className="absolute top-[520px] left-[810px] w-[170px] flex flex-col items-center bg-slate-50 p-2 rounded-xl border border-slate-200/60 shadow-sm z-30">
-        <img src="/images/principal-sign.png" alt="Principal Signature" className="h-[50px] object-contain mb-1 mix-blend-multiply" crossOrigin="anonymous" />
+        <img src="/images/principal-sign.png" alt="Principal Signature" className="h-[50px] object-contain mb-1" />
         <div className="w-full h-[2px] bg-slate-300 mb-1 mt-1 rounded-full"></div>
         <span className="font-bold text-base text-slate-600 uppercase tracking-widest">Principal</span>
       </div>
