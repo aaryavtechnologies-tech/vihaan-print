@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
 
-import type { School } from "@prisma/client";
+import type { School, Student } from "@prisma/client";
 import { SchoolStatus } from "@/types/school";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -18,9 +18,10 @@ import {
 
 interface SchoolProfileProps {
   school: School;
+  students?: Student[];
 }
 
-export function SchoolProfile({ school }: SchoolProfileProps) {
+export function SchoolProfile({ school, students = [] }: SchoolProfileProps) {
   const getStatusBadge = (status: SchoolStatus) => {
     switch (status) {
       case SchoolStatus.ACTIVE:
@@ -43,8 +44,15 @@ export function SchoolProfile({ school }: SchoolProfileProps) {
           <ArrowLeft className="w-4 h-4 mr-1" /> Back to Schools
         </Link>
         <div className="flex items-center gap-2">
+          {students.length > 0 && (
+            <Link href={`/dashboard/schools/${school.id}/print`}>
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/20 hover:shadow-lg transition-all h-9">
+                <Printer className="w-4 h-4 mr-2" /> Print {students.length} ID Cards
+              </Button>
+            </Link>
+          )}
           <Link href={`/dashboard/schools/${school.id}/edit`}>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="h-9">
               <Pencil className="w-4 h-4 mr-2" /> Edit School
             </Button>
           </Link>
@@ -121,7 +129,7 @@ export function SchoolProfile({ school }: SchoolProfileProps) {
             <Card className="bg-blue-50/50 dark:bg-blue-900/10 border-blue-100 dark:border-blue-900/30">
               <CardContent className="p-4 flex flex-col items-center text-center justify-center">
                 <Users className="w-6 h-6 text-blue-500 mb-2" />
-                <span className="text-2xl font-bold text-slate-900 dark:text-white">0</span>
+                <span className="text-2xl font-bold text-slate-900 dark:text-white">{students.length}</span>
                 <span className="text-xs text-slate-500 font-medium uppercase tracking-wider">Students</span>
               </CardContent>
             </Card>
@@ -294,16 +302,43 @@ export function SchoolProfile({ school }: SchoolProfileProps) {
             </TabsContent>
 
             <TabsContent value="students" className="outline-none">
-              <Card className="border-dashed bg-slate-50/50 dark:bg-slate-900/20">
-                <CardContent className="flex flex-col items-center justify-center py-16">
-                  <Users className="w-12 h-12 text-slate-300 mb-4" />
-                  <h3 className="text-lg font-medium mb-1">No Students Found</h3>
-                  <p className="text-sm text-slate-500 text-center max-w-sm mb-6">
-                    Import or add students to generate their ID cards.
-                  </p>
-                  <Button variant="outline">Import Students</Button>
-                </CardContent>
-              </Card>
+              {students.length === 0 ? (
+                <Card className="border-dashed bg-slate-50/50 dark:bg-slate-900/20">
+                  <CardContent className="flex flex-col items-center justify-center py-16">
+                    <Users className="w-12 h-12 text-slate-300 mb-4" />
+                    <h3 className="text-lg font-medium mb-1">No Students Found</h3>
+                    <p className="text-sm text-slate-500 text-center max-w-sm mb-6">
+                      Import or add students to generate their ID cards.
+                    </p>
+                    <Link href={`/dashboard/students/new?schoolId=${school.id}`}>
+                      <Button variant="outline">Add Student</Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {students.map((student) => (
+                    <Card key={student.id} className="overflow-hidden">
+                      <CardContent className="p-4 flex items-center gap-4">
+                        <div className="h-16 w-16 bg-slate-100 rounded-full overflow-hidden shrink-0">
+                          {student.photo ? (
+                            <img src={student.photo} alt={student.fullName} className="w-full h-full object-cover" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-slate-300">
+                              <Users className="w-8 h-8" />
+                            </div>
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-semibold text-slate-900 truncate">{student.fullName}</p>
+                          <p className="text-sm text-slate-500 truncate">Class: {student.className || "N/A"}</p>
+                          <p className="text-xs text-slate-400 truncate">{student.studentMobile || "No Mobile"}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
             </TabsContent>
 
             <TabsContent value="history" className="outline-none">

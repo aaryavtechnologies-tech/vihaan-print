@@ -6,20 +6,24 @@ import { Printer, FileImage } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 
+import { PrintButton } from "@/components/dashboard/print-button";
+
 export const metadata = {
   title: "Print ID Cards | Admin",
 };
 
-export default async function PrintPage({ params }: { params: { id: string } }) {
+export default async function PrintPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  
   // First, find the school
   let school = await prisma.school.findUnique({
-    where: { id: params.id },
+    where: { id: id },
   });
 
   // If not found by CUID, try by schoolCode (e.g. STJOHN-9780)
   if (!school) {
     school = await prisma.school.findUnique({
-      where: { schoolCode: params.id },
+      where: { schoolCode: id },
     });
   }
 
@@ -57,10 +61,7 @@ export default async function PrintPage({ params }: { params: { id: string } }) 
           <h1 className="text-3xl font-bold text-slate-900">Print ID Cards: {school.schoolName}</h1>
           <p className="text-slate-500">Total Cards: {students.length}</p>
         </div>
-        <Button onClick={() => typeof window !== 'undefined' && window.print()} className="bg-blue-600 hover:bg-blue-700">
-          <Printer className="w-4 h-4 mr-2" />
-          Print Now
-        </Button>
+        <PrintButton />
       </div>
 
       <div className="no-print">

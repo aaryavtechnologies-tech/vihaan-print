@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useSession } from "@/lib/auth-client";
+import { useSession, authClient } from "@/lib/auth-client";
 import { LogOut, User as UserIcon, Settings } from "lucide-react";
 import Link from "next/link";
 
@@ -11,19 +11,16 @@ export function UserMenu() {
 
   const handleLogout = async () => {
     try {
-      await fetch("/api/auth/sign-out", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
+      await authClient.signOut({
+        fetchOptions: {
+          onSuccess: () => {
+            window.location.assign("/login");
+          },
         },
       });
     } catch (error) {
       console.error("Logout failed:", error);
-    } finally {
-      document.cookie = "better-auth.session_token=; Max-Age=0; path=/; SameSite=Lax";
-      document.cookie = "better-auth.session_data=; Max-Age=0; path=/; SameSite=Lax";
-      document.cookie = "better-auth.dont_remember=; Max-Age=0; path=/; SameSite=Lax";
+      // Fallback
       window.location.assign("/login");
     }
   };

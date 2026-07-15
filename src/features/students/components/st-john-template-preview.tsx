@@ -37,9 +37,7 @@ export function StJohnTemplatePreview({ data, zoom = 1 }: StJohnTemplatePreviewP
 
         {/* Logo area */}
         <div className="absolute top-[25px] left-[30px] w-[130px] h-[130px] bg-white rounded-full flex items-center justify-center border-[4px] border-white/20 shadow-xl overflow-hidden backdrop-blur-sm">
-          <div className="w-[120px] h-[120px] bg-gradient-to-br from-[#1A56DB] to-[#0e3b9e] rounded-full flex items-center justify-center shadow-inner">
-            <span className="text-white font-bold text-xs text-center px-2 tracking-wider">SCHOOL<br/>LOGO</span>
-          </div>
+          <img src="/images/st-john-logo.png" alt="School Logo" className="w-[120px] h-[120px] object-contain rounded-full shadow-inner bg-white" crossOrigin="anonymous" />
         </div>
         
         <div className="absolute top-[160px] left-[30px] w-[130px] text-center text-white/90 font-bold text-sm tracking-widest bg-black/30 rounded-b-md px-1 py-0.5">
@@ -110,14 +108,8 @@ export function StJohnTemplatePreview({ data, zoom = 1 }: StJohnTemplatePreviewP
       </div>
 
       {/* Principal Signature */}
-      <div className="absolute top-[520px] left-[810px] w-[170px] flex flex-col items-center bg-slate-50 p-2 rounded-xl border border-slate-200/60 shadow-sm">
-        {data.principalSignUrl ? (
-          <img src={data.principalSignUrl} alt="Principal Signature" className="h-[50px] object-contain mb-1 mix-blend-multiply" />
-        ) : (
-          <div className="h-[50px] w-full mb-1 flex items-center justify-center opacity-30">
-            <svg className="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-          </div>
-        )}
+      <div className="absolute top-[520px] left-[810px] w-[170px] flex flex-col items-center bg-slate-50 p-2 rounded-xl border border-slate-200/60 shadow-sm z-30">
+        <img src="/images/principal-sign.png" alt="Principal Signature" className="h-[50px] object-contain mb-1 mix-blend-multiply" crossOrigin="anonymous" />
         <div className="w-full h-[2px] bg-slate-300 mb-1 mt-1 rounded-full"></div>
         <span className="font-bold text-base text-slate-600 uppercase tracking-widest">Principal</span>
       </div>
@@ -132,7 +124,7 @@ export function StJohnTemplatePreview({ data, zoom = 1 }: StJohnTemplatePreviewP
       {/* Photo Box: 1.2x1.5 inches at 300 DPI = 360x450 pixels */}
       <div className="absolute top-[150px] left-[35px] w-[360px] h-[450px] bg-white z-10 rounded-2xl overflow-hidden flex items-center justify-center shadow-[0_10px_30px_rgba(0,0,0,0.3)] ring-4 ring-white ring-offset-2 ring-offset-[#1A56DB]">
         {data.photoUrl ? (
-          <img src={data.photoUrl} alt="Student" className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105" />
+          <img src={data.photoUrl} alt="Student" className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105" crossOrigin="anonymous" />
         ) : (
           <div className="flex flex-col items-center justify-center text-slate-300">
             <svg className="w-20 h-20 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>

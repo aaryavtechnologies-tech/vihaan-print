@@ -34,7 +34,7 @@ export function Step1Filters() {
           <label className="text-sm font-semibold flex items-center gap-2 text-slate-700">
             <Building2 className="w-4 h-4" /> Select School *
           </label>
-          <Select value={filters.schoolId || undefined} onValueChange={(val) => setFilters({ schoolId: val as string})}>
+          <Select value={filters.schoolId} onValueChange={(val) => setFilters({ schoolId: val as string})}>
             <SelectTrigger className="h-12 bg-white rounded-xl shadow-sm">
               <SelectValue placeholder="Choose a school" />
             </SelectTrigger>

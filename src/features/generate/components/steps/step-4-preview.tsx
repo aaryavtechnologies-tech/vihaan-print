@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useGenerationStore } from "../../store/generation-store";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
@@ -79,7 +79,7 @@ export function Step4Preview() {
 
           if (el.type === "placeholder") {
             if (el.placeholderType === "student_photo" && studentData.student_photo) {
-              return { ...el, type: "image", url: studentData.student_photo };
+              return { ...el, type: "image", isStudentPhoto: true, url: studentData.student_photo };
             }
             if (el.placeholderType === "qr_code") {
               const qrText = studentData.student_id || "UNKNOWN";
@@ -151,7 +151,6 @@ export function Step4Preview() {
               
               {processedElements.map((el) => {
                 const commonProps = {
-                  key: el.id,
                   x: el.x,
                   y: el.y,
                   width: el.width,
@@ -162,21 +161,30 @@ export function Step4Preview() {
 
                 if (el.type === "text") {
                   return (
-                    <Text
-                      {...commonProps}
-                      text={el.text}
-                      fill={el.textColor}
-                      fontSize={el.fontSize}
-                      fontFamily={el.fontFamily}
-                      fontStyle={el.fontStyle}
-                      align={el.textAlign}
-                    />
+                    <React.Fragment key={el.id}>
+                      {el.backgroundColor && (
+                        <Rect key={`bg-${el.id}`} {...commonProps} fill={el.backgroundColor} />
+                      )}
+                      <Text
+                        key={`text-${el.id}`}
+                        {...commonProps}
+                        text={el.text}
+                        fill={el.textColor}
+                        fontSize={el.fontSize}
+                        fontFamily={el.fontFamily}
+                        fontStyle={el.fontStyle}
+                        align={el.textAlign}
+                        lineHeight={el.lineHeight}
+                        wrap="word"
+                      />
+                    </React.Fragment>
                   );
                 }
                 
                 if (el.type === "rectangle" || el.type === "circle") {
                   return (
                     <Rect
+                      key={el.id}
                       {...commonProps}
                       fill={el.fill || "transparent"}
                       stroke={el.stroke || "transparent"}
@@ -187,7 +195,14 @@ export function Step4Preview() {
                 }
                 
                 if (el.type === "image") {
-                  return <AsyncImage {...commonProps} url={el.url} />;
+                  return (
+                    <React.Fragment key={el.id}>
+                      {el.isStudentPhoto && (
+                        <Rect key={`bg-${el.id}`} {...commonProps} fill="#ffffff" cornerRadius={el.cornerRadius || 0} />
+                      )}
+                      <AsyncImage key={`img-${el.id}`} {...commonProps} url={el.url} />
+                    </React.Fragment>
+                  );
                 }
                 
                 return null;
