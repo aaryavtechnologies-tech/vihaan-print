@@ -162,6 +162,8 @@ export function OffscreenRenderer({
               height: el.height,
               rotation: el.rotation,
               opacity: el.opacity,
+              stroke: el.stroke,
+              strokeWidth: el.strokeWidth,
             };
 
             if (el.type === "text") {

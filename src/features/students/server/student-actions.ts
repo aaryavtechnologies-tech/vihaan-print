@@ -152,3 +152,72 @@ export async function bulkDeleteStudents(ids: string[]) {
     return { success: false, error: "Failed to delete students" };
   }
 }
+
+import cloudinary from "@/lib/cloudinary";
+
+function getPublicIdFromUrl(url: string) {
+  if (!url || !url.includes('cloudinary.com')) return null;
+  const parts = url.split('/');
+  const uploadIndex = parts.indexOf('upload');
+  if (uploadIndex === -1) return null;
+  
+  let startIndex = uploadIndex + 1;
+  if (parts[startIndex].match(/^v\d+$/)) {
+    startIndex++;
+  }
+  
+  const pathWithExtension = parts.slice(startIndex).join('/');
+  const lastDot = pathWithExtension.lastIndexOf('.');
+  if (lastDot === -1) return pathWithExtension;
+  return pathWithExtension.substring(0, lastDot);
+}
+
+export async function clearStudentImages(studentId: string) {
+  try {
+    const student = await prisma.student.findUnique({
+      where: { id: studentId },
+      include: { generatedCards: true }
+    });
+
+    if (!student) return { success: false, error: "Student not found" };
+
+    // Clear student photo and signature from Cloudinary
+    if (student.photo) {
+      const publicId = getPublicIdFromUrl(student.photo);
+      if (publicId) await cloudinary.uploader.destroy(publicId).catch(console.error);
+    }
+    if (student.signature) {
+      const publicId = getPublicIdFromUrl(student.signature);
+      if (publicId) await cloudinary.uploader.destroy(publicId).catch(console.error);
+    }
+
+    // Clear generated cards images from Cloudinary
+    for (const card of student.generatedCards) {
+      if (card.frontImage) {
+        const publicId = getPublicIdFromUrl(card.frontImage);
+        if (publicId) await cloudinary.uploader.destroy(publicId).catch(console.error);
+      }
+      if (card.backImage) {
+        const publicId = getPublicIdFromUrl(card.backImage);
+        if (publicId) await cloudinary.uploader.destroy(publicId).catch(console.error);
+      }
+    }
+
+    // Update database to remove image references
+    await prisma.student.update({
+      where: { id: studentId },
+      data: { photo: null, signature: null, schoolSignature: null }
+    });
+    
+    // Delete generated card records to fully clear it from DB
+    await prisma.generatedCard.deleteMany({
+      where: { studentId }
+    });
+
+    revalidatePath("/dashboard/students");
+    return { success: true };
+  } catch (error: any) {
+    console.error("Failed to clear student images:", error);
+    return { success: false, error: error.message };
+  }
+}

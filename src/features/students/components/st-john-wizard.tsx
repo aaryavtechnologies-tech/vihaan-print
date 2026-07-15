@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { createStudent } from "../server/student-actions";
 import { toast } from "sonner";
 import { ImageUploadWithBgRemoval } from "@/components/ui/image-upload-with-bg-removal";
+import { format } from "date-fns";
 
 import { StJohnTemplatePreview, StudentCardData } from "./st-john-template-preview";
 import { Input } from "@/components/ui/input";
@@ -103,25 +104,6 @@ export function StJohnWizard() {
     }
   };
 
-  const [previewScale, setPreviewScale] = useState(1);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (wizardStep !== "previewing") return;
-    
-    const updateScale = () => {
-      if (containerRef.current) {
-        const width = containerRef.current.clientWidth;
-        const newScale = Math.min(width / 1016, 1); 
-        setPreviewScale(newScale);
-      }
-    };
-    
-    updateScale();
-    window.addEventListener("resize", updateScale);
-    return () => window.removeEventListener("resize", updateScale);
-  }, [wizardStep]);
-
   const handleReset = () => {
     reset();
     setWizardStep("filling");
@@ -148,30 +130,42 @@ export function StJohnWizard() {
         <Card className="border-slate-200/60 shadow-xl shadow-slate-200/50 rounded-3xl overflow-hidden bg-white">
           <CardContent className="p-6 md:p-10 flex flex-col items-center">
             <div className="mb-8 text-center">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-800">Preview ID Card</h2>
-              <p className="text-slate-500 mt-2">Please verify that all details look correct on the card before submitting.</p>
+              <h2 className="text-2xl md:text-3xl font-extrabold text-slate-800">Verify Student Details</h2>
+              <p className="text-slate-500 mt-2">Please review the entered information carefully before submitting.</p>
             </div>
             
-            <div className="bg-slate-100 p-4 sm:p-8 rounded-2xl w-full mb-8 shadow-inner border border-slate-200 flex justify-center">
-              <div ref={containerRef} className="w-full max-w-[1016px] flex justify-center overflow-hidden">
-                <div 
-                  style={{ 
-                    width: `${1016 * previewScale}px`, 
-                    height: `${638 * previewScale}px`,
-                    position: "relative"
-                  }}
-                >
-                  <div 
-                    className="absolute top-0 left-0 origin-top-left" 
-                    style={{ 
-                      transform: `scale(${previewScale})`,
-                      width: "1016px",
-                      height: "638px"
-                    }}
-                  >
-                    <StJohnTemplatePreview data={previewData} zoom={1} />
-                  </div>
+            <div className="bg-slate-50 w-full rounded-2xl p-6 sm:p-8 mb-8 border border-slate-200/60 shadow-sm text-left">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1">Student Name</h3>
+                  <p className="text-lg font-bold text-slate-900 uppercase">{previewData.studentName || "-"}</p>
                 </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1">Father's Name</h3>
+                  <p className="text-lg font-medium text-slate-800 uppercase">{previewData.fatherName || "-"}</p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1">Class</h3>
+                  <p className="text-lg font-medium text-slate-800 uppercase">{previewData.className || "-"}</p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1">Date of Birth</h3>
+                  <p className="text-lg font-medium text-slate-800">{previewData.dob ? format(new Date(previewData.dob), "dd/MM/yyyy") : "-"}</p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1">Mobile Number</h3>
+                  <p className="text-lg font-medium text-slate-800">{previewData.mobile || "-"}</p>
+                </div>
+                <div className="md:col-span-2">
+                  <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-1">Address</h3>
+                  <p className="text-lg font-medium text-slate-800 uppercase">{previewData.address || "-"}</p>
+                </div>
+                {previewData.photoUrl && (
+                  <div className="md:col-span-2 mt-4 pt-6 border-t border-slate-200">
+                    <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-3">Uploaded Photo</h3>
+                    <img src={previewData.photoUrl} alt="Student" className="w-32 h-40 object-cover rounded-xl shadow-md border-2 border-white bg-white" />
+                  </div>
+                )}
               </div>
             </div>
 

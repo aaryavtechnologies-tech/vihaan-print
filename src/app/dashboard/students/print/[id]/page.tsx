@@ -27,7 +27,7 @@ export default async function PrintStudentPage({ params }: { params: Promise<{ i
   };
 
   return (
-    <PrintController>
+    <PrintController studentId={student.id}>
       <StJohnTemplatePreview data={previewData} />
     </PrintController>
   );

@@ -25,118 +25,119 @@ export function StJohnTemplatePreview({ data, zoom = 1 }: StJohnTemplatePreviewP
     : "";
 
   return (
-    <div className="w-[1016px] h-[638px] bg-white relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.2)] rounded-xl border border-slate-200 transform origin-top-left" style={{ zoom: zoom, fontFamily: 'Arial, Helvetica, sans-serif' }}>
+    <div 
+      className="bg-white relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.2)] rounded-xl border border-slate-200 transform origin-top-left shrink-0" 
+      style={{ width: 1016, height: 638, minWidth: 1016, minHeight: 638, zoom: zoom, fontFamily: 'Arial, Helvetica, sans-serif' }}
+    >
       {/* Background Watermark/Pattern */}
       <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] pointer-events-none mix-blend-multiply"></div>
       
       {/* Top Banner with Gradient */}
-      <div className="absolute top-0 left-0 w-full h-[180px] bg-gradient-to-r from-[#0e3b9e] via-[#1A56DB] to-[#0e3b9e] shadow-lg flex items-center justify-center text-center">
+      <div className="absolute top-0 left-0 w-full h-[230px] bg-[#0e4ee5] shadow-lg flex items-center justify-center text-center">
         {/* Decorative Circles */}
         <div className="absolute top-[-50px] right-[-50px] w-[300px] h-[300px] bg-white/5 rounded-full blur-2xl"></div>
         <div className="absolute bottom-[-100px] left-[200px] w-[400px] h-[200px] bg-white/5 rounded-full blur-2xl"></div>
 
-        {/* Logo area */}
-        <div className="absolute top-[25px] left-[30px] w-[130px] h-[130px] bg-white rounded-full flex items-center justify-center border-[4px] border-white/20 shadow-xl overflow-hidden backdrop-blur-sm">
-          <img src="/images/st-john-logo.png" alt="School Logo" className="w-[120px] h-[120px] object-contain rounded-full shadow-inner bg-white" />
+        {/* ESTD Text */}
+        <div className="absolute text-white font-bold text-[20px] tracking-widest text-center" style={{ top: 20, left: 20, width: 350 }}>
+          ESTD:2001
         </div>
-        
-        <div className="absolute top-[160px] left-[30px] w-[130px] text-center text-white/90 font-bold text-sm tracking-widest bg-black/30 rounded-b-md px-1 py-0.5">
-          ESTD: 2001
+
+        {/* Logo area */}
+        <div className="absolute flex items-center justify-center overflow-hidden" style={{ top: 40, left: 20, width: 350, height: 230 }}>
+          <img src="/images/st-john-logo.png" alt="School Logo" className="object-contain drop-shadow-xl w-full h-full" />
         </div>
 
         {/* Header Texts */}
-        <div className="absolute top-[10px] left-[170px] w-[800px] text-white font-bold text-lg text-center tracking-widest drop-shadow-md">
-          HIS GRACE
+        <div className="absolute text-white font-bold text-[20px] text-center tracking-widest drop-shadow-md" style={{ top: 15, left: 380, width: 616 }}>
+          H<span style={{ fontSize: '24px', verticalAlign: 'middle', margin: '0 2px' }}>†</span>S GRACE
         </div>
         
-        <div className="absolute top-[35px] left-[170px] w-[800px] text-yellow-300 italic text-xl text-center font-serif tracking-wide drop-shadow-sm">
-          "Fear of the Lord is the beginning of wisdom"
+        <div className="absolute text-white font-bold text-[18px] text-center tracking-wide drop-shadow-sm" style={{ top: 40, left: 380, width: 616 }}>
+          "Fear of the Lord is the beginning of the wisdom"
         </div>
         
-        <div className="absolute top-[60px] left-[170px] w-[800px] text-white font-extrabold text-[46px] text-center uppercase tracking-tight drop-shadow-lg leading-none" style={{ fontFamily: 'Impact, Arial, sans-serif' }}>
+        <div className="absolute text-white font-extrabold text-[52px] text-center uppercase tracking-tight drop-shadow-lg leading-none" style={{ top: 65, left: 380, width: 616, fontFamily: 'Arial Black, Impact, sans-serif' }}>
           ST.JOHN SAMARITAN
         </div>
         
-        <div className="absolute top-[110px] left-[170px] w-[800px] text-white font-bold text-[22px] text-center uppercase tracking-wide drop-shadow-md">
-          ENGLISH MEDIUM PRIMARY & HIGH SCHOOL
+        <div className="absolute text-white font-bold text-[20px] text-center uppercase tracking-wide drop-shadow-md" style={{ top: 130, left: 380, width: 616 }}>
+          ENGLISH MEDIUM PRIMARY &amp; HIGH SCHOOL
         </div>
         
-        <div className="absolute top-[138px] left-[180px] w-[780px] h-[2px] bg-gradient-to-r from-transparent via-white/70 to-transparent"></div>
+        <div className="absolute bg-white" style={{ top: 165, left: 400, width: 566, height: 3 }}></div>
         
-        <div className="absolute top-[145px] left-[170px] w-[800px] flex items-center justify-center gap-4 text-white/95 text-[16px] font-semibold text-center uppercase tracking-wider drop-shadow-md">
-          <span>BAPUJI COLONY ANAND NAGAR OLD HUBLI-HUBBALLI</span>
-          <span className="bg-black/20 px-3 py-0.5 rounded-full border border-white/10">PH : 9902396096 - 9663868677</span>
+        <div className="absolute flex flex-col items-center justify-center text-white text-[16px] font-semibold text-center uppercase tracking-wider drop-shadow-md" style={{ top: 175, left: 380, width: 616, lineHeight: '1.2' }}>
+          <span>NEAR BYPASS NEKAR NAGAR OLD HUBLI-HUBBALLI</span>
+          <span>OFFICE CONTACT NO : 7892788532 - 8970349780</span>
         </div>
       </div>
 
+      {/* Left Blue Curve */}
+      <div className="absolute overflow-hidden" style={{ top: 230, left: 0, width: 100, height: 408 }}>
+        <svg viewBox="0 0 100 408" className="absolute top-0 left-0 w-full h-full text-[#0e4ee5] z-0" preserveAspectRatio="none">
+          <path d="M0,0 Q100,204 0,408 Z" fill="currentColor" />
+        </svg>
+      </div>
+
       {/* Title */}
-      <div className="absolute top-[200px] left-[420px] w-[560px] flex justify-center z-20">
-        <div className="inline-block bg-[#D91C1C] text-white font-extrabold text-[32px] uppercase px-8 py-2 rounded-2xl shadow-lg border-2 border-white tracking-widest">
+      <div className="absolute flex justify-center z-20" style={{ top: 240, left: 320, width: 650 }}>
+        <div className="text-[#D91C1C] font-extrabold text-[36px] uppercase tracking-widest" style={{ fontFamily: 'Arial Black, Impact, sans-serif' }}>
           ID CARD 2026-27
         </div>
       </div>
 
       {/* Student Data Fields */}
-      <div className="absolute top-[280px] left-[420px] flex items-center bg-slate-50/50 w-[560px] py-2 px-4 rounded-xl border border-slate-100/50">
-        <span className="font-bold text-[24px] text-slate-500 w-[140px] tracking-wider uppercase">Name :</span>
-        <span className="text-[33px] text-[#FF0000] ml-2 font-bold uppercase drop-shadow-sm leading-none flex-1 truncate">{data.studentName || "-"}</span>
+      <div className="absolute flex items-center" style={{ top: 300, left: 320, width: 650 }}>
+        <span className="font-bold text-[20px] text-black w-[150px] shrink-0 uppercase tracking-widest">NAME :</span>
+        <span className="text-[20px] text-black font-bold uppercase leading-none flex-1 truncate">{data.studentName || ""}</span>
       </div>
 
-      <div className="absolute top-[340px] left-[420px] flex items-center px-4 w-[560px]">
-        <span className="font-bold text-[24px] text-slate-500 w-[200px] tracking-wider uppercase">Father Name :</span>
-        <span className="text-[29px] text-[#0000FF] font-normal uppercase leading-none flex-1 truncate">{data.fatherName || "-"}</span>
+      <div className="absolute flex items-center" style={{ top: 360, left: 320, width: 650 }}>
+        <span className="font-bold text-[20px] text-black w-[220px] shrink-0 uppercase tracking-widest">FATHER NAME :</span>
+        <span className="text-[20px] text-black font-bold uppercase leading-none flex-1 truncate">{data.fatherName || ""}</span>
       </div>
 
-      <div className="absolute top-[395px] left-[420px] flex items-center px-4 w-[280px]">
-        <span className="font-bold text-[24px] text-slate-500 w-[100px] tracking-wider uppercase">Class :</span>
-        <span className="text-[33px] text-[#FF0000] font-normal uppercase bg-red-50 px-3 py-1 rounded-lg border border-red-100 leading-none truncate max-w-[150px]">{data.className || "-"}</span>
+      <div className="absolute flex items-center" style={{ top: 420, left: 320, width: 350 }}>
+        <span className="font-bold text-[20px] text-black w-[120px] shrink-0 uppercase tracking-widest">CLASS :</span>
+        <span className="text-[20px] text-black font-bold uppercase leading-none flex-1 truncate">{data.className || ""}</span>
       </div>
 
-      <div className="absolute top-[395px] left-[710px] flex items-center px-4 bg-blue-50 rounded-lg py-1 border border-blue-100 w-[270px]">
-        <span className="font-bold text-[24px] text-slate-500 w-[75px] tracking-wider uppercase">DOB :</span>
-        <span className="text-[29px] text-[#0000FF] ml-1 font-normal uppercase leading-none flex-1 truncate">{formattedDob || "-"}</span>
+      <div className="absolute flex items-center" style={{ top: 420, left: 680, width: 300 }}>
+        <span className="font-bold text-[20px] text-black w-[90px] shrink-0 uppercase tracking-widest">DOB :</span>
+        <span className="text-[20px] text-black font-bold uppercase leading-none flex-1 truncate">{formattedDob || ""}</span>
       </div>
 
-      <div className="absolute top-[455px] left-[420px] flex items-center px-4 w-[560px]">
-        <span className="font-bold text-[24px] text-slate-500 w-[120px] tracking-wider uppercase">Mobile :</span>
-        <span className="text-[29px] text-[#FF0000] ml-2 font-normal uppercase leading-none">{data.mobile || "-"}</span>
+      <div className="absolute flex items-center" style={{ top: 480, left: 320, width: 650 }}>
+        <span className="font-bold text-[20px] text-black w-[140px] shrink-0 uppercase tracking-widest">MOBILE :</span>
+        <span className="text-[20px] text-black font-bold uppercase leading-none flex-1 truncate">{data.mobile || ""}</span>
       </div>
 
-      <div className="absolute top-[505px] left-[420px] flex items-start w-[380px] px-4">
-        <span className="font-bold text-[24px] text-slate-500 w-[120px] shrink-0 tracking-wider uppercase">Address :</span>
-        <span className="text-[19px] text-[#FF0000] font-normal uppercase leading-tight mt-1 ml-2 flex-1 break-words">{data.address || "-"}</span>
+      <div className="absolute flex items-start" style={{ top: 530, left: 320, width: 450 }}>
+        <span className="font-bold text-[20px] text-black w-[160px] shrink-0 uppercase tracking-widest">ADDRESS :</span>
+        <span className="text-[18px] text-black font-bold uppercase leading-tight flex-1 break-words">{data.address || ""}</span>
       </div>
 
       {/* Principal Signature */}
-      <div className="absolute top-[520px] left-[810px] w-[170px] flex flex-col items-center bg-slate-50 p-2 rounded-xl border border-slate-200/60 shadow-sm z-30">
-        <img src="/images/principal-sign.png" alt="Principal Signature" className="h-[50px] object-contain mb-1" />
-        <div className="w-full h-[2px] bg-slate-300 mb-1 mt-1 rounded-full"></div>
-        <span className="font-bold text-base text-slate-600 uppercase tracking-widest">Principal</span>
-      </div>
-
-      {/* Left Blue Curve */}
-      <div className="absolute top-[260px] left-0 w-[300px] h-[345px] overflow-hidden">
-        <svg viewBox="0 0 270 340" className="absolute top-0 left-0 w-full h-full text-[#1A56DB] z-0 drop-shadow-xl" preserveAspectRatio="none">
-          <path d="M0,0 Q180,170 0,345 Z" fill="currentColor" />
-        </svg>
-      </div>
-
-      {/* Photo Box: 1.2x1.5 inches at 300 DPI = 360x450 pixels */}
-      <div className="absolute top-[150px] left-[35px] w-[360px] h-[450px] bg-white z-10 rounded-2xl overflow-hidden flex items-center justify-center shadow-[0_10px_30px_rgba(0,0,0,0.3)] ring-4 ring-white ring-offset-2 ring-offset-[#1A56DB]">
-        {data.photoUrl ? (
-          <img src={data.photoUrl} alt="Student" className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105" crossOrigin="anonymous" />
+      <div className="absolute flex flex-col items-center justify-center z-30" style={{ top: 490, left: 800, width: 166, height: 100 }}>
+        {data.principalSignUrl ? (
+           <img src={data.principalSignUrl} alt="Principal Signature" className="object-contain w-full h-full" crossOrigin="anonymous" />
         ) : (
-          <div className="flex flex-col items-center justify-center text-slate-300">
-            <svg className="w-20 h-20 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-            <span className="text-xl font-bold tracking-widest uppercase">1.2x1.5"</span>
-          </div>
+           <img src="/images/principal-sign.png" alt="Principal Signature" className="object-contain w-full h-full" />
         )}
       </div>
 
-      {/* Bottom Blue Border */}
-      <div className="absolute bottom-0 left-0 w-full h-[38px] bg-gradient-to-r from-[#0e3b9e] via-[#1A56DB] to-[#0e3b9e] shadow-inner z-20">
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05] mix-blend-multiply"></div>
+      {/* Photo Box */}
+      <div className="absolute bg-transparent z-10 overflow-hidden flex items-center justify-center border-[6px] border-solid border-black" style={{ top: 260, left: 50, width: 200, height: 260 }}>
+        {data.photoUrl ? (
+          <img src={data.photoUrl} alt="Student" className="w-full h-full object-cover object-top" crossOrigin="anonymous" />
+        ) : (
+           <span className="text-slate-400 font-bold uppercase text-sm tracking-widest text-center px-4">Student<br/>Photo</span>
+        )}
       </div>
+
+      {/* Bottom Blue Bar */}
+      <div className="absolute bottom-0 left-0 w-full h-[30px] bg-[#0e4ee5] z-20"></div>
     </div>
   );
 }
