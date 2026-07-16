@@ -194,127 +194,98 @@ export function StJohnWizard() {
   return (
     <div className="w-full max-w-4xl mx-auto">
       <Card className="border-slate-200/60 shadow-xl shadow-slate-200/50 rounded-3xl overflow-hidden bg-white/50 backdrop-blur-xl">
-        <CardContent className="p-6 md:p-10">
-          <div className="mb-8 text-center">
-            <h2 className="text-2xl md:text-3xl font-extrabold text-slate-800">Student Details</h2>
-            <p className="text-slate-500 mt-2">Fill in the details below. All fields will be auto-capitalized for printing.</p>
+        <CardContent className="p-4 md:p-6 md:px-8">
+          <div className="mb-6 text-center">
+            <h2 className="text-2xl font-extrabold text-slate-800">Student Details</h2>
+            <p className="text-sm text-slate-500 mt-1">Fill in the details below. All fields will be auto-capitalized for printing.</p>
           </div>
 
           <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onFormValid)} className="space-y-12">
+            <form onSubmit={handleSubmit(onFormValid)} className="space-y-6">
               
               <input type="hidden" {...register("photoUrl")} />
               <input type="hidden" {...register("signatureUrl")} />
               
-              {/* Basic Details */}
-              <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300">
-                <div className="flex items-center gap-3 border-b pb-4">
-                  <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm">1</div>
-                  <h3 className="text-xl font-bold text-slate-800">Basic Details</h3>
-                </div>
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-8">
                 
-                <div className="grid gap-6">
-                  <div className="grid grid-cols-1 gap-6">
-                    <div className="space-y-2">
-                      <Label className="text-slate-700 font-semibold">Student Name <span className="text-red-500">*</span></Label>
-                      <Input 
-                        className="h-12 rounded-xl border-slate-200 bg-white uppercase" 
-                        {...register("studentName")} 
-                        onChange={(e) => handleUppercaseChange(e, "studentName")}
-                        placeholder="FULL NAME" 
-                      />
-                      {errors.studentName && <span className="text-xs text-red-500 font-medium">{errors.studentName.message}</span>}
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label className="text-slate-700 font-semibold">Date of Birth <span className="text-red-500">*</span></Label>
-                      <Input className="h-12 rounded-xl border-slate-200 bg-white" type="date" {...register("dob")} />
-                      {errors.dob && <span className="text-xs text-red-500 font-medium">{errors.dob.message}</span>}
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="text-slate-700 font-semibold">Class / Grade <span className="text-red-500">*</span></Label>
-                      <Input 
-                        className="h-12 rounded-xl border-slate-200 bg-white uppercase" 
-                        {...register("className")} 
-                        onChange={(e) => handleUppercaseChange(e, "className")}
-                        placeholder="E.G. 10TH GRADE" 
-                      />
-                      {errors.className && <span className="text-xs text-red-500 font-medium">{errors.className.message}</span>}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Academic & Family Information */}
-              <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300 delay-100">
-                <div className="flex items-center gap-3 border-b pb-4">
-                  <div className="w-8 h-8 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-sm">2</div>
-                  <h3 className="text-xl font-bold text-slate-800">Family & Contact</h3>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <Label className="text-slate-700 font-semibold">Father's Name <span className="text-red-500">*</span></Label>
+                {/* Left side: Form fields */}
+                <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4 h-fit">
+                  <div className="space-y-1.5">
+                    <Label className="text-sm text-slate-700 font-semibold">Student Name <span className="text-red-500">*</span></Label>
                     <Input 
-                      className="h-12 rounded-xl border-slate-200 bg-white uppercase" 
+                      className="h-11 rounded-xl border-slate-200 bg-white uppercase shadow-sm" 
+                      {...register("studentName")} 
+                      onChange={(e) => handleUppercaseChange(e, "studentName")}
+                      placeholder="FULL NAME" 
+                    />
+                    {errors.studentName && <span className="text-xs text-red-500 font-medium">{errors.studentName.message}</span>}
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label className="text-sm text-slate-700 font-semibold">Father's Name <span className="text-red-500">*</span></Label>
+                    <Input 
+                      className="h-11 rounded-xl border-slate-200 bg-white uppercase shadow-sm" 
                       {...register("fatherName")} 
                       onChange={(e) => handleUppercaseChange(e, "fatherName")}
                       placeholder="FATHER'S FULL NAME" 
                     />
                     {errors.fatherName && <span className="text-xs text-red-500 font-medium">{errors.fatherName.message}</span>}
                   </div>
-                  <div className="space-y-2">
-                    <Label className="text-slate-700 font-semibold">Mobile Number <span className="text-red-500">*</span></Label>
-                    <Input className="h-12 rounded-xl border-slate-200 bg-white" {...register("mobile")} placeholder="e.g. 9876543210" />
+
+                  <div className="space-y-1.5">
+                    <Label className="text-sm text-slate-700 font-semibold">Date of Birth <span className="text-red-500">*</span></Label>
+                    <Input className="h-11 rounded-xl border-slate-200 bg-white shadow-sm" type="date" {...register("dob")} />
+                    {errors.dob && <span className="text-xs text-red-500 font-medium">{errors.dob.message}</span>}
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label className="text-sm text-slate-700 font-semibold">Class / Grade <span className="text-red-500">*</span></Label>
+                    <Input 
+                      className="h-11 rounded-xl border-slate-200 bg-white uppercase shadow-sm" 
+                      {...register("className")} 
+                      onChange={(e) => handleUppercaseChange(e, "className")}
+                      placeholder="E.G. 10TH GRADE" 
+                    />
+                    {errors.className && <span className="text-xs text-red-500 font-medium">{errors.className.message}</span>}
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <Label className="text-sm text-slate-700 font-semibold">Mobile Number <span className="text-red-500">*</span></Label>
+                    <Input className="h-11 rounded-xl border-slate-200 bg-white shadow-sm" {...register("mobile")} placeholder="e.g. 9876543210" />
                     {errors.mobile && <span className="text-xs text-red-500 font-medium">{errors.mobile.message}</span>}
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <Label className="text-slate-700 font-semibold">Full Address <span className="text-red-500">*</span></Label>
-                  <Input 
-                    className="h-12 rounded-xl border-slate-200 bg-white uppercase" 
-                    {...register("addressLine1")} 
-                    onChange={(e) => handleUppercaseChange(e, "addressLine1")}
-                    placeholder="HOUSE NO, STREET, CITY" 
-                  />
-                  {errors.addressLine1 && <span className="text-xs text-red-500 font-medium">{errors.addressLine1.message}</span>}
-                </div>
-              </div>
-
-              {/* Uploads */}
-              <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-300 delay-200">
-                <div className="flex items-center gap-3 border-b pb-4">
-                  <div className="w-8 h-8 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center font-bold text-sm">3</div>
-                  <h3 className="text-xl font-bold text-slate-800">Student Photo</h3>
-                </div>
-
-                <div className="grid gap-8">
-                  <div className="space-y-4 bg-slate-50 p-6 rounded-2xl border border-slate-100">
-                    <Label className="text-slate-700 font-semibold text-base">Upload & Adjust Photo <span className="text-red-500">*</span></Label>
-                    <div className="max-w-3xl">
-                      <ImageUploadWithBgRemoval 
-                        value={formValues.photoUrl} 
-                        onChange={(url) => methods.setValue("photoUrl", url, { shouldValidate: true, shouldDirty: true, shouldTouch: true })}
-                        label="Click or drag photo here"
-                        folder="vihaan_id_print/students"
-                      />
-                    </div>
-                    {errors.photoUrl && <span className="text-xs text-red-500 font-medium block">{errors.photoUrl.message}</span>}
-                    <p className="text-sm text-slate-500 max-w-lg leading-relaxed mt-2">
-                      Please ensure the student's face is clearly visible. You can adjust brightness and contrast after selecting the image.
-                    </p>
+                  <div className="space-y-1.5 md:col-span-2">
+                    <Label className="text-sm text-slate-700 font-semibold">Full Address <span className="text-red-500">*</span></Label>
+                    <Input 
+                      className="h-11 rounded-xl border-slate-200 bg-white uppercase shadow-sm" 
+                      {...register("addressLine1")} 
+                      onChange={(e) => handleUppercaseChange(e, "addressLine1")}
+                      placeholder="HOUSE NO, STREET, CITY" 
+                    />
+                    {errors.addressLine1 && <span className="text-xs text-red-500 font-medium">{errors.addressLine1.message}</span>}
                   </div>
                 </div>
+
+                {/* Right side: Photo upload */}
+                <div className="lg:col-span-4 h-fit bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-inner flex flex-col justify-center">
+                  <Label className="text-sm text-slate-800 font-bold mb-3 block">Student Photo <span className="text-red-500">*</span></Label>
+                  <ImageUploadWithBgRemoval 
+                    value={formValues.photoUrl} 
+                    onChange={(url) => methods.setValue("photoUrl", url, { shouldValidate: true, shouldDirty: true, shouldTouch: true })}
+                    label="Click or drag photo here"
+                    folder="vihaan_id_print/students"
+                  />
+                  {errors.photoUrl && <span className="text-xs text-red-500 font-medium block mt-2 text-center">{errors.photoUrl.message}</span>}
+                  <p className="text-xs text-slate-500 mt-4 text-center">Ensure face is clearly visible</p>
+                </div>
+                
               </div>
 
-              {/* Submit Area */}
-              <div className="pt-8 mt-8 border-t border-slate-200">
+              <div className="pt-2">
                 <Button 
                   type="submit" 
-                  className="w-full h-14 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-xl shadow-blue-500/25 hover:shadow-2xl hover:shadow-blue-500/40 transition-all font-bold text-lg"
+                  className="w-full h-12 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40 transition-all font-bold text-lg"
                 >
                   Review ID Card Preview
                 </Button>
