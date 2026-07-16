@@ -39,7 +39,7 @@ export async function getStudentById(id: string) {
 export async function createStudent(data: any) {
   try {
     // Generate full name automatically
-    const fullNameParts = [data.firstName, data.middleName, data.lastName].filter(Boolean);
+    const fullNameParts = data.studentName ? [data.studentName] : [data.firstName, data.middleName, data.lastName].filter(Boolean);
     const fullName = fullNameParts.join(" ").trim().toUpperCase();
 
     let finalSchoolId = data.schoolId;
@@ -94,7 +94,7 @@ export async function createStudent(data: any) {
       data: {
         studentId: finalStudentId,
         schoolId: finalSchoolId,
-        firstName: data.firstName.toUpperCase(),
+        firstName: data.studentName ? data.studentName.toUpperCase() : data.firstName.toUpperCase(),
         middleName: data.middleName ? data.middleName.toUpperCase() : null,
         lastName: data.lastName ? data.lastName.toUpperCase() : null,
         fullName,
