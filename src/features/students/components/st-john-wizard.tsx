@@ -23,8 +23,7 @@ const studentSchema = z.object({
   schoolId: z.string().optional(),
   studentId: z.string().optional(),
   admissionNo: z.string().optional(),
-  firstName: z.string().min(1, "First Name is required"),
-  lastName: z.string().optional(),
+  studentName: z.string().min(1, "Student Name is required"),
   dob: z.string().min(1, "Date of Birth is required"), 
   className: z.string().min(1, "Class is required"),
   fatherName: z.string().min(1, "Father's Name is required"),
@@ -46,8 +45,7 @@ export function StJohnWizard() {
     defaultValues: {
       schoolId: "", // Will be assigned on server or hidden
       studentId: "",
-      firstName: "",
-      lastName: "",
+      studentName: "",
       dob: "",
       className: "",
       fatherName: "",
@@ -69,7 +67,7 @@ export function StJohnWizard() {
   };
 
   const previewData: StudentCardData = {
-    studentName: `${formValues.firstName || ""} ${formValues.lastName || ""}`.trim().toUpperCase(),
+    studentName: (formValues.studentName || "").trim().toUpperCase(),
     fatherName: formValues.fatherName?.toUpperCase(),
     className: formValues.className?.toUpperCase(),
     dob: formValues.dob,
@@ -216,25 +214,16 @@ export function StJohnWizard() {
                 </div>
                 
                 <div className="grid gap-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 gap-6">
                     <div className="space-y-2">
-                      <Label className="text-slate-700 font-semibold">First Name <span className="text-red-500">*</span></Label>
+                      <Label className="text-slate-700 font-semibold">Student Name <span className="text-red-500">*</span></Label>
                       <Input 
                         className="h-12 rounded-xl border-slate-200 bg-white uppercase" 
-                        {...register("firstName")} 
-                        onChange={(e) => handleUppercaseChange(e, "firstName")}
-                        placeholder="FIRST NAME" 
+                        {...register("studentName")} 
+                        onChange={(e) => handleUppercaseChange(e, "studentName")}
+                        placeholder="FULL NAME" 
                       />
-                      {errors.firstName && <span className="text-xs text-red-500 font-medium">{errors.firstName.message}</span>}
-                    </div>
-                    <div className="space-y-2">
-                      <Label className="text-slate-700 font-semibold">Last Name</Label>
-                      <Input 
-                        className="h-12 rounded-xl border-slate-200 bg-white uppercase" 
-                        {...register("lastName")} 
-                        onChange={(e) => handleUppercaseChange(e, "lastName")}
-                        placeholder="LAST NAME" 
-                      />
+                      {errors.studentName && <span className="text-xs text-red-500 font-medium">{errors.studentName.message}</span>}
                     </div>
                   </div>
 
