@@ -6,11 +6,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GraduationCap, Lock, LogIn } from "lucide-react";
+import { GraduationCap, Lock, LogIn, Eye, EyeOff } from "lucide-react";
 
 export default function StJohnLogin() {
   const [id, setId] = useState("STJOHN-9780");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
 
@@ -62,16 +63,23 @@ export default function StJohnLogin() {
             
             <div className="space-y-2">
               <Label className="text-slate-700 font-bold">Password</Label>
-              <div className="relative">
+              <div className="relative group">
                 <Input 
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="h-12 pl-10 rounded-xl bg-slate-50 border-slate-200 font-medium" 
+                  className="h-12 pl-10 pr-12 rounded-xl bg-slate-50 border-slate-200 font-medium focus-visible:ring-blue-500" 
                   placeholder="Enter Password"
                   required
                 />
-                <Lock className="absolute left-3 top-3.5 w-5 h-5 text-slate-400" />
+                <Lock className="absolute left-3 top-3.5 w-5 h-5 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-1"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
               </div>
             </div>
             
