@@ -234,7 +234,7 @@ export function StJohnWizard() {
 
                   <div className="space-y-1.5">
                     <Label className="text-sm text-slate-700 font-semibold">Date of Birth <span className="text-red-500">*</span></Label>
-                    <Input className="h-11 rounded-xl border-slate-200 bg-white shadow-sm" type="date" {...register("dob")} />
+                    <Input className="h-11 rounded-xl border-slate-200 bg-white shadow-sm" type="text" placeholder="DD/MM/YYYY" {...register("dob")} />
                     {errors.dob && <span className="text-xs text-red-500 font-medium">{errors.dob.message}</span>}
                   </div>
 

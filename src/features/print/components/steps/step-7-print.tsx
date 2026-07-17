@@ -3,12 +3,13 @@
 import { useEffect, useState, useRef } from "react";
 import { usePrintStore } from "../../store/print-store";
 import { Button } from "@/components/ui/button";
-import { Loader2, CheckCircle2, XCircle, Download } from "lucide-react";
+import { Loader2, CheckCircle2, XCircle, Download, Image as ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { generatePDF } from "../../utils/pdf-engine";
 import { createPrintJobRecord } from "../../actions/print-actions";
 import { authClient } from "@/lib/auth-client"; // Use client session for user id
 import JSZip from "jszip";
+import { toast } from "sonner";
 
 export function Step7Print() {
   const router = useRouter();
@@ -19,6 +20,7 @@ export function Step7Print() {
   
   const [isStarted, setIsStarted] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
+  const [isZippingImages, setIsZippingImages] = useState(false);
   const hasInitialized = useRef(false);
 
   useEffect(() => {
@@ -118,6 +120,44 @@ export function Step7Print() {
     }
   };
 
+  const downloadImagesZip = async () => {
+    setIsZippingImages(true);
+    try {
+      const zip = new JSZip();
+      const folder = zip.folder("id_cards_images");
+      
+      for (let i = 0; i < selectedCards.length; i++) {
+        const card = selectedCards[i];
+        const studentIdStr = card.student?.studentId ? card.student.studentId.replace(/[^a-zA-Z0-9]/g, '_') : `card_${i}`;
+        
+        if (card.frontImage) {
+          const res = await fetch(card.frontImage);
+          const blob = await res.blob();
+          folder?.file(`${studentIdStr}_front.png`, blob);
+        }
+        if (card.backImage) {
+          const res = await fetch(card.backImage);
+          const blob = await res.blob();
+          folder?.file(`${studentIdStr}_back.png`, blob);
+        }
+      }
+      
+      const zipBlob = await zip.generateAsync({ type: "blob" });
+      const url = URL.createObjectURL(zipBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `id_cards_images_${new Date().getTime()}.zip`;
+      link.click();
+      URL.revokeObjectURL(url);
+      toast.success("Images ZIP downloaded successfully!");
+    } catch (e) {
+      console.error(e);
+      toast.error("Failed to download images. Make sure CORS is configured properly.");
+    } finally {
+      setIsZippingImages(false);
+    }
+  };
+
   const handleFinish = () => {
     if (downloadUrl) {
       URL.revokeObjectURL(downloadUrl.split('#')[0]);
@@ -144,20 +184,35 @@ export function Step7Print() {
           <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle2 className="w-10 h-10 text-emerald-600" />
           </div>
-          <h2 className="text-4xl font-extrabold tracking-tight text-slate-900">PDF Ready!</h2>
+          <h2 className="text-4xl font-extrabold tracking-tight text-slate-900">Print Job Ready!</h2>
           <p className="text-slate-500 text-lg">Your high-resolution PDF has been successfully compiled and recorded.</p>
         </div>
 
         <div className="flex flex-col items-center justify-center gap-4 pt-8">
-          <a href={downloadUrl.split('#')[0]} download={`print_job_${new Date().getTime()}.${downloadUrl.split('#')[1] || 'pdf'}`}>
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center">
+            <a href={downloadUrl.split('#')[0]} download={`print_job_${new Date().getTime()}.${downloadUrl.split('#')[1] || 'pdf'}`}>
+              <Button 
+                className="h-14 px-8 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/20 transition-all font-bold text-lg w-full sm:w-auto"
+              >
+                <Download className="w-5 h-5 mr-3" /> Download {downloadUrl.split('#')[1] === 'zip' ? 'ZIP Archive' : 'PDF File'}
+              </Button>
+            </a>
+            
             <Button 
-              className="h-14 px-12 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-600/20 transition-all font-bold text-lg"
+              onClick={downloadImagesZip}
+              disabled={isZippingImages}
+              variant="outline"
+              className="h-14 px-8 rounded-xl bg-white border-slate-200 text-slate-800 shadow-sm transition-all font-bold text-lg w-full sm:w-auto"
             >
-              <Download className="w-5 h-5 mr-3" /> Download {downloadUrl.split('#')[1] === 'zip' ? 'ZIP Archive' : 'PDF File'}
+              {isZippingImages ? (
+                <><Loader2 className="w-5 h-5 mr-3 animate-spin" /> Zipping Images...</>
+              ) : (
+                <><ImageIcon className="w-5 h-5 mr-3 text-blue-600" /> Export as Images (ZIP)</>
+              )}
             </Button>
-          </a>
+          </div>
           
-          <Button variant="ghost" onClick={handleFinish} className="text-slate-500 hover:text-slate-700 mt-4">
+          <Button variant="ghost" onClick={handleFinish} className="text-slate-500 hover:text-slate-700 mt-6">
             Return to Print History
           </Button>
         </div>

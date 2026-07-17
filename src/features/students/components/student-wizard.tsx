@@ -193,7 +193,7 @@ export function StudentWizard({ schools = [], isPublic = false }: { schools?: an
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <Label className="text-slate-700 font-semibold">Date of Birth <span className="text-red-500">*</span></Label>
-                        <Input className="h-12 rounded-xl border-slate-200 bg-white" type="date" {...register("dob")} />
+                        <Input className="h-12 rounded-xl border-slate-200 bg-white" type="text" placeholder="DD/MM/YYYY" {...register("dob")} />
                         {errors.dob && <span className="text-xs text-red-500 font-medium">{errors.dob.message}</span>}
                       </div>
                       <div className="space-y-2">
