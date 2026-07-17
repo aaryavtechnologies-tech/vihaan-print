@@ -10,6 +10,7 @@ export interface StudentCardData {
   mobile?: string;
   address?: string;
   principalSignUrl?: string;
+  schoolId?: string;
 }
 
 interface StJohnTemplatePreviewProps {
@@ -35,7 +36,7 @@ export function StJohnTemplatePreview({ data, zoom = 1 }: StJohnTemplatePreviewP
       {/* Top Banner with Image */}
       <div className="absolute top-0 left-0 w-full h-[240px] bg-[#0047ff] shadow-lg flex items-center justify-center text-center overflow-hidden z-10 border-b-[2px] border-[#0047ff]">
         <img 
-          src="/id-template/header.png" 
+          src={data.schoolId === "STJOHN-8677" ? "/id-template/header-2.png" : "/id-template/header.png"}
           alt="School Header" 
           className="w-full h-full object-contain object-top" 
         />

@@ -33,6 +33,7 @@ export function BulkA4Button({ selectedIds }: BulkA4ButtonProps) {
         mobile: student.studentMobile || "",
         address: student.addressLine1 || "",
         photoUrl: student.photo || "",
+        schoolId: student.school.schoolCode,
       }));
 
       // 3. Chunk into groups of 4 (for 2x2 grid per A4 page)

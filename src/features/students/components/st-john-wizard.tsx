@@ -35,7 +35,7 @@ const studentSchema = z.object({
 
 type StudentFormData = z.infer<typeof studentSchema>;
 
-export function StJohnWizard() {
+export function StJohnWizard({ schoolId = "STJOHN-9780" }: { schoolId?: string }) {
   const [wizardStep, setWizardStep] = useState<"filling" | "previewing">("filling");
   const [isSuccess, setIsSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -75,6 +75,7 @@ export function StJohnWizard() {
     address: formValues.addressLine1?.toUpperCase(),
     photoUrl: formValues.photoUrl,
     principalSignUrl: formValues.signatureUrl,
+    schoolId: schoolId,
   };
 
   const onFormValid = (data: StudentFormData) => {
@@ -86,9 +87,8 @@ export function StJohnWizard() {
     setIsSubmitting(true);
     try {
       const data = methods.getValues();
-      // In a real app we'd fetch the actual St John school ID from DB.
-      // For this demo, let's assign a mock or pass STJOHN-9780.
-      data.schoolId = "STJOHN-9780"; 
+      // Assign the schoolId that was passed in (from login cookie)
+      data.schoolId = schoolId; 
       const res = await createStudent(data);
       if (res.success) {
         setIsSuccess(true);

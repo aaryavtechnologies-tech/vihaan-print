@@ -10,6 +10,7 @@ export const metadata = {
 export default async function StJohnFormPage() {
   const cookieStore = await cookies();
   const isAuthenticated = cookieStore.get("stjohn_auth")?.value === "true";
+  const schoolId = cookieStore.get("stjohn_school_id")?.value || "STJOHN-9780";
 
   if (!isAuthenticated) {
     redirect("/stjohn/login");
@@ -46,7 +47,7 @@ export default async function StJohnFormPage() {
         {/* Form Container */}
         <div className="bg-white text-slate-900 rounded-[2rem] shadow-2xl shadow-blue-900/5 p-6 md:p-10 border border-slate-100 animate-in fade-in zoom-in-95 duration-1000 delay-200 fill-mode-both ring-1 ring-slate-200/50">
           <div className="relative z-10">
-            <StJohnWizard />
+            <StJohnWizard schoolId={schoolId} />
           </div>
         </div>
 

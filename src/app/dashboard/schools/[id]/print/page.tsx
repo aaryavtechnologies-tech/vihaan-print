@@ -5,6 +5,7 @@ import { StJohnTemplatePreview } from "@/features/students/components/st-john-te
 import { Printer, FileImage } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
 
 import { PrintButton } from "@/components/dashboard/print-button";
 
@@ -34,16 +35,18 @@ export default async function PrintPage({ params }: { params: Promise<{ id: stri
   const students = await prisma.student.findMany({
     where: { schoolId: school.id },
     orderBy: { createdAt: "desc" },
+    include: { school: true }
   });
 
-  const cardData = students.map(s => ({
-    studentName: s.fullName,
-    fatherName: s.fatherName || "",
-    className: s.className || "",
-    dob: s.dateOfBirth || "",
-    mobile: s.studentMobile || "",
-    address: s.addressLine1 || "",
-    photoUrl: s.photo || "",
+  const cardData = students.map(student => ({
+    studentName: student.fullName,
+    fatherName: student.fatherName || "",
+    className: student.className || "",
+    dob: student.dateOfBirth ? format(student.dateOfBirth, "dd/MM/yyyy") : "",
+    mobile: student.studentMobile || "",
+    address: student.addressLine1 || "",
+    photoUrl: student.photo || "",
+    schoolId: student.school.schoolCode,
   }));
 
   // Group into pages of 10 for A4

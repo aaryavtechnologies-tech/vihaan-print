@@ -17,9 +17,10 @@ export default function StJohnLogin() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (id === "STJOHN-9780" && password === "stjohn123") {
+    if ((id === "STJOHN-9780" || id === "STJOHN-8677") && password === "stjohn123") {
       // Set a simple cookie or localStorage to protect the form route
       document.cookie = "stjohn_auth=true; path=/stjohn; max-age=86400";
+      document.cookie = `stjohn_school_id=${id}; path=/stjohn; max-age=86400`;
       router.push("/stjohn/form");
     } else {
       setError("Invalid ID or Password");
