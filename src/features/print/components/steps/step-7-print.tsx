@@ -131,12 +131,12 @@ export function Step7Print() {
         const studentIdStr = card.student?.studentId ? card.student.studentId.replace(/[^a-zA-Z0-9]/g, '_') : `card_${i}`;
         
         if (card.frontImage) {
-          const res = await fetch(card.frontImage);
+          const res = await fetch(`/api/proxy-download?url=${encodeURIComponent(card.frontImage)}`);
           const blob = await res.blob();
           folder?.file(`${studentIdStr}_front.png`, blob);
         }
         if (card.backImage) {
-          const res = await fetch(card.backImage);
+          const res = await fetch(`/api/proxy-download?url=${encodeURIComponent(card.backImage)}`);
           const blob = await res.blob();
           folder?.file(`${studentIdStr}_back.png`, blob);
         }

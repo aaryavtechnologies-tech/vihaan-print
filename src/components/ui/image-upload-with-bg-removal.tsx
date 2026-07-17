@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { Upload, X, Loader2, Sparkles, SlidersHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { removeBackground } from "@imgly/background-removal";
 import { Button } from "@/components/ui/button";
 
 interface ImageUploadWithBgRemovalProps {
@@ -39,13 +38,10 @@ export function ImageUploadWithBgRemoval({ value, onChange, label = "Upload Phot
 
   const processFile = async (file: File) => {
     setIsProcessing(true);
-    setProcessStatus("Removing Background...");
+    setProcessStatus("Loading Image...");
     
     try {
-      // 1. Remove Background
-      const imageBlob = await removeBackground(file);
-      
-      // 2. Read Blob as DataURL for preview/editing
+      // 1. Read Original File as DataURL for preview/editing
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreviewUrl(reader.result as string);
@@ -56,7 +52,7 @@ export function ImageUploadWithBgRemoval({ value, onChange, label = "Upload Phot
       reader.onerror = () => {
         throw new Error("Failed to read image");
       };
-      reader.readAsDataURL(imageBlob);
+      reader.readAsDataURL(file);
       
     } catch (error) {
       console.error(error);
@@ -286,7 +282,7 @@ export function ImageUploadWithBgRemoval({ value, onChange, label = "Upload Phot
                 {label}
               </span>
               <span className="text-xs text-slate-500 mt-2 text-center px-2">
-                Auto bg-removal & crop
+                Upload image directly
               </span>
             </>
           )}

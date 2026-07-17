@@ -36,7 +36,6 @@ export default async function PrintPage({ params }: { params: Promise<{ id: stri
     orderBy: { createdAt: "desc" },
   });
 
-  // Map to preview data
   const cardData = students.map(s => ({
     studentName: s.fullName,
     fatherName: s.fatherName || "",
@@ -44,8 +43,7 @@ export default async function PrintPage({ params }: { params: Promise<{ id: stri
     dob: s.dateOfBirth || "",
     mobile: s.studentMobile || "",
     address: s.addressLine1 || "",
-    photoUrl: s.photo || undefined,
-    principalSignUrl: s.signature || undefined, // assuming signature is used for principal
+    photoUrl: s.photo || "",
   }));
 
   // Group into pages of 10 for A4
@@ -80,7 +78,6 @@ export default async function PrintPage({ params }: { params: Promise<{ id: stri
                   <div className="grid grid-cols-2 gap-x-[10mm] gap-y-[10mm] justify-center items-center h-full">
                     {page.map((data, i) => (
                       <div key={i} className="card-wrapper flex justify-center items-center" style={{ width: '86mm', height: '54mm', overflow: 'hidden' }}>
-                         {/* We scale the 1016x638 template down to 86x54mm. 86mm is ~325px at 96 DPI screen. Scale factor = 325 / 1016 = 0.32 */}
                          <div style={{ transform: 'scale(0.32)', transformOrigin: 'top left' }}>
                            <StJohnTemplatePreview data={data} zoom={1} />
                          </div>
@@ -97,7 +94,7 @@ export default async function PrintPage({ params }: { params: Promise<{ id: stri
              <div className="flex flex-wrap gap-6 justify-center">
                 {cardData.map((data, i) => (
                   <div key={i} className="bg-white p-4 rounded-xl shadow-md">
-                     <div style={{ transform: 'scale(0.4)', transformOrigin: 'top left', width: '406px', height: '255px' }}>
+                     <div style={{ transform: 'scale(0.32)', transformOrigin: 'top left', width: '325px', height: '204px' }}>
                        <StJohnTemplatePreview data={data} zoom={1} />
                      </div>
                   </div>

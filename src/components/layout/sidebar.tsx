@@ -50,20 +50,6 @@ export function Sidebar() {
           {primaryLinks.map((link) => (
             <SidebarItem key={link.href} {...link} isCollapsed={isSidebarCollapsed} />
           ))}
-          
-          <div className="my-4">
-             <Separator />
-          </div>
-          
-          {!isSidebarCollapsed && (
-            <h4 className="mb-2 px-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Actions
-            </h4>
-          )}
-          
-          {actionLinks.map((link) => (
-            <SidebarItem key={link.href} {...link} isCollapsed={isSidebarCollapsed} />
-          ))}
         </nav>
       </ScrollArea>
 

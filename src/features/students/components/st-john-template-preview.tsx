@@ -32,45 +32,13 @@ export function StJohnTemplatePreview({ data, zoom = 1 }: StJohnTemplatePreviewP
       {/* Background Watermark/Pattern */}
       <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] pointer-events-none mix-blend-multiply"></div>
       
-      {/* Top Banner with Gradient */}
-      <div className="absolute top-0 left-0 w-full h-[230px] bg-[#0e4ee5] shadow-lg flex items-center justify-center text-center">
-        {/* Decorative Circles */}
-        <div className="absolute top-[-50px] right-[-50px] w-[300px] h-[300px] bg-white/5 rounded-full blur-2xl"></div>
-        <div className="absolute bottom-[-100px] left-[200px] w-[400px] h-[200px] bg-white/5 rounded-full blur-2xl"></div>
-
-        {/* ESTD Text */}
-        <div className="absolute text-white font-bold text-[20px] tracking-widest text-center" style={{ top: 20, left: 20, width: 350 }}>
-          ESTD:2001
-        </div>
-
-        {/* Logo area */}
-        <div className="absolute flex items-center justify-center overflow-hidden" style={{ top: 40, left: 20, width: 350, height: 230 }}>
-          <img src="/images/st-john-logo.png" alt="School Logo" className="object-contain drop-shadow-xl w-full h-full" />
-        </div>
-
-        {/* Header Texts */}
-        <div className="absolute text-white font-bold text-[20px] text-center tracking-widest drop-shadow-md" style={{ top: 15, left: 380, width: 616 }}>
-          H<span style={{ fontSize: '24px', verticalAlign: 'middle', margin: '0 2px' }}>†</span>S GRACE
-        </div>
-        
-        <div className="absolute text-white font-bold text-[18px] text-center tracking-wide drop-shadow-sm" style={{ top: 40, left: 380, width: 616 }}>
-          "Fear of the Lord is the beginning of the wisdom"
-        </div>
-        
-        <div className="absolute text-white font-extrabold text-[52px] text-center uppercase tracking-tight drop-shadow-lg leading-none" style={{ top: 65, left: 380, width: 616, fontFamily: 'Arial Black, Impact, sans-serif' }}>
-          ST.JOHN SAMARITAN
-        </div>
-        
-        <div className="absolute text-white font-bold text-[20px] text-center uppercase tracking-wide drop-shadow-md" style={{ top: 130, left: 380, width: 616 }}>
-          ENGLISH MEDIUM PRIMARY &amp; HIGH SCHOOL
-        </div>
-        
-        <div className="absolute bg-white" style={{ top: 165, left: 400, width: 566, height: 3 }}></div>
-        
-        <div className="absolute flex flex-col items-center justify-center text-white text-[16px] font-semibold text-center uppercase tracking-wider drop-shadow-md" style={{ top: 175, left: 380, width: 616, lineHeight: '1.2' }}>
-          <span>NEAR BYPASS NEKAR NAGAR OLD HUBLI-HUBBALLI</span>
-          <span>OFFICE CONTACT NO : 7892788532 - 8970349780</span>
-        </div>
+      {/* Top Banner with Image */}
+      <div className="absolute top-0 left-0 w-full h-[240px] bg-[#0047ff] shadow-lg flex items-center justify-center text-center overflow-hidden z-10 border-b-[2px] border-[#0047ff]">
+        <img 
+          src="/id-template/header.png" 
+          alt="School Header" 
+          className="w-full h-full object-contain object-top" 
+        />
       </div>
 
       {/* Left Blue Curve */}
@@ -89,33 +57,33 @@ export function StJohnTemplatePreview({ data, zoom = 1 }: StJohnTemplatePreviewP
 
       {/* Student Data Fields */}
       <div className="absolute flex items-center" style={{ top: 300, left: 320, width: 650 }}>
-        <span className="font-bold text-[20px] text-black w-[150px] shrink-0 uppercase tracking-widest">NAME :</span>
-        <span className="text-[20px] text-black font-bold uppercase leading-none flex-1 truncate">{data.studentName || ""}</span>
+        <span className="font-bold text-[29px] text-black shrink-0 uppercase tracking-widest mr-3">NAME :</span>
+        <span className="text-[33px] text-[#ff0000] font-bold uppercase leading-none flex-1 truncate">{data.studentName || ""}</span>
       </div>
 
       <div className="absolute flex items-center" style={{ top: 360, left: 320, width: 650 }}>
-        <span className="font-bold text-[20px] text-black w-[220px] shrink-0 uppercase tracking-widest">FATHER NAME :</span>
-        <span className="text-[20px] text-black font-bold uppercase leading-none flex-1 truncate">{data.fatherName || ""}</span>
+        <span className="font-bold text-[29px] text-black shrink-0 uppercase tracking-widest mr-3">FATHER NAME :</span>
+        <span className="text-[29px] text-[#0000ff] font-normal uppercase leading-none flex-1 truncate">{data.fatherName || ""}</span>
       </div>
 
-      <div className="absolute flex items-center" style={{ top: 420, left: 320, width: 350 }}>
-        <span className="font-bold text-[20px] text-black w-[120px] shrink-0 uppercase tracking-widest">CLASS :</span>
-        <span className="text-[20px] text-black font-bold uppercase leading-none flex-1 truncate">{data.className || ""}</span>
+      <div className="absolute flex items-center" style={{ top: 420, left: 320, width: 280 }}>
+        <span className="font-bold text-[29px] text-black shrink-0 uppercase tracking-widest mr-3">CLASS :</span>
+        <span className="text-[33px] text-[#ff0000] font-bold uppercase leading-none flex-1 truncate">{data.className || ""}</span>
       </div>
 
-      <div className="absolute flex items-center" style={{ top: 420, left: 680, width: 300 }}>
-        <span className="font-bold text-[20px] text-black w-[90px] shrink-0 uppercase tracking-widest">DOB :</span>
-        <span className="text-[20px] text-black font-bold uppercase leading-none flex-1 truncate">{formattedDob || ""}</span>
+      <div className="absolute flex items-center" style={{ top: 420, left: 600, width: 350 }}>
+        <span className="font-bold text-[29px] text-black shrink-0 uppercase tracking-widest mr-3">DOB :</span>
+        <span className="text-[29px] text-[#0000ff] font-normal uppercase leading-none flex-1 truncate">{formattedDob || ""}</span>
       </div>
 
       <div className="absolute flex items-center" style={{ top: 480, left: 320, width: 650 }}>
-        <span className="font-bold text-[20px] text-black w-[140px] shrink-0 uppercase tracking-widest">MOBILE :</span>
-        <span className="text-[20px] text-black font-bold uppercase leading-none flex-1 truncate">{data.mobile || ""}</span>
+        <span className="font-bold text-[29px] text-black shrink-0 uppercase tracking-widest mr-3">MOBILE :</span>
+        <span className="text-[29px] text-[#ff0000] font-normal uppercase leading-none flex-1 truncate">{data.mobile || ""}</span>
       </div>
 
-      <div className="absolute flex items-start" style={{ top: 530, left: 320, width: 450 }}>
-        <span className="font-bold text-[20px] text-black w-[160px] shrink-0 uppercase tracking-widest">ADDRESS :</span>
-        <span className="text-[18px] text-black font-bold uppercase leading-tight flex-1 break-words">{data.address || ""}</span>
+      <div className="absolute flex items-start" style={{ top: 530, left: 320, width: 470 }}>
+        <span className="font-bold text-[29px] text-black shrink-0 uppercase tracking-widest pt-[2px] mr-3">ADDRESS :</span>
+        <span className="text-[21px] text-[#ff0000] font-normal uppercase leading-[1.2] flex-1 break-words">{data.address || ""}</span>
       </div>
 
       {/* Principal Signature */}
@@ -128,9 +96,9 @@ export function StJohnTemplatePreview({ data, zoom = 1 }: StJohnTemplatePreviewP
       </div>
 
       {/* Photo Box */}
-      <div className="absolute bg-transparent z-10 overflow-hidden flex items-center justify-center border-[6px] border-solid border-black" style={{ top: 260, left: 50, width: 200, height: 260 }}>
+      <div className="absolute bg-white z-10 overflow-hidden flex items-center justify-center border-[4px] border-solid border-black shadow-sm" style={{ top: 270, left: 60, width: 220, height: 280 }}>
         {data.photoUrl ? (
-          <img src={data.photoUrl} alt="Student" className="w-full h-full object-cover object-top" crossOrigin="anonymous" />
+          <img src={data.photoUrl} alt="Student" className="w-full h-full object-cover object-top mix-blend-multiply" crossOrigin="anonymous" />
         ) : (
            <span className="text-slate-400 font-bold uppercase text-sm tracking-widest text-center px-4">Student<br/>Photo</span>
         )}

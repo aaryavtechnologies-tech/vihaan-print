@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { clearStudentImages } from "../server/student-actions";
 import { toast } from "sonner";
-import html2canvas from "html2canvas";
+import * as htmlToImage from "html-to-image";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 export function PrintController({ children, studentId }: { children: React.ReactNode, studentId?: string }) {
@@ -31,16 +31,19 @@ export function PrintController({ children, studentId }: { children: React.React
     setIsExporting(true);
     try {
       // Create a clone or just render the current ref
-      // We use html2canvas on the card container
-      const canvas = await html2canvas(cardRef.current, {
-        useCORS: true,
-        scale: 4, // Higher scale for high quality ID card
-        backgroundColor: null,
-        logging: false
-      });
+      // We use html-to-image on the card container
+      const options = {
+        pixelRatio: 4, // Higher scale for high quality ID card
+        backgroundColor: 'transparent',
+      };
       
-      const mimeType = format === 'jpg' ? 'image/jpeg' : 'image/png';
-      const dataUrl = canvas.toDataURL(mimeType, 1.0);
+      let dataUrl: string;
+      if (format === 'jpg') {
+        // JPG doesn't support transparency, so use white background
+        dataUrl = await htmlToImage.toJpeg(cardRef.current, { ...options, backgroundColor: '#ffffff' });
+      } else {
+        dataUrl = await htmlToImage.toPng(cardRef.current, options);
+      }
       
       const link = document.createElement('a');
       link.download = `student-id-${studentId || 'card'}.${format}`;
@@ -113,7 +116,7 @@ export function PrintController({ children, studentId }: { children: React.React
       </div>
 
       {/* Printable Area - We use scale down for screen viewing but allow print CSS to dictate print size */}
-      <div className="bg-white p-8 shadow-xl print:shadow-none print:p-0 rounded-xl print:rounded-none overflow-hidden flex flex-col items-center justify-center">
+      <div className="bg-white p-8 md:p-12 shadow-xl print:shadow-none print:p-0 rounded-xl print:rounded-none flex flex-col items-center justify-center min-h-[500px] w-full max-w-3xl">
         
         {/* Helper text for user - hidden on print */}
         <div className="text-center mb-6 text-slate-500 text-sm print:hidden max-w-md">
@@ -121,7 +124,7 @@ export function PrintController({ children, studentId }: { children: React.React
         </div>
 
         {/* The actual ID card (scaled slightly for screen preview) */}
-        <div className="transform scale-[0.6] sm:scale-[0.8] print:scale-100 origin-top">
+        <div className="transform scale-[1.25] sm:scale-[1.75] md:scale-[2] print:scale-100 origin-top mt-4 mb-24 sm:mb-40 md:mb-52 print:my-0">
           <div ref={cardRef}>
             {children}
           </div>

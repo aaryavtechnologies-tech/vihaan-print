@@ -12,7 +12,7 @@ import { createStudent } from "../server/student-actions";
 import { toast } from "sonner";
 import { ImageUpload } from "@/components/ui/image-upload";
 
-import { StJohnTemplatePreview, StudentCardData } from "./st-john-template-preview";
+import { StJohnTemplatePreview } from "@/features/students/components/st-john-template-preview";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -63,15 +63,14 @@ export function StudentWizard({ schools = [], isPublic = false }: { schools?: an
   
   const formValues = watch();
 
-  const previewData: StudentCardData = {
+  const previewData = {
     studentName: `${formValues.firstName || ""} ${formValues.lastName || ""}`.trim(),
-    fatherName: formValues.fatherName,
-    className: formValues.className,
-    dob: formValues.dob,
-    mobile: formValues.mobile,
-    address: formValues.addressLine1,
-    photoUrl: formValues.photoUrl,
-    principalSignUrl: formValues.signatureUrl, // Just for demo, usually it's school signature
+    fatherName: formValues.fatherName || "",
+    className: formValues.className || "",
+    dob: formValues.dob || "",
+    mobile: formValues.mobile || "",
+    address: formValues.addressLine1 || "",
+    photoUrl: formValues.photoUrl || "",
   };
 
   const onSubmit = async (data: StudentFormData) => {
@@ -126,7 +125,7 @@ export function StudentWizard({ schools = [], isPublic = false }: { schools?: an
           
           <div className="w-full overflow-hidden flex justify-center items-center relative z-10 pb-4">
             <div className="scale-[0.35] xs:scale-[0.45] sm:scale-[0.6] md:scale-[0.7] xl:scale-[0.8] origin-top md:origin-center transition-all duration-300">
-              <StJohnTemplatePreview data={previewData} />
+              <StJohnTemplatePreview data={previewData} zoom={1} />
             </div>
           </div>
         </div>

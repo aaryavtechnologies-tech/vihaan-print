@@ -89,13 +89,13 @@ export default async function GeneratedCardDetail({ params }: { params: Promise<
             </div>
 
             <div className="space-y-3 pt-4">
-              <a href={card.frontImage || "#"} download={`${card.student.studentId}_front.png`}>
+              <a href={card.frontImage ? `/api/proxy-download?url=${encodeURIComponent(card.frontImage)}&filename=${encodeURIComponent(card.student.studentId + "_front.png")}` : "#"}>
                 <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md h-11">
                   <Download className="w-4 h-4 mr-2" /> Download Front
                 </Button>
               </a>
               {card.backImage && (
-                <a href={card.backImage} download={`${card.student.studentId}_back.png`}>
+                <a href={`/api/proxy-download?url=${encodeURIComponent(card.backImage)}&filename=${encodeURIComponent(card.student.studentId + "_back.png")}`}>
                   <Button variant="outline" className="w-full rounded-xl shadow-sm h-11">
                     <Download className="w-4 h-4 mr-2" /> Download Back
                   </Button>
