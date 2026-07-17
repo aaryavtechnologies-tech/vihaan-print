@@ -21,6 +21,21 @@ export async function getStudents(schoolId?: string) {
   }
 }
 
+export async function getStudentsByIds(ids: string[]) {
+  try {
+    return await prisma.student.findMany({
+      where: { id: { in: ids } },
+      include: {
+        school: { select: { schoolName: true, schoolCode: true } },
+        template: { select: { name: true } }
+      }
+    });
+  } catch (error) {
+    console.error("Failed to fetch students by ids:", error);
+    return [];
+  }
+}
+
 export async function getStudentById(id: string) {
   try {
     return await prisma.student.findFirst({

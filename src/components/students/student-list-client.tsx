@@ -18,6 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { deleteStudent, bulkDeleteStudents } from "@/features/students/server/student-actions";
+import { BulkA4Button } from "@/features/students/components/bulk-a4-btn";
 
 type Student = {
   id: string;
@@ -184,19 +185,7 @@ export function StudentListClient({ students }: StudentListClientProps) {
             <ChevronDown className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
           </div>
 
-          {/* Status filter */}
-          <div className="relative">
-            <select
-              id="filter-status"
-              value={filterStatus}
-              onChange={e => setFilterStatus(e.target.value)}
-              className="appearance-none pl-3 pr-8 h-10 text-sm rounded-xl border border-slate-200 bg-white shadow-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-            >
-              <option value="">All Statuses</option>
-              {statuses.map(s => <option key={s} value={s}>{s}</option>)}
-            </select>
-            <ChevronDown className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
-          </div>
+
 
           {/* School filter */}
           <div className="relative">
@@ -242,6 +231,7 @@ export function StudentListClient({ students }: StudentListClientProps) {
             <Trash2 className="h-3.5 w-3.5 mr-1.5" />
             Delete Selected
           </Button>
+          <BulkA4Button selectedIds={Array.from(selectedIds)} />
           <Button
             variant="ghost"
             size="sm"
@@ -293,7 +283,6 @@ export function StudentListClient({ students }: StudentListClientProps) {
                   <th className="px-4 py-4 font-semibold text-slate-600">Name</th>
                   <th className="px-4 py-4 font-semibold text-slate-600">Class</th>
                   <th className="px-4 py-4 font-semibold text-slate-600">School</th>
-                  <th className="px-4 py-4 font-semibold text-slate-600">Status</th>
                   <th className="px-4 py-4 font-semibold text-slate-600 text-right">Actions</th>
                 </tr>
               </thead>
@@ -320,11 +309,6 @@ export function StudentListClient({ students }: StudentListClientProps) {
                         {student.className}{student.section ? ` - ${student.section}` : ""}
                       </td>
                       <td className="px-4 py-3.5 text-slate-500 text-xs">{student.school.schoolName}</td>
-                      <td className="px-4 py-3.5">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${statusColor(student.status)}`}>
-                          {student.status}
-                        </span>
-                      </td>
                       <td className="px-4 py-3.5 text-right">
                         <div className="flex items-center justify-end gap-2">
                           <Button

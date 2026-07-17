@@ -55,28 +55,27 @@ export function StJohnTemplatePreview({ data, zoom = 1 }: StJohnTemplatePreviewP
         </div>
       </div>
 
-      {/* Student Data Fields */}
-      <div className="absolute flex items-center" style={{ top: 300, left: 320, width: 650 }}>
+      <div className="absolute flex items-baseline" style={{ top: 300, left: 320, width: 650 }}>
         <span className="font-bold text-[29px] text-black shrink-0 uppercase tracking-widest mr-3">NAME :</span>
         <span className="text-[33px] text-[#ff0000] font-bold uppercase leading-none flex-1 truncate">{data.studentName || ""}</span>
       </div>
 
-      <div className="absolute flex items-center" style={{ top: 360, left: 320, width: 650 }}>
+      <div className="absolute flex items-baseline" style={{ top: 360, left: 320, width: 650 }}>
         <span className="font-bold text-[29px] text-black shrink-0 uppercase tracking-widest mr-3">FATHER NAME :</span>
         <span className="text-[29px] text-[#0000ff] font-normal uppercase leading-none flex-1 truncate">{data.fatherName || ""}</span>
       </div>
 
-      <div className="absolute flex items-center" style={{ top: 420, left: 320, width: 280 }}>
+      <div className="absolute flex items-baseline" style={{ top: 420, left: 320, width: 280 }}>
         <span className="font-bold text-[29px] text-black shrink-0 uppercase tracking-widest mr-3">CLASS :</span>
         <span className="text-[33px] text-[#ff0000] font-bold uppercase leading-none flex-1 truncate">{data.className || ""}</span>
       </div>
 
-      <div className="absolute flex items-center" style={{ top: 420, left: 600, width: 350 }}>
+      <div className="absolute flex items-baseline" style={{ top: 420, left: 600, width: 350 }}>
         <span className="font-bold text-[29px] text-black shrink-0 uppercase tracking-widest mr-3">DOB :</span>
         <span className="text-[29px] text-[#0000ff] font-normal uppercase leading-none flex-1 truncate">{formattedDob || ""}</span>
       </div>
 
-      <div className="absolute flex items-center" style={{ top: 480, left: 320, width: 650 }}>
+      <div className="absolute flex items-baseline" style={{ top: 480, left: 320, width: 650 }}>
         <span className="font-bold text-[29px] text-black shrink-0 uppercase tracking-widest mr-3">MOBILE :</span>
         <span className="text-[29px] text-[#ff0000] font-normal uppercase leading-none flex-1 truncate">{data.mobile || ""}</span>
       </div>

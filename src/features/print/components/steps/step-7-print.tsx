@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, CheckCircle2, XCircle, Download, Image as ImageIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { generatePDF } from "../../utils/pdf-engine";
+import { generateA4Images } from "../../utils/a4-image-engine";
 import { createPrintJobRecord } from "../../actions/print-actions";
 import { authClient } from "@/lib/auth-client"; // Use client session for user id
 import JSZip from "jszip";
@@ -21,6 +22,7 @@ export function Step7Print() {
   const [isStarted, setIsStarted] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [isZippingImages, setIsZippingImages] = useState(false);
+  const [isGeneratingA4, setIsGeneratingA4] = useState(false);
   const hasInitialized = useRef(false);
 
   useEffect(() => {
@@ -158,6 +160,47 @@ export function Step7Print() {
     }
   };
 
+  const downloadA4Images = async () => {
+    setIsGeneratingA4(true);
+    try {
+      const template = selectedCards[0]?.template;
+      if (!template) throw new Error("Template data missing");
+
+      const blobs = await generateA4Images({ 
+        cards: selectedCards, 
+        template
+      });
+
+      if (blobs.length === 1) {
+        const url = URL.createObjectURL(blobs[0]);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `A4_ID_Cards_${new Date().getTime()}.png`;
+        link.click();
+        URL.revokeObjectURL(url);
+        toast.success("A4 Image downloaded successfully!");
+      } else {
+        const zip = new JSZip();
+        blobs.forEach((blob, index) => {
+          zip.file(`A4_Page_${index + 1}.png`, blob);
+        });
+        const zipBlob = await zip.generateAsync({ type: "blob" });
+        const url = URL.createObjectURL(zipBlob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `A4_ID_Cards_${new Date().getTime()}.zip`;
+        link.click();
+        URL.revokeObjectURL(url);
+        toast.success("A4 Images ZIP downloaded successfully!");
+      }
+    } catch (e) {
+      console.error(e);
+      toast.error("Failed to generate A4 images.");
+    } finally {
+      setIsGeneratingA4(false);
+    }
+  };
+
   const handleFinish = () => {
     if (downloadUrl) {
       URL.revokeObjectURL(downloadUrl.split('#')[0]);
@@ -200,14 +243,27 @@ export function Step7Print() {
             
             <Button 
               onClick={downloadImagesZip}
-              disabled={isZippingImages}
+              disabled={isZippingImages || isGeneratingA4}
               variant="outline"
               className="h-14 px-8 rounded-xl bg-white border-slate-200 text-slate-800 shadow-sm transition-all font-bold text-lg w-full sm:w-auto"
             >
               {isZippingImages ? (
-                <><Loader2 className="w-5 h-5 mr-3 animate-spin" /> Zipping Images...</>
+                <><Loader2 className="w-5 h-5 mr-3 animate-spin" /> Zipping...</>
               ) : (
-                <><ImageIcon className="w-5 h-5 mr-3 text-blue-600" /> Export as Images (ZIP)</>
+                <><ImageIcon className="w-5 h-5 mr-3 text-blue-600" /> Export Individual (ZIP)</>
+              )}
+            </Button>
+            
+            <Button 
+              onClick={downloadA4Images}
+              disabled={isGeneratingA4 || isZippingImages}
+              variant="outline"
+              className="h-14 px-8 rounded-xl bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100 shadow-sm transition-all font-bold text-lg w-full sm:w-auto"
+            >
+              {isGeneratingA4 ? (
+                <><Loader2 className="w-5 h-5 mr-3 animate-spin" /> Generating A4...</>
+              ) : (
+                <><ImageIcon className="w-5 h-5 mr-3 text-indigo-600" /> Download A4 Image</>
               )}
             </Button>
           </div>
