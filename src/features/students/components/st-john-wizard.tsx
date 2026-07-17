@@ -10,7 +10,7 @@ import { Save, Loader2, CreditCard } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { createStudent } from "../server/student-actions";
 import { toast } from "sonner";
-import { ImageUploadWithBgRemoval } from "@/components/ui/image-upload-with-bg-removal";
+import { ImageUpload } from "@/components/ui/image-upload";
 import { format } from "date-fns";
 
 import { StJohnTemplatePreview, StudentCardData } from "./st-john-template-preview";
@@ -270,7 +270,7 @@ export function StJohnWizard() {
                 {/* Right side: Photo upload */}
                 <div className="lg:col-span-4 h-fit bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-inner flex flex-col justify-center">
                   <Label className="text-sm text-slate-800 font-bold mb-3 block">Student Photo <span className="text-red-500">*</span></Label>
-                  <ImageUploadWithBgRemoval 
+                  <ImageUpload 
                     value={formValues.photoUrl} 
                     onChange={(url) => methods.setValue("photoUrl", url, { shouldValidate: true, shouldDirty: true, shouldTouch: true })}
                     label="Click or drag photo here"

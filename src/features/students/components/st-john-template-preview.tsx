@@ -98,7 +98,7 @@ export function StJohnTemplatePreview({ data, zoom = 1 }: StJohnTemplatePreviewP
       {/* Photo Box */}
       <div className="absolute bg-white z-10 overflow-hidden flex items-center justify-center border-[4px] border-solid border-black shadow-sm" style={{ top: 270, left: 60, width: 220, height: 280 }}>
         {data.photoUrl ? (
-          <img src={data.photoUrl} alt="Student" className="w-full h-full object-cover object-top mix-blend-multiply" crossOrigin="anonymous" />
+          <img src={data.photoUrl} alt="Student" className="w-full h-full object-cover object-top" crossOrigin="anonymous" />
         ) : (
            <span className="text-slate-400 font-bold uppercase text-sm tracking-widest text-center px-4">Student<br/>Photo</span>
         )}
