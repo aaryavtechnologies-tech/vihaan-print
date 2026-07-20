@@ -36,10 +36,10 @@ export function BulkA4Button({ selectedIds }: BulkA4ButtonProps) {
         schoolId: student.school.schoolCode,
       }));
 
-      // 3. Chunk into groups of 4 (for 2x2 grid per A4 page)
+      // 3. Chunk into groups of 10 (for 2x5 grid per A4 page)
       const chunks: any[][] = [];
-      for (let i = 0; i < mapped.length; i += 4) {
-        chunks.push(mapped.slice(i, i + 4));
+      for (let i = 0; i < mapped.length; i += 10) {
+        chunks.push(mapped.slice(i, i + 10));
       }
       
       // We will render them off-screen temporarily, wait a moment for fonts/images to load, then capture
@@ -100,14 +100,14 @@ export function BulkA4Button({ selectedIds }: BulkA4ButtonProps) {
       <Button
         onClick={handleGenerate}
         disabled={isGenerating || selectedIds.length === 0}
-        variant="outline"
-        size="sm"
-        className="h-8 rounded-lg bg-indigo-50 border-indigo-200 text-indigo-700 hover:bg-indigo-100 shadow-sm font-semibold ml-2"
+        variant="default"
+        size="lg"
+        className="h-12 rounded-xl shadow-lg font-bold px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white"
       >
         {isGenerating ? (
-          <><Loader2 className="w-3.5 h-3.5 mr-1.5 animate-spin" /> Generating A4...</>
+          <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Generating A4...</>
         ) : (
-          <><Printer className="w-3.5 h-3.5 mr-1.5" /> Download A4 Sheet</>
+          <><Printer className="w-5 h-5 mr-2" /> Bulk Print A4 (10 per page)</>
         )}
       </Button>
 
@@ -118,10 +118,10 @@ export function BulkA4Button({ selectedIds }: BulkA4ButtonProps) {
             <div 
               key={pageIndex} 
               id={`a4-page-render-${pageIndex}`}
-              className="bg-white relative overflow-hidden" 
+              className="bg-white relative overflow-hidden flex items-center justify-center" 
               style={{ width: '2480px', height: '3508px', padding: '100px' }} // 300 DPI A4 Size
             >
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '50px', justifyContent: 'center', alignContent: 'start', width: '100%', height: '100%' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px 40px', justifyContent: 'center', alignContent: 'center' }}>
                 {chunk.map((student, i) => (
                   <div key={i} className="relative shadow-sm border border-slate-200 rounded-2xl overflow-hidden" style={{ width: '1016px', height: '638px' }}>
                     <StJohnTemplatePreview data={student} zoom={1} />

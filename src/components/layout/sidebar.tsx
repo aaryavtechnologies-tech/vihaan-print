@@ -10,21 +10,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
 export const primaryLinks = [
-  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Students", href: "/dashboard/students", icon: Users },
-  { label: "Schools", href: "/dashboard/schools", icon: Building2 },
-  { label: "Templates", href: "/dashboard/templates", icon: LayoutTemplate },
+  { label: "Admin Panel", href: "/dashboard", icon: LayoutDashboard },
 ];
 
-export const actionLinks = [
-  { label: "Bulk Import", href: "/dashboard/import", icon: Database },
-  { label: "Import History", href: "/dashboard/import/history", icon: History },
-  { label: "Generate ID", href: "/dashboard/generate", icon: IdCard },
-  { label: "Generation History", href: "/dashboard/generate/history", icon: History },
-  { label: "Generated Cards", href: "/dashboard/generated-cards", icon: CreditCard },
-  { label: "Print Center", href: "/dashboard/print", icon: Printer },
-  { label: "Reports", href: "/dashboard/reports", icon: BarChart3 },
-];
+export const actionLinks: { label: string; href: string; icon: any }[] = [];
 
 export function Sidebar() {
   const { isSidebarCollapsed, toggleSidebar } = useDashboardStore();
