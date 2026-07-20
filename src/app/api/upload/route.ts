@@ -16,14 +16,22 @@ export async function POST(request: Request) {
     const buffer = Buffer.from(arrayBuffer);
     const base64Data = `data:${file.type};base64,${buffer.toString("base64")}`;
 
-    // Upload to Cloudinary
-    const result = await cloudinary.uploader.upload(base64Data, {
+    const removeBg = formData.get("removeBg") === "true";
+
+    const uploadOptions: any = {
       folder: folder,
       resource_type: "auto",
       // Optimization
       quality: "auto",
       fetch_format: "auto",
-    });
+    };
+
+    if (removeBg) {
+      uploadOptions.background_removal = "cloudinary_ai";
+    }
+
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(base64Data, uploadOptions);
 
     return NextResponse.json({
       url: result.secure_url,

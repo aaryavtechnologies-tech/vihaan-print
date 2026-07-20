@@ -14,6 +14,7 @@ interface ImageUploadProps {
 
 export function ImageUpload({ value, onChange, label = "Upload Image", folder = "vihaan_id_print/students" }: ImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
+  const [removeBg, setRemoveBg] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,6 +35,7 @@ export function ImageUpload({ value, onChange, label = "Upload Image", folder = 
     const formData = new FormData();
     formData.append("file", file);
     formData.append("folder", folder);
+    formData.append("removeBg", removeBg.toString());
 
     try {
       const response = await fetch("/api/upload", {
@@ -97,6 +99,23 @@ export function ImageUpload({ value, onChange, label = "Upload Image", folder = 
           <span className="text-xs text-slate-400 mt-1">JPG, PNG (Max 5MB)</span>
         </div>
       )}
+      
+      {!value && (
+        <div className="mt-3 flex items-center justify-center space-x-2">
+          <input
+            type="checkbox"
+            id="removeBg"
+            checked={removeBg}
+            onChange={(e) => setRemoveBg(e.target.checked)}
+            className="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+            disabled={isUploading}
+          />
+          <label htmlFor="removeBg" className="text-xs font-medium text-slate-600 cursor-pointer">
+            Remove Background (AI)
+          </label>
+        </div>
+      )}
+
       <input
         type="file"
         ref={inputRef}
