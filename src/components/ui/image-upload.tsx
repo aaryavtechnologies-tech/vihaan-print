@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { Upload, X, Loader2, Sparkles } from "lucide-react";
+import { Upload, X, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { removeBackground } from "@imgly/background-removal";
 
 interface ImageUploadProps {
   value?: string;
@@ -15,8 +14,7 @@ interface ImageUploadProps {
 
 export function ImageUpload({ value, onChange, label = "Upload Image", folder = "vihaan_id_print/students" }: ImageUploadProps) {
   const [isUploading, setIsUploading] = useState(false);
-  const [bgProgress, setBgProgress] = useState(0);
-  const [loadingText, setLoadingText] = useState("Processing...");
+  const [loadingText, setLoadingText] = useState("Uploading...");
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,25 +32,11 @@ export function ImageUpload({ value, onChange, label = "Upload Image", folder = 
     }
 
     setIsUploading(true);
-    setBgProgress(0);
-    setLoadingText("Removing Background...");
+    setLoadingText("Uploading image...");
     
     try {
-      // 1. Client-side AI Background Removal first
-      const imageBlob = await removeBackground(file, {
-        progress: (key: string, current: number, total: number) => {
-          if (key.includes("compute")) {
-            setBgProgress(Math.round((current / total) * 100));
-          }
-        }
-      });
-      
-      // 2. Upload the processed image to Cloudinary
-      setBgProgress(100);
-      setLoadingText("Uploading to server...");
-      
       const formData = new FormData();
-      formData.append("file", imageBlob, "nobg.png");
+      formData.append("file", file);
       formData.append("folder", folder);
 
       const response = await fetch("/api/upload", {
@@ -66,14 +50,13 @@ export function ImageUpload({ value, onChange, label = "Upload Image", folder = 
 
       const data = await response.json();
       onChange(data.url);
-      toast.success("Image uploaded successfully with background removed");
+      toast.success("Image uploaded successfully");
     } catch (error) {
       console.error(error);
-      toast.error("Failed to process and upload image");
+      toast.error("Failed to upload image");
     } finally {
       setIsUploading(false);
-      setBgProgress(0);
-      setLoadingText("Processing...");
+      setLoadingText("Uploading...");
       if (inputRef.current) {
         inputRef.current.value = ""; // Reset input
       }
@@ -114,7 +97,7 @@ export function ImageUpload({ value, onChange, label = "Upload Image", folder = 
             <>
               <Loader2 className="w-8 h-8 text-blue-500 animate-spin mb-2" />
               <span className="text-sm font-medium text-blue-600 text-center">
-                {bgProgress > 0 && bgProgress < 100 ? `AI Magic ${bgProgress}%` : loadingText}
+                {loadingText}
               </span>
             </>
           ) : (
@@ -123,7 +106,7 @@ export function ImageUpload({ value, onChange, label = "Upload Image", folder = 
               <span className="text-sm font-medium text-slate-600 text-center">
                 {label}
               </span>
-              <span className="text-xs text-slate-400 mt-1">JPG, PNG (Auto BG Remove)</span>
+              <span className="text-xs text-slate-400 mt-1">JPG, PNG</span>
             </>
           )}
         </div>
