@@ -269,8 +269,9 @@ export function StudentWizard({ schools = [], isPublic = false }: { schools?: an
                         onChange={(url) => methods.setValue("photoUrl", url, { shouldValidate: true, shouldDirty: true, shouldTouch: true })}
                         label="Upload Photo"
                         folder="vihaan_id_print/students"
+                        enableAutoCrop={true}
                       />
-                      <p className="text-xs text-slate-500">Ensure the face is clearly visible with a light background.</p>
+                      <p className="text-xs text-slate-500 font-medium">✨ Auto-cropped to 3.5×4.5 cm Passport Size</p>
                     </div>
                     <div className="space-y-4 bg-slate-50 p-4 rounded-2xl border border-slate-100">
                       <Label className="text-slate-700 font-semibold">Signature (Optional)</Label>
@@ -279,6 +280,7 @@ export function StudentWizard({ schools = [], isPublic = false }: { schools?: an
                         onChange={(url) => methods.setValue("signatureUrl", url, { shouldValidate: true, shouldDirty: true, shouldTouch: true })}
                         label="Upload Signature"
                         folder="vihaan_id_print/signatures"
+                        enableAutoCrop={false}
                       />
                       <p className="text-xs text-slate-500">Only needed if the student signature is printed on the card.</p>
                     </div>

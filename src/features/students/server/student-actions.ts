@@ -148,23 +148,25 @@ export async function createStudent(data: any) {
 
 export async function deleteStudent(id: string) {
   try {
+    await prisma.generatedCard.deleteMany({ where: { studentId: id } });
     await prisma.student.delete({ where: { id } });
     revalidatePath("/dashboard/students");
     return { success: true };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Failed to delete student:", error);
-    return { success: false, error: "Failed to delete student" };
+    return { success: false, error: error.message || "Failed to delete student" };
   }
 }
 
 export async function bulkDeleteStudents(ids: string[]) {
   try {
+    await prisma.generatedCard.deleteMany({ where: { studentId: { in: ids } } });
     await prisma.student.deleteMany({ where: { id: { in: ids } } });
     revalidatePath("/dashboard/students");
     return { success: true, count: ids.length };
-  } catch (error) {
+  } catch (error: any) {
     console.error("Failed to bulk delete students:", error);
-    return { success: false, error: "Failed to delete students" };
+    return { success: false, error: error.message || "Failed to delete students" };
   }
 }
 
