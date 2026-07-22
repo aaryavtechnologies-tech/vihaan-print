@@ -277,7 +277,7 @@ export function StJohnWizard({ schoolId = "STJOHN-9780" }: { schoolId?: string }
                     folder="vihaan_id_print/students"
                   />
                   {errors.photoUrl && <span className="text-xs text-red-500 font-medium block mt-2 text-center">{errors.photoUrl.message}</span>}
-                  <p className="text-xs text-slate-500 mt-4 text-center font-medium">✨ Auto-cropped to 3.5×4.5 cm Passport Size</p>
+                  <p className="text-xs text-slate-500 mt-4 text-center font-medium">✨ Passport Size (1.25" × 1.75")</p>
                 </div>
                 
               </div>

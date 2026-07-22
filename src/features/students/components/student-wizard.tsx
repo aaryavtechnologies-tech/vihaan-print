@@ -271,7 +271,7 @@ export function StudentWizard({ schools = [], isPublic = false }: { schools?: an
                         folder="vihaan_id_print/students"
                         enableAutoCrop={true}
                       />
-                      <p className="text-xs text-slate-500 font-medium">✨ Auto-cropped to 3.5×4.5 cm Passport Size</p>
+                      <p className="text-xs text-slate-500 font-medium">✨ Passport Size (1.25" × 1.75")</p>
                     </div>
                     <div className="space-y-4 bg-slate-50 p-4 rounded-2xl border border-slate-100">
                       <Label className="text-slate-700 font-semibold">Signature (Optional)</Label>

@@ -31,10 +31,10 @@ interface PassportCropModalProps {
   onCropComplete: (croppedBlob: Blob, croppedDataUrl: string) => void;
 }
 
-// Passport photo standard aspect ratio: 3.5cm x 4.5cm (3.5 / 4.5 = ~0.77778)
-const PASSPORT_ASPECT_RATIO = 3.5 / 4.5;
+// Passport photo standard aspect ratio: 1.25 in x 1.75 in (1.25 / 1.75 = ~0.71428)
+const PASSPORT_ASPECT_RATIO = 1.25 / 1.75;
 const EXPORT_WIDTH = 600;
-const EXPORT_HEIGHT = Math.round(EXPORT_WIDTH / PASSPORT_ASPECT_RATIO); // 771px
+const EXPORT_HEIGHT = Math.round(EXPORT_WIDTH / PASSPORT_ASPECT_RATIO); // 840px
 
 export function PassportCropModal({
   isOpen,
@@ -125,7 +125,6 @@ export function PassportCropModal({
       ctx.rotate((rotation * Math.PI) / 180);
 
       // Calculate scale based on natural dimensions vs export box
-      // Container dimensions ratio vs image
       const scaleToFitWidth = canvas.width / img.naturalWidth;
       const scaleToFitHeight = canvas.height / img.naturalHeight;
       // Cover strategy for passport crop
@@ -133,8 +132,8 @@ export function PassportCropModal({
       const totalScale = baseScale * zoom;
 
       // Pan multiplier normalized for export size
-      // We assume container preview width is ~260px
-      const previewScale = 260 / EXPORT_WIDTH;
+      // Container preview width is 230px
+      const previewScale = 230 / EXPORT_WIDTH;
       const normalizedPanX = pan.x / (previewScale * zoom);
       const normalizedPanY = pan.y / (previewScale * zoom);
 
@@ -178,10 +177,10 @@ export function PassportCropModal({
           <div className="flex items-center justify-between">
             <DialogTitle className="text-xl font-bold text-slate-900 flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-blue-600 animate-pulse" />
-              Auto Passport Cropper
+              Passport Photo Cropper
             </DialogTitle>
             <Badge variant="outline" className="border-blue-200 bg-blue-50 text-blue-700 font-semibold text-xs px-2.5 py-0.5">
-              3.5 x 4.5 cm Ratio
+              1.25" × 1.75" Ratio
             </Badge>
           </div>
           <DialogDescription className="text-xs text-slate-500">
@@ -200,7 +199,7 @@ export function PassportCropModal({
             onTouchStart={handleMouseDown}
             onTouchMove={handleMouseMove}
             onTouchEnd={handleMouseUp}
-            className="relative w-[240px] h-[308px] rounded-2xl overflow-hidden border-4 border-blue-500/80 shadow-xl bg-slate-900 cursor-grab active:cursor-grabbing select-none group touch-none"
+            className="relative w-[230px] h-[322px] rounded-2xl overflow-hidden border-4 border-blue-500/80 shadow-xl bg-slate-900 cursor-grab active:cursor-grabbing select-none group touch-none"
           >
             {imageSrc && (
               <div
@@ -227,14 +226,14 @@ export function PassportCropModal({
               <div className="absolute inset-0 bg-black/20"></div>
 
               {/* Head & Shoulder outline guide */}
-              <div className="relative z-10 w-[140px] h-[170px] border-2 border-dashed border-yellow-300/80 rounded-[50%] flex flex-col items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">
+              <div className="relative z-10 w-[135px] h-[170px] border-2 border-dashed border-yellow-300/80 rounded-[50%] flex flex-col items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">
                 <User className="w-16 h-16 text-yellow-300/40" />
                 <span className="text-[10px] font-bold text-yellow-200 bg-black/50 px-2 py-0.5 rounded-full mt-1">
                   Face Oval Guide
                 </span>
               </div>
               <span className="relative z-10 text-[9px] font-semibold text-white/90 bg-blue-900/60 px-2 py-0.5 rounded-full mt-2">
-                Passport 3.5 × 4.5 Standard
+                Passport 1.25" × 1.75" Standard
               </span>
             </div>
           </div>
