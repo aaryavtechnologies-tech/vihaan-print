@@ -172,7 +172,7 @@ export function PassportCropModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-md w-full p-6 rounded-3xl bg-white shadow-2xl border border-slate-100 overflow-hidden">
+      <DialogContent className="max-w-md w-full p-6 rounded-3xl bg-white shadow-2xl border border-slate-100 overflow-y-auto max-h-[90vh]">
         <DialogHeader className="space-y-1 text-center sm:text-left">
           <div className="flex items-center justify-between">
             <DialogTitle className="text-xl font-bold text-slate-900 flex items-center gap-2">
