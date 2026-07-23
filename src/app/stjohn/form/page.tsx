@@ -17,7 +17,7 @@ export default async function StJohnFormPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 relative overflow-hidden flex flex-col justify-center py-16 px-4 sm:px-6 lg:px-8 selection:bg-blue-100 selection:text-blue-900">
+    <div className="min-h-screen bg-slate-50 text-slate-900 relative overflow-x-hidden flex flex-col justify-center py-16 px-4 sm:px-6 lg:px-8 selection:bg-blue-100 selection:text-blue-900">
       
       {/* Dynamic Background Elements - Light Theme */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
